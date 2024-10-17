@@ -15,4 +15,9 @@
 .subtle {
   color: #666;
   font-size: 0.8rem;
+  text-align: center;
+}
+
+.link {
+  color: #0ea5e9;
 }
