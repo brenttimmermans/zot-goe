@@ -1,5 +1,6 @@
 .main {
   min-height: 100vh;
+  padding: 24px;
 }
 
 .construction {
@@ -10,12 +11,23 @@
   justify-content: center;
   align-items: center;
   gap: 8px;
+
+  text-align: center;
+}
+
+.construction h2 {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.construction p {
+  max-width: 420px;
 }
 
 .subtle {
   color: #666;
   font-size: 0.8rem;
-  text-align: center;
 }
 
 .link {
