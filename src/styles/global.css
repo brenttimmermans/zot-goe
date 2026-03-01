@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./fonts.css";
 
 @theme {
   --color-bg: #f5f4f0;
@@ -12,6 +13,7 @@
 @layer base {
   body {
     @apply bg-bg text-body;
+    font-family: "Montserrat Variable", "Helvetica Neue", sans-serif;
   }
 }
 
