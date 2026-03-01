@@ -1,1 +1,12 @@
 @import "tailwindcss";
+
+@layer base {
+  body {
+    @apply bg-bg text-body;
+  }
+}
+
+/* GLightbox overlay override */
+.goverlay {
+  background: rgba(44, 42, 39, 0.95);
+}
