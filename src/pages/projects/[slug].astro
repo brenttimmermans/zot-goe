@@ -1,0 +1,92 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+
+export async function getStaticPaths() {
+  const projects = await getCollection("projects");
+  return projects.map((project: CollectionEntry<"projects">) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props as { project: CollectionEntry<"projects"> };
+const { title, description, date, gallery, cover } = project.data;
+
+const formattedDate = date.toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "long",
+});
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "ImageGallery",
+  name: title,
+  description,
+  dateCreated: date.toISOString().split("T")[0],
+  author: {
+    "@type": "Person",
+    name: "Zot Goe",
+  },
+  image: gallery.map((src: string) => ({
+    "@type": "ImageObject",
+    contentUrl: `https://zotgoe.com${src}`,
+  })),
+};
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  ogImage={cover}
+  structuredData={structuredData}
+>
+  <section class="py-20">
+    <div class="max-w-7xl mx-auto px-6">
+      <a
+        href="/projects"
+        class="text-muted hover:text-accent transition-colors text-sm mb-8 inline-block"
+      >
+        &larr; Back to Projects
+      </a>
+
+      <header class="mb-12">
+        <h1 class="text-4xl md:text-5xl font-bold text-heading mb-4">{title}</h1>
+        <p class="text-body text-lg max-w-2xl mb-2">{description}</p>
+        <p class="text-muted text-sm">{formattedDate}</p>
+      </header>
+
+      <div class="columns-1 sm:columns-2 lg:columns-3 gap-4">
+        {gallery.map((src: string, i: number) => (
+          <a
+            href={src}
+            class="glightbox mb-4 block break-inside-avoid"
+            data-gallery="project-gallery"
+            data-description={`Image ${i + 1}`}
+          >
+            <img
+              src={src}
+              alt=""
+              loading="lazy"
+              decoding="async"
+              class="w-full rounded hover:opacity-90 transition-opacity"
+            />
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <script type="module">
+    import GLightbox from "glightbox";
+    import "glightbox/dist/css/glightbox.min.css";
+
+    GLightbox({
+      selector: ".glightbox",
+      touchNavigation: true,
+      loop: true,
+      autoplayVideos: false,
+    });
+  </script>
+</BaseLayout>
