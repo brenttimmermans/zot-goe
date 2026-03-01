@@ -16,7 +16,7 @@ Install and configure `@astrojs/sitemap` for automatic sitemap generation and cr
 
 - [ ] `@astrojs/sitemap` is installed
 - [ ] Sitemap integration is added to `astro.config.mjs`
-- [ ] `site` property is set in Astro config to `https://zotgoe.com`
+- [ ] `site` property is set in Astro config to `https://zotgoe.be`
 - [ ] `public/robots.txt` exists with proper directives
 - [ ] AI crawlers (GPTBot, Google-Extended, anthropic-ai, CCBot) are explicitly allowed
 - [ ] Sitemap URL referenced in robots.txt
@@ -38,7 +38,7 @@ import tailwind from "@astrojs/tailwind";
 import sitemap from "@astrojs/sitemap";
 
 export default defineConfig({
-  site: "https://zotgoe.com",
+  site: "https://zotgoe.be",
   integrations: [tailwind(), sitemap()],
 });
 ```
@@ -49,7 +49,7 @@ export default defineConfig({
 User-agent: *
 Allow: /
 
-Sitemap: https://zotgoe.com/sitemap-index.xml
+Sitemap: https://zotgoe.be/sitemap-index.xml
 
 # AI Crawlers (allowed for portfolio visibility)
 User-agent: GPTBot

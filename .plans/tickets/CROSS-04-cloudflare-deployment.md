@@ -16,7 +16,7 @@ Prepare the project for deployment on Cloudflare Pages. This includes verifying 
 
 - [ ] `npm run build` succeeds and produces output in `dist/`
 - [ ] `.node-version` file exists at project root with content `22`
-- [ ] Astro config has `site: "https://zotgoe.com"` set
+- [ ] Astro config has `site: "https://zotgoe.be"` set
 - [ ] Astro output mode is `"static"` (default, no SSR)
 - [ ] No build errors or warnings
 - [ ] All pages are generated in `dist/`
@@ -42,23 +42,24 @@ import tailwind from "@astrojs/tailwind";
 import sitemap from "@astrojs/sitemap";
 
 export default defineConfig({
-  site: "https://zotgoe.com",
+  site: "https://zotgoe.be",
   integrations: [tailwind(), sitemap()],
 });
 ```
 
 ### Cloudflare Pages Settings (for manual setup in dashboard)
 
-| Setting | Value |
-|---|---|
-| Build command | `npm run build` |
-| Build output directory | `dist` |
-| Node.js version | 22 (via `.node-version` or `NODE_VERSION` env var) |
-| Environment variable | `SITE_URL=https://zotgoe.com` |
+| Setting                | Value                                              |
+| ---------------------- | -------------------------------------------------- |
+| Build command          | `npm run build`                                    |
+| Build output directory | `dist`                                             |
+| Node.js version        | 22 (via `.node-version` or `NODE_VERSION` env var) |
+| Environment variable   | `SITE_URL=https://zotgoe.be`                       |
 
 ### Build Verification
 
 Run `npm run build` and verify:
+
 - `dist/index.html` exists (home page)
 - `dist/projects/index.html` exists (projects listing)
 - `dist/projects/urban-decay/index.html` exists (project detail)

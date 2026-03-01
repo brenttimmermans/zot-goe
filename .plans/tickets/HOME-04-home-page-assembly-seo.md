@@ -44,12 +44,12 @@ const structuredData = {
     {
       "@type": "WebSite",
       "name": "Zot Goe Photography",
-      "url": "https://zotgoe.com",
+      "url": "https://zotgoe.be",
     },
     {
       "@type": "Person",
       "name": "Zot Goe",
-      "url": "https://zotgoe.com",
+      "url": "https://zotgoe.be",
       "jobTitle": "Photographer",
     },
   ],

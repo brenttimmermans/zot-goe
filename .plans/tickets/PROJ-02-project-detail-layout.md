@@ -60,7 +60,7 @@ const structuredData = {
   },
   "image": gallery.map((src: string) => ({
     "@type": "ImageObject",
-    "contentUrl": `https://zotgoe.com${src}`,
+    "contentUrl": `https://zotgoe.be${src}`,
   })),
 };
 ---

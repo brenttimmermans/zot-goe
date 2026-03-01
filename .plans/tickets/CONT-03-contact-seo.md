@@ -32,7 +32,7 @@ Verify and finalize SEO meta tags and JSON-LD structured data on the contact pag
   "@type": "ContactPage",
   "name": "Contact — Zot Goe Photography",
   "description": "Get in touch with Zot Goe for photography inquiries.",
-  "url": "https://zotgoe.com/contact"
+  "url": "https://zotgoe.be/contact"
 }
 ```
 

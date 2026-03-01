@@ -14,15 +14,15 @@
 
 ## 2. Technology Stack
 
-| Layer | Technology | Rationale |
-|---|---|---|
-| Framework | Astro (v5.x) | Static-first, content collections for YAML-driven data, zero JS by default |
-| Styling | Tailwind CSS (v4.x) | Utility-first, rapid prototyping, small production bundle |
-| Deployment | Cloudflare Pages | Global CDN, automatic builds from Git, free tier generous for portfolios |
-| Forms | Web3Forms | No backend needed, free tier, simple API integration |
-| Lightbox | GLightbox | Lightweight (~11 KB), no dependencies, touch-friendly, accessible |
-| Content | YAML + static images in `public/` | Each project is a YAML file referencing a folder of pre-optimized images — no CMS, no database |
-| Node.js | v22.x | Runtime for development and Cloudflare Pages builds |
+| Layer      | Technology                        | Rationale                                                                                      |
+| ---------- | --------------------------------- | ---------------------------------------------------------------------------------------------- |
+| Framework  | Astro (v5.x)                      | Static-first, content collections for YAML-driven data, zero JS by default                     |
+| Styling    | Tailwind CSS (v4.x)               | Utility-first, rapid prototyping, small production bundle                                      |
+| Deployment | Cloudflare Pages                  | Global CDN, automatic builds from Git, free tier generous for portfolios                       |
+| Forms      | Web3Forms                         | No backend needed, free tier, simple API integration                                           |
+| Lightbox   | GLightbox                         | Lightweight (~11 KB), no dependencies, touch-friendly, accessible                              |
+| Content    | YAML + static images in `public/` | Each project is a YAML file referencing a folder of pre-optimized images — no CMS, no database |
+| Node.js    | v22.x                             | Runtime for development and Cloudflare Pages builds                                            |
 
 ---
 
@@ -95,13 +95,13 @@ Each project is represented by a single YAML file inside `src/content/projects/`
 title: "Urban Decay"
 description: "Abandoned industrial spaces reclaimed by nature across Northern Europe."
 date: 2025-06-15
-cover: "/images/projects/urban-decay/highlight-1.jpg"   # Absolute path from public/
-imageFolder: "urban-decay"                                # Folder name inside public/images/projects/
-highlights:                                               # Exactly 3 images for the ProjectCard
+cover: "/images/projects/urban-decay/highlight-1.jpg" # Absolute path from public/
+imageFolder: "urban-decay" # Folder name inside public/images/projects/
+highlights: # Exactly 3 images for the ProjectCard
   - "/images/projects/urban-decay/highlight-1.jpg"
   - "/images/projects/urban-decay/highlight-2.jpg"
   - "/images/projects/urban-decay/highlight-3.jpg"
-gallery:                                                  # All gallery images (explicit list)
+gallery: # All gallery images (explicit list)
   - "/images/projects/urban-decay/gallery-01.jpg"
   - "/images/projects/urban-decay/gallery-02.jpg"
   - "/images/projects/urban-decay/gallery-03.jpg"
@@ -149,12 +149,12 @@ export default {
   theme: {
     extend: {
       colors: {
-        bg:       "#F5F4F0",   // Off-white background
-        surface:  "#ECEAE4",   // Slightly darker for cards, sections
-        muted:    "#B0ADA6",   // Muted text, borders, dividers
-        body:     "#4A4845",   // Body text
-        heading:  "#2C2A27",   // Headings, strong text
-        accent:   "#6B6863",   // Hover states, secondary elements
+        bg: "#F5F4F0", // Off-white background
+        surface: "#ECEAE4", // Slightly darker for cards, sections
+        muted: "#B0ADA6", // Muted text, borders, dividers
+        body: "#4A4845", // Body text
+        heading: "#2C2A27", // Headings, strong text
+        accent: "#6B6863", // Hover states, secondary elements
       },
     },
   },
@@ -310,9 +310,19 @@ The homepage has three distinct vertical sections:
 ```html
 <div class="columns-1 sm:columns-2 lg:columns-3 gap-4">
   {entry.data.gallery.map((src) => (
-    <a href={src} class="glightbox mb-4 block break-inside-avoid" data-gallery="project">
-      <img src={src} alt="" loading="lazy" decoding="async" class="w-full rounded" />
-    </a>
+  <a
+    href="{src}"
+    class="glightbox mb-4 block break-inside-avoid"
+    data-gallery="project"
+  >
+    <img
+      src="{src}"
+      alt=""
+      loading="lazy"
+      decoding="async"
+      class="w-full rounded"
+    />
+  </a>
   ))}
 </div>
 ```
@@ -354,7 +364,7 @@ This uses CSS multi-column layout, which naturally fills columns and respects va
 ```astro
 <form action="https://api.web3forms.com/submit" method="POST">
   <input type="hidden" name="access_key" value="YOUR_KEY_HERE" />
-  <input type="hidden" name="redirect" value="https://zotgoe.com/contact?success=true" />
+  <input type="hidden" name="redirect" value="https://zotgoe.be/contact?success=true" />
   <input type="checkbox" name="botcheck" class="hidden" />
 
   <input type="text" name="name" required placeholder="Your name" />
@@ -405,7 +415,7 @@ interface Props {
   description: string;
   date: Date;
   slug: string;
-  highlights: string[];   // Array of 3 absolute image paths (e.g., "/images/projects/...")
+  highlights: string[]; // Array of 3 absolute image paths (e.g., "/images/projects/...")
 }
 ```
 
@@ -497,7 +507,7 @@ GLightbox ships with its own CSS. Override the background to match the neutral p
 ```css
 /* In global.css or a scoped style block */
 .goverlay {
-  background: rgba(44, 42, 39, 0.95);  /* heading colour at 95% opacity */
+  background: rgba(44, 42, 39, 0.95); /* heading colour at 95% opacity */
 }
 ```
 
@@ -509,15 +519,15 @@ Images are **pre-optimized by the owner** before being added to the project. Ast
 
 ### Approach
 
-| Concern | Approach |
-|---|---|
-| Storage | All images in `public/images/` — served as-is by Cloudflare CDN |
-| Format | Owner pre-optimizes to WebP or JPEG before adding to repo |
-| Resizing | Owner provides final sizes; no build-time generation |
-| Lazy loading | `loading="lazy"` on all images except the hero (`loading="eager"`) |
-| Decoding | `decoding="async"` on all images |
+| Concern      | Approach                                                                 |
+| ------------ | ------------------------------------------------------------------------ |
+| Storage      | All images in `public/images/` — served as-is by Cloudflare CDN          |
+| Format       | Owner pre-optimizes to WebP or JPEG before adding to repo                |
+| Resizing     | Owner provides final sizes; no build-time generation                     |
+| Lazy loading | `loading="lazy"` on all images except the hero (`loading="eager"`)       |
+| Decoding     | `decoding="async"` on all images                                         |
 | Layout shift | Set explicit `width` + `height` attributes where possible to prevent CLS |
-| Alt text | Meaningful alt text on every image for accessibility and SEO |
+| Alt text     | Meaningful alt text on every image for accessibility and SEO             |
 
 ### Image tags throughout the project
 
@@ -525,14 +535,26 @@ Since images are in `public/`, use plain `<img>` tags everywhere — **not** Ast
 
 ```html
 <!-- Hero (eager load) -->
-<img src="/images/hero.jpg" alt="..." loading="eager" decoding="async" class="..." />
+<img
+  src="/images/hero.jpg"
+  alt="..."
+  loading="eager"
+  decoding="async"
+  class="..."
+/>
 
 <!-- ProjectCard highlights (lazy) -->
-<img src={highlight} alt="..." loading="lazy" decoding="async" class="object-cover w-full h-full" />
+<img
+  src="{highlight}"
+  alt="..."
+  loading="lazy"
+  decoding="async"
+  class="object-cover w-full h-full"
+/>
 
 <!-- Gallery images (lazy, wrapped in lightbox link) -->
-<a href={src} class="glightbox">
-  <img src={src} alt="..." loading="lazy" decoding="async" class="w-full" />
+<a href="{src}" class="glightbox">
+  <img src="{src}" alt="..." loading="lazy" decoding="async" class="w-full" />
 </a>
 ```
 
@@ -549,24 +571,27 @@ Since images are in `public/`, use plain `<img>` tags everywhere — **not** Ast
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{title} | Zot Goe Photography</title>
-  <meta name="description" content={description} />
-  <link rel="canonical" href={canonicalUrl} />
+  <meta name="description" content="{description}" />
+  <link rel="canonical" href="{canonicalUrl}" />
 
   <!-- Open Graph -->
-  <meta property="og:title" content={title} />
-  <meta property="og:description" content={description} />
-  <meta property="og:image" content={ogImage} />
-  <meta property="og:url" content={canonicalUrl} />
+  <meta property="og:title" content="{title}" />
+  <meta property="og:description" content="{description}" />
+  <meta property="og:image" content="{ogImage}" />
+  <meta property="og:url" content="{canonicalUrl}" />
   <meta property="og:type" content="website" />
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content={title} />
-  <meta name="twitter:description" content={description} />
-  <meta name="twitter:image" content={ogImage} />
+  <meta name="twitter:title" content="{title}" />
+  <meta name="twitter:description" content="{description}" />
+  <meta name="twitter:image" content="{ogImage}" />
 
   <!-- JSON-LD Structured Data -->
-  <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+  <script
+    type="application/ld+json"
+    set:html="{JSON.stringify(structuredData)}"
+  />
 </head>
 ```
 
@@ -591,8 +616,14 @@ Example for a project detail page:
     "name": "Zot Goe"
   },
   "image": [
-    { "@type": "ImageObject", "contentUrl": "https://zotgoe.com/images/projects/urban-decay/gallery-01.jpg" },
-    { "@type": "ImageObject", "contentUrl": "https://zotgoe.com/images/projects/urban-decay/gallery-02.jpg" }
+    {
+      "@type": "ImageObject",
+      "contentUrl": "https://zotgoe.be/images/projects/urban-decay/gallery-01.jpg"
+    },
+    {
+      "@type": "ImageObject",
+      "contentUrl": "https://zotgoe.be/images/projects/urban-decay/gallery-02.jpg"
+    }
   ]
 }
 ```
@@ -605,7 +636,7 @@ Install `@astrojs/sitemap` in `astro.config.mjs`:
 import sitemap from "@astrojs/sitemap";
 
 export default defineConfig({
-  site: "https://zotgoe.com",
+  site: "https://zotgoe.be",
   integrations: [sitemap(), tailwind()],
 });
 ```
@@ -618,7 +649,7 @@ This auto-generates `sitemap-index.xml` at build time.
 User-agent: *
 Allow: /
 
-Sitemap: https://zotgoe.com/sitemap-index.xml
+Sitemap: https://zotgoe.be/sitemap-index.xml
 
 # AI Crawlers (allowed for portfolio visibility)
 User-agent: GPTBot
@@ -661,12 +692,12 @@ These practices are maintainable and don't require manual upkeep — they benefi
 
 ### 11.1 Build Configuration
 
-| Setting | Value |
-|---|---|
-| Build command | `npm run build` |
-| Build output directory | `dist` |
-| Node.js version | 22.x |
-| Environment variable | `SITE_URL=https://zotgoe.com` |
+| Setting                | Value                        |
+| ---------------------- | ---------------------------- |
+| Build command          | `npm run build`              |
+| Build output directory | `dist`                       |
+| Node.js version        | 22.x                         |
+| Environment variable   | `SITE_URL=https://zotgoe.be` |
 
 ### 11.2 Setup Steps
 
@@ -674,7 +705,7 @@ These practices are maintainable and don't require manual upkeep — they benefi
 2. Connect the repo in Cloudflare Pages dashboard
 3. Set the build configuration above
 4. Set Node.js version: add `NODE_VERSION=22` as an environment variable in Cloudflare Pages, or add a `.node-version` file with `22` to the project root
-5. Add a custom domain (`zotgoe.com`) in the Cloudflare dashboard
+5. Add a custom domain (`zotgoe.be`) in the Cloudflare dashboard
 6. Cloudflare auto-provisions SSL and handles DNS
 
 ### 11.3 Cloudflare-Specific Optimizations
@@ -726,6 +757,7 @@ Photography portfolio website built with Astro 5, Tailwind CSS 4, deployed on Cl
 ## Content Model
 
 Projects are defined as YAML files in `src/content/projects/`. Each file has:
+
 - `title`, `description`, `date`, `cover`, `imageFolder`
 - `highlights`: array of 3 image paths for ProjectCard
 - `gallery`: array of image paths for the detail page
@@ -828,17 +860,17 @@ Ensure Node.js 22.x is active (use `nvm use 22` or similar).
 
 ## 15. Milestone Plan
 
-| Phase | Tasks | Est. Time |
-|---|---|---|
-| **1. Scaffold** | Init Astro project, configure Tailwind with colour tokens, set up content collections, folder structure, AGENT.md | 1–2 hours |
-| **2. Layout & Nav** | BaseLayout, Navbar (desktop + mobile), Footer | 2–3 hours |
-| **3. Home Page** | HeroSection, featured projects section, CTA block | 3–4 hours |
-| **4. ProjectCard** | Build the 4-column card component with gap-2, responsive breakpoints | 2–3 hours |
-| **5. Projects Page** | Listing page with all ProjectCards, sorted by date, vertical spacing | 1–2 hours |
-| **6. Project Detail** | Dynamic route, 3-column gallery, GLightbox integration | 2–3 hours |
-| **7. Contact** | Web3Forms integration, form styling, success/error states | 1–2 hours |
-| **8. SEO & Meta** | Structured data, OG tags, sitemap, robots.txt, semantic HTML audit | 2–3 hours |
-| **9. Polish** | Animations, responsive testing, accessibility audit, cross-browser check | 3–4 hours |
-| **10. Deploy** | Cloudflare Pages setup, Node 22 config, custom domain, caching rules, final QA | 1–2 hours |
+| Phase                 | Tasks                                                                                                             | Est. Time |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------- | --------- |
+| **1. Scaffold**       | Init Astro project, configure Tailwind with colour tokens, set up content collections, folder structure, AGENT.md | 1–2 hours |
+| **2. Layout & Nav**   | BaseLayout, Navbar (desktop + mobile), Footer                                                                     | 2–3 hours |
+| **3. Home Page**      | HeroSection, featured projects section, CTA block                                                                 | 3–4 hours |
+| **4. ProjectCard**    | Build the 4-column card component with gap-2, responsive breakpoints                                              | 2–3 hours |
+| **5. Projects Page**  | Listing page with all ProjectCards, sorted by date, vertical spacing                                              | 1–2 hours |
+| **6. Project Detail** | Dynamic route, 3-column gallery, GLightbox integration                                                            | 2–3 hours |
+| **7. Contact**        | Web3Forms integration, form styling, success/error states                                                         | 1–2 hours |
+| **8. SEO & Meta**     | Structured data, OG tags, sitemap, robots.txt, semantic HTML audit                                                | 2–3 hours |
+| **9. Polish**         | Animations, responsive testing, accessibility audit, cross-browser check                                          | 3–4 hours |
+| **10. Deploy**        | Cloudflare Pages setup, Node 22 config, custom domain, caching rules, final QA                                    | 1–2 hours |
 
 **Estimated total: 18–28 hours**
