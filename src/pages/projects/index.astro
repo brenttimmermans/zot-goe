@@ -1,0 +1,43 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ProjectCard from "../../components/ProjectCard.astro";
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+
+const allProjects = await getCollection("projects");
+const sorted = allProjects.sort(
+  (a: CollectionEntry<"projects">, b: CollectionEntry<"projects">) =>
+    new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+);
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: "Projects - Zot Goe Photography",
+  description: "Browse all photography projects by Zot Goe.",
+  url: "https://zotgoe.com/projects",
+};
+---
+
+<BaseLayout
+  title="Projects"
+  description="Browse all photography projects by Zot Goe."
+  structuredData={structuredData}
+>
+  <section class="py-20">
+    <div class="max-w-7xl mx-auto px-6">
+      <h1 class="text-4xl font-bold text-heading mb-12">Projects</h1>
+      <div class="flex flex-col gap-6">
+        {sorted.map((project: CollectionEntry<"projects">) => (
+          <ProjectCard
+            title={project.data.title}
+            description={project.data.description}
+            date={project.data.date}
+            slug={project.id}
+            highlights={project.data.highlights}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
