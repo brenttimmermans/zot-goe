@@ -1,0 +1,39 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ContactForm from "../components/ContactForm.astro";
+
+const success = Astro.url.searchParams.get("success") === "true";
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  name: "Contact — Zot Goe Photography",
+  description: "Get in touch with Zot Goe for photography inquiries.",
+  url: "https://zotgoe.com/contact",
+};
+---
+
+<BaseLayout
+  title="Contact"
+  description="Get in touch with Zot Goe for photography inquiries, collaborations, and commissions."
+  canonicalUrl="https://zotgoe.com/contact"
+  structuredData={structuredData}
+>
+  <section class="py-20">
+    <div class="max-w-xl mx-auto px-6">
+      <h1 class="text-4xl font-bold text-heading mb-4">Get in Touch</h1>
+      <p class="text-body mb-10">
+        Have a project in mind or just want to say hello? Drop me a message below.
+      </p>
+
+      {success ? (
+        <div class="bg-surface rounded p-8 text-center">
+          <h2 class="text-2xl font-bold text-heading mb-2">Message sent!</h2>
+          <p class="text-body">Thank you for reaching out. I'll get back to you soon.</p>
+        </div>
+      ) : (
+        <ContactForm />
+      )}
+    </div>
+  </section>
+</BaseLayout>
