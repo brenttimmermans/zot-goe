@@ -49,8 +49,14 @@ const fullTitle = `${title} | Zot Goe Photography`;
     )}
   </head>
   <body class="bg-bg text-body min-h-screen flex flex-col">
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:rounded focus:bg-bg focus:px-4 focus:py-2 focus:text-heading focus:shadow"
+    >
+      Skip to content
+    </a>
     <Navbar />
-    <main class="flex-1">
+    <main id="main-content" class="flex-1">
       <slot />
     </main>
     <Footer />

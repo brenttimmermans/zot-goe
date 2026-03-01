@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://zotgoe.be/sitemap-index.xml
+
+# AI Crawlers (allowed for portfolio visibility)
+User-agent: GPTBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: CCBot
+Allow: /

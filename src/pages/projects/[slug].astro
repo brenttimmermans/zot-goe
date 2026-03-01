@@ -31,7 +31,7 @@ const structuredData = {
   },
   image: gallery.map((src: string) => ({
     "@type": "ImageObject",
-    contentUrl: `https://zotgoe.com${src}`,
+    contentUrl: `https://zotgoe.be${src}`,
   })),
 };
 ---
@@ -67,7 +67,7 @@ const structuredData = {
           >
             <img
               src={src}
-              alt=""
+              alt={`${title} photo ${i + 1}`}
               loading="lazy"
               decoding="async"
               class="w-full rounded hover:opacity-90 transition-opacity"
