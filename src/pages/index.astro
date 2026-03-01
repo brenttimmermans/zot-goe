@@ -1,17 +1,74 @@
 ---
+import { getCollection, type CollectionEntry } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import HeroSection from "../components/HeroSection.astro";
+import ProjectCard from "../components/ProjectCard.astro";
 
+const allProjects: CollectionEntry<"projects">[] = await getCollection("projects");
+const featured = allProjects
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
+  .slice(0, 4);
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      name: "Zot Goe Photography",
+      url: "https://zotgoe.com",
+    },
+    {
+      "@type": "Person",
+      name: "Zot Goe",
+      url: "https://zotgoe.com",
+      jobTitle: "Photographer",
+    },
+  ],
+};
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout
+  title="Home"
+  description="Zot Goe — a photography portfolio capturing the unseen."
+  ogImage="/images/hero.jpg"
+  structuredData={structuredData}
+>
+  <HeroSection />
+
+  <section class="py-20">
+    <div class="max-w-7xl mx-auto px-6">
+      <h2 class="text-3xl font-bold text-heading mb-10">Projects</h2>
+      <div class="flex flex-col gap-6">
+        {featured.map((project, index) => (
+          <ProjectCard
+            title={project.data.title}
+            description={project.data.description}
+            date={project.data.date}
+            slug={project.id}
+            highlights={project.data.highlights}
+            textPositionIndex={index === 1 ? 2 : 0}
+          />
+        ))}
+      </div>
+      <div class="mt-10 text-center">
+        <a href="/projects" class="text-accent hover:text-heading transition-colors font-medium">
+          View All Projects &rarr;
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20">
+    <div class="max-w-7xl mx-auto px-6 text-center">
+      <h2 class="text-3xl md:text-4xl font-bold text-heading mb-6">
+        Let's work together.
+      </h2>
+      <a
+        href="/contact"
+        class="inline-block text-accent hover:text-heading transition-colors font-medium text-lg"
+      >
+        Get in Touch &rarr;
+      </a>
+    </div>
+  </section>
+</BaseLayout>
