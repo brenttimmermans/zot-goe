@@ -43,7 +43,7 @@ const structuredData = {
   "@type": "CollectionPage",
   "name": "Projects — Zot Goe Photography",
   "description": "Browse all photography projects by Zot Goe.",
-  "url": "https://zotgoe.com/projects",
+  "url": "https://zotgoe.be/projects",
 };
 ---
 

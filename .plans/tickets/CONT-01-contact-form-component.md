@@ -32,7 +32,7 @@ Build the `ContactForm.astro` component that integrates with Web3Forms for serve
 ```astro
 <form action="https://api.web3forms.com/submit" method="POST" class="space-y-6">
   <input type="hidden" name="access_key" value="YOUR_WEB3FORMS_KEY_HERE" />
-  <input type="hidden" name="redirect" value="https://zotgoe.com/contact?success=true" />
+  <input type="hidden" name="redirect" value="https://zotgoe.be/contact?success=true" />
 
   <!-- Honeypot spam protection -->
   <input type="checkbox" name="botcheck" class="hidden" style="display:none" />

@@ -31,7 +31,7 @@ Ensure both the projects listing page and each project detail page have proper S
   "@type": "CollectionPage",
   "name": "Projects — Zot Goe Photography",
   "description": "Browse all photography projects by Zot Goe.",
-  "url": "https://zotgoe.com/projects"
+  "url": "https://zotgoe.be/projects"
 }
 ```
 
@@ -49,8 +49,14 @@ Ensure both the projects listing page and each project detail page have proper S
     "name": "Zot Goe"
   },
   "image": [
-    { "@type": "ImageObject", "contentUrl": "https://zotgoe.com/images/projects/urban-decay/gallery-01.jpg" },
-    { "@type": "ImageObject", "contentUrl": "https://zotgoe.com/images/projects/urban-decay/gallery-02.jpg" }
+    {
+      "@type": "ImageObject",
+      "contentUrl": "https://zotgoe.be/images/projects/urban-decay/gallery-01.jpg"
+    },
+    {
+      "@type": "ImageObject",
+      "contentUrl": "https://zotgoe.be/images/projects/urban-decay/gallery-02.jpg"
+    }
   ]
 }
 ```
