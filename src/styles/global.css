@@ -15,6 +15,14 @@
     @apply bg-bg text-body;
     font-family: "Montserrat Variable", "Helvetica Neue", sans-serif;
   }
+
+  :where(a, button, input, textarea, select, summary) {
+    @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent;
+  }
+}
+
+summary::-webkit-details-marker {
+  display: none;
 }
 
 /* GLightbox overlay override */
