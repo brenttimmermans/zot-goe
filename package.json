@@ -1,12 +1,15 @@
 {
   "name": "zot-goe",
-  "type": "module",
   "version": "0.0.1",
+  "type": "module",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "lint": "oxlint .",
+    "format": "oxfmt .",
+    "prepare": "husky"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.0",
@@ -14,5 +17,20 @@
     "astro": "^5.17.1",
     "glightbox": "^3.3.1",
     "tailwindcss": "^4.2.1"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^16.3.2",
+    "oxfmt": "^0.36.0",
+    "oxlint": "^1.51.0"
+  },
+  "lint-staged": {
+    "*.{astro,ts}": [
+      "npm run lint",
+      "npm run format"
+    ],
+    "*.{json,css,md,yaml,yml}": [
+      "npm run format"
+    ]
   }
 }
