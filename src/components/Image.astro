@@ -1,0 +1,35 @@
+---
+import "glightbox/dist/css/glightbox.min.css";
+
+interface Props {
+  src: string;
+  alt: string;
+}
+const { src, alt } = Astro.props;
+---
+<a
+  href={src}
+  class="glightbox mb-4 block break-inside-avoid"
+  data-gallery="project-gallery"
+>
+  <img
+    src={src}
+    alt={alt}
+    loading="lazy"
+    decoding="async"
+    class="w-full rounded hover:opacity-90 transition-opacity"
+  />
+</a>
+
+<script>
+  import GLightbox from "glightbox";
+
+  document.addEventListener("DOMContentLoaded", () => {
+    GLightbox({
+      selector: ".glightbox",
+      touchNavigation: true,
+      loop: true,
+      autoplayVideos: false,
+    });
+  });
+</script>

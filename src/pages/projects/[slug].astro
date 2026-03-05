@@ -1,7 +1,8 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { getCollection } from "astro:content";
+import Image from "../../components/Image.astro";
 import type { CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
 
 export async function getStaticPaths() {
   const projects = await getCollection("projects");
@@ -59,34 +60,9 @@ const structuredData = {
 
       <div class="columns-1 sm:columns-2 lg:columns-3 gap-4">
         {gallery.map((src: string, i: number) => (
-          <a
-            href={src}
-            class="glightbox mb-4 block break-inside-avoid"
-            data-gallery="project-gallery"
-            data-description={`Image ${i + 1}`}
-          >
-            <img
-              src={src}
-              alt={`${title} photo ${i + 1}`}
-              loading="lazy"
-              decoding="async"
-              class="w-full rounded hover:opacity-90 transition-opacity"
-            />
-          </a>
+          <Image src={src} alt={`${title} photo ${i + 1}`} />
         ))}
       </div>
     </div>
   </section>
-
-  <script type="module">
-    import GLightbox from "glightbox";
-    import "glightbox/dist/css/glightbox.min.css";
-
-    GLightbox({
-      selector: ".glightbox",
-      touchNavigation: true,
-      loop: true,
-      autoplayVideos: false,
-    });
-  </script>
 </BaseLayout>
