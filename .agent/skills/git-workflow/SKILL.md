@@ -5,6 +5,10 @@ description: Git conventions for this repository. Use when committing changes, c
 
 # Git Workflow
 
+## Tooling
+
+Use **git** for version control operations (commit, branch, status, diff, etc.) and the **GitHub CLI** (`gh`) for GitHub-specific actions (creating PRs, viewing issues, pushing branches). Prefer `gh` over the GitHub web UI when creating or managing pull requests.
+
 ## Commit Messages: Gitmoji Convention
 
 All commits **must** use the [gitmoji](https://gitmoji.dev/) convention. Format:
