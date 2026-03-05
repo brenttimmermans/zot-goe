@@ -2,81 +2,193 @@
 
 ## Overview
 
-- Static photography portfolio site built with Astro and Tailwind, deployed as pre-rendered HTML.
-- Content is stored as Astro content collections in YAML and rendered into pages at build time.
+**Zot Goe** is a photography portfolio website built with Astro, Tailwind CSS, and TypeScript. It showcases photography projects with a gallery view, project details, and a contact form for inquiries.
 
 ## Tech Stack
 
-- Framework: Astro 5 (`package.json`)
-- Styling: Tailwind CSS 4 via Vite plugin (`tailwind.config.mjs`, `astro.config.mjs`)
-- Content: Astro Content Collections (`src/content/config.ts`)
-- Lightbox: GLightbox (`src/pages/projects/[slug].astro`)
-- Forms: Web3Forms POST (`src/components/ContactForm.astro`)
-- Deploy target: Cloudflare Pages (from `AGENTS.md`)
+| Layer          | Technology                        |
+| -------------- | --------------------------------- |
+| **Framework**  | Astro 5.17.1                      |
+| **Styling**    | Tailwind CSS 4.2.1 + custom theme |
+| **Language**   | TypeScript (strict mode)          |
+| **Content**    | Astro Content Collections (YAML)  |
+| **Linting**    | Oxlint 1.51.0                     |
+| **Formatting** | Oxfmt 0.36.0                      |
+| **Git Hooks**  | Husky 9.1.7 + lint-staged         |
+| **Gallery**    | GLightbox 3.3.1                   |
+| **SEO**        | Astro Sitemap 3.7.0               |
 
 ## Directory Structure
 
 ```
-.
-├── astro.config.mjs
-├── tailwind.config.mjs
-├── tsconfig.json
-├── public/
-│   └── images/                  # Pre-optimized assets served as-is
-└── src/
-    ├── components/              # Reusable UI pieces
-    ├── content/
-    │   ├── config.ts             # Content collection schema
-    │   └── projects/             # YAML project entries
-    ├── layouts/                  # Base layout + document head
-    ├── pages/                    # Route entry points
-    └── styles/                   # Tailwind + font setup
+zot-goe/
+├── src/
+│   ├── pages/                    # Route-based pages (auto-generates routes)
+│   │   ├── index.astro          # Home page with featured projects
+│   │   ├── contact.astro        # Contact form page
+│   │   └── projects/
+│   │       ├── index.astro      # All projects listing
+│   │       └── [slug].astro     # Dynamic project detail page
+│   ├── components/              # Reusable Astro components
+│   │   ├── BaseLayout.astro     # Root layout with SEO/meta
+│   │   ├── Navbar.astro         # Navigation with active state
+│   │   ├── Footer.astro         # Footer with copyright
+│   │   ├── HeroSection.astro    # Homepage hero
+│   │   ├── ProjectCard.astro    # Project preview card
+│   │   └── ContactForm.astro    # Web3Forms contact form
+│   ├── layouts/
+│   │   └── BaseLayout.astro     # Main layout wrapper
+│   ├── content/
+│   │   ├── config.ts            # Content collection schema
+│   │   └── projects/            # Project data (YAML)
+│   │       ├── spa-24-001.yaml
+│   │       └── spa-24-002.yaml
+│   └── styles/
+│       ├── global.css           # Tailwind + theme variables
+│       ├── fonts.css            # Font imports
+│       └── fonts/
+│           └── montserrat-variable.ttf
+├── public/                      # Static assets (images, favicon)
+├── astro.config.mjs            # Astro configuration
+├── tailwind.config.mjs          # Tailwind theme config
+├── tsconfig.json               # TypeScript config (strict)
+├── .oxlintrc.json              # Oxlint rules
+├── .oxfmtrc.json               # Oxfmt rules
+├── .husky/                     # Git hooks
+└── package.json                # Dependencies & scripts
 ```
 
 ## Core Components
 
-- Layout shell: `src/layouts/BaseLayout.astro` sets meta tags, JSON-LD, and page chrome.
-- Navigation: `src/components/Navbar.astro` renders sticky nav and active-link state.
-- Hero: `src/components/HeroSection.astro` renders the home hero copy + image.
-- Project card: `src/components/ProjectCard.astro` renders card + highlight images.
-- Footer: `src/components/Footer.astro` renders copyright year.
-- Contact form: `src/components/ContactForm.astro` posts to Web3Forms.
+### Pages
 
-## Pages / Entry Points
+| File                              | Purpose                                                 |
+| --------------------------------- | ------------------------------------------------------- |
+| `src/pages/index.astro`           | Home page: hero + featured projects (4 latest) + CTA    |
+| `src/pages/projects/index.astro`  | All projects listing, sorted by date (newest first)     |
+| `src/pages/projects/[slug].astro` | Dynamic project detail with masonry gallery + GLightbox |
+| `src/pages/contact.astro`         | Contact form with success state                         |
 
-- Home: `src/pages/index.astro`
-  - Loads `projects` collection, sorts by date, slices 4 featured items.
-- Projects index: `src/pages/projects/index.astro`
-  - Loads all projects, sorts by date, lists cards.
-- Project detail: `src/pages/projects/[slug].astro`
-  - `getStaticPaths` builds static routes from project IDs.
-  - Renders gallery with GLightbox for full-screen viewing.
-- Contact: `src/pages/contact.astro`
-  - Renders success state based on `?success=true` query param.
+### Layouts
+
+| File                           | Purpose                                                     |
+| ------------------------------ | ----------------------------------------------------------- |
+| `src/layouts/BaseLayout.astro` | Root layout: SEO meta, navbar, footer, skip-to-content link |
+
+### Components
+
+| File                | Purpose                                                       |
+| ------------------- | ------------------------------------------------------------- |
+| `Navbar.astro`      | Sticky navigation with active link detection                  |
+| `Footer.astro`      | Footer with copyright year                                    |
+| `HeroSection.astro` | Large hero with title + image                                 |
+| `ProjectCard.astro` | Project preview: title, description, date, 3 highlight images |
+| `ContactForm.astro` | Form with Web3Forms integration (requires API key)            |
+
+### Content
+
+| File                          | Purpose                                                 |
+| ----------------------------- | ------------------------------------------------------- |
+| `src/content/config.ts`       | Zod schema for projects collection                      |
+| `src/content/projects/*.yaml` | Project data: title, description, date, images, gallery |
 
 ## Data Flow
 
-- Content source: YAML files in `src/content/projects/*.yaml`.
-- Schema: `src/content/config.ts` validates fields (title, description, date, cover, imageFolder, highlights, gallery).
-- Build-time load: Pages call `getCollection("projects")` to access entries.
-- Render: pages map collection entries into components, with structured data JSON-LD injected by `BaseLayout`.
+```
+User Request
+    ↓
+Astro Router (file-based routing)
+    ↓
+Page Component (e.g., [slug].astro)
+    ↓
+getCollection("projects") → Content Collection
+    ↓
+Render with BaseLayout + Components
+    ↓
+Tailwind CSS + Global Styles
+    ↓
+HTML + Structured Data (JSON-LD)
+    ↓
+Browser (with GLightbox script for galleries)
+```
+
+### Project Data Schema
+
+```typescript
+{
+  title: string              // Project name
+  description: string        // Short description
+  date: Date                 // Project date (YYYY-MM-DD)
+  cover: string              // OG image path
+  imageFolder: string        // Folder containing images
+  highlights: string[]       // 3 highlight image paths
+  gallery: string[]          // All gallery image paths (1+)
+}
+```
 
 ## External Integrations
 
-- Web3Forms endpoint: `https://api.web3forms.com/submit` (`src/components/ContactForm.astro`).
-- GLightbox: client-side lightbox initialized in `src/pages/projects/[slug].astro`.
-- Sitemap: `@astrojs/sitemap` integration (`astro.config.mjs`).
+| Service           | Purpose                    | Config                                                 |
+| ----------------- | -------------------------- | ------------------------------------------------------ |
+| **Web3Forms**     | Contact form submission    | `ContactForm.astro` (requires API key in `access_key`) |
+| **GLightbox**     | Image gallery lightbox     | `src/pages/projects/[slug].astro`                      |
+| **Astro Sitemap** | Auto-generated sitemap.xml | `astro.config.mjs`                                     |
 
 ## Configuration
 
-- Site URL: `site: "https://zotgoe.be"` in `astro.config.mjs`.
-- Tailwind theme colors: `tailwind.config.mjs` and CSS tokens in `src/styles/global.css`.
-- Fonts: `src/styles/fonts.css` loads Montserrat variable font.
-- Node version: `.node-version` uses Node 22.
+### Environment
+
+- **Site URL**: `https://zotgoe.be` (in `astro.config.mjs`)
+- **Language**: English (`lang="en"` in BaseLayout)
+
+### Styling
+
+Custom Tailwind theme in `src/styles/global.css`:
+
+```css
+--color-bg: #f5f4f0 /* Background */ --color-surface: #eceae4 /* Card/surface */
+  --color-muted: #b0ada6 /* Secondary text */ --color-body: #4a4845 /* Body text */
+  --color-heading: #2c2a27 /* Headings */ --color-accent: #6b6863 /* Links/hover */;
+```
+
+### Linting & Formatting
+
+- **Oxlint**: Default config in `.oxlintrc.json`
+- **Oxfmt**: Default config in `.oxfmtrc.json`
+- **Husky**: Pre-commit hook runs lint + format on staged files
 
 ## Build & Deploy
 
-- Local dev: `npm run dev` (`package.json`).
-- Build: `npm run build` outputs static site to `dist/`.
-- Preview: `npm run preview`.
-- Deploy: Cloudflare Pages (documented in `AGENTS.md`).
+| Command           | Action                            |
+| ----------------- | --------------------------------- |
+| `npm install`     | Install dependencies              |
+| `npm run dev`     | Start dev server (localhost:4321) |
+| `npm run build`   | Build to `./dist/`                |
+| `npm run preview` | Preview production build locally  |
+| `npm run lint`    | Run Oxlint                        |
+| `npm run format`  | Run Oxfmt                         |
+| `npm run astro`   | Run Astro CLI commands            |
+
+### Pre-commit Hooks
+
+Husky + lint-staged automatically:
+
+1. Lint `*.astro` and `*.ts` files
+2. Format `*.astro`, `*.ts`, `*.json`, `*.css`, `*.md`, `*.yaml`, `*.yml`
+
+## SEO & Metadata
+
+All pages include:
+
+- Meta description
+- Open Graph tags (title, description, image, URL)
+- Twitter Card tags
+- Canonical URL
+- Structured data (JSON-LD) for schema.org
+
+Examples:
+
+- Home: `WebSite` + `Person` schema
+- Projects: `CollectionPage` schema
+- Project detail: `ImageGallery` schema
+- Contact: `ContactPage` schema
