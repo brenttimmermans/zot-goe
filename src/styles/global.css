@@ -8,12 +8,25 @@
   --color-body: #4a4845;
   --color-heading: #2c2a27;
   --color-accent: #6b6863;
+  --transition-duration: 0.3s;
+}
+
+[data-theme="dark"] {
+  --color-bg: #1a1917;
+  --color-surface: #252320;
+  --color-muted: #6b6863;
+  --color-body: #b0ada6;
+  --color-heading: #eceae4;
+  --color-accent: #b0ada6;
 }
 
 @layer base {
   body {
     @apply bg-bg text-body;
     font-family: "Montserrat Variable", "Helvetica Neue", sans-serif;
+    transition:
+      background-color var(--transition-duration) ease,
+      color var(--transition-duration) ease;
   }
 
   :where(a, button, input, textarea, select, summary) {

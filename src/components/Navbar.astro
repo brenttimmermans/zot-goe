@@ -1,4 +1,6 @@
 ---
+import ThemeToggle from "./Theme/Toggle.astro";
+
 const currentPath = Astro.url.pathname;
 
 const links = [
@@ -31,6 +33,7 @@ function isActive(href: string): boolean {
           {link.label}
         </a>
       ))}
+      <ThemeToggle />
     </div>
   </div>
 </nav>
