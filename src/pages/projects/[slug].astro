@@ -1,38 +1,39 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
-import Image from "../../components/Image.astro";
-import type { CollectionEntry } from "astro:content";
-import { getCollection } from "astro:content";
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import { SITE_URL } from '../../config';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Image from '../../components/Image.astro';
 
 export async function getStaticPaths() {
-	const projects = await getCollection("projects");
-	return projects.map((project: CollectionEntry<"projects">) => ({
+	const projects = await getCollection('projects');
+	return projects.map((project: CollectionEntry<'projects'>) => ({
 		params: { slug: project.id },
 		props: { project },
 	}));
 }
 
-const { project } = Astro.props as { project: CollectionEntry<"projects"> };
+const { project } = Astro.props as { project: CollectionEntry<'projects'> };
 const { title, description, date, gallery, cover } = project.data;
 
-const formattedDate = date.toLocaleDateString("en-US", {
-	year: "numeric",
-	month: "long",
+const formattedDate = date.toLocaleDateString('en-US', {
+	year: 'numeric',
+	month: 'long',
 });
 
 const structuredData = {
-	"@context": "https://schema.org",
-	"@type": "ImageGallery",
+	'@context': 'https://schema.org',
+	'@type': 'ImageGallery',
 	name: title,
 	description,
-	dateCreated: date.toISOString().split("T")[0],
+	dateCreated: date.toISOString().split('T')[0],
 	author: {
-		"@type": "Person",
-		name: "Zot Goe",
+		'@type': 'Person',
+		name: 'Zot Goe',
 	},
 	image: gallery.map((src: string) => ({
-		"@type": "ImageObject",
-		contentUrl: `https://zotgoe.be${src}`,
+		'@type': 'ImageObject',
+		contentUrl: `${SITE_URL}${src}`,
 	})),
 };
 ---

@@ -2,12 +2,12 @@
 @import "./fonts.css";
 
 @theme {
-	--color-bg: #f5f4f0;
-	--color-surface: #eceae4;
-	--color-muted: #b0ada6;
-	--color-body: #4a4845;
-	--color-heading: #2c2a27;
-	--color-accent: #6b6863;
+	--color-bg: hsl(40, 17%, 95%);
+	--color-surface: hsl(40, 17%, 91%);
+	--color-muted: hsl(45, 8%, 67%);
+	--color-body: hsl(40, 4%, 28%);
+	--color-heading: hsl(30, 4%, 16%);
+	--color-accent: hsl(30, 4%, 40%);
 
 	--navbar-height: 64px;
 
@@ -15,12 +15,12 @@
 }
 
 [data-theme="dark"] {
-	--color-bg: #1a1917;
-	--color-surface: #252320;
-	--color-muted: #6b6863;
-	--color-body: #b0ada6;
-	--color-heading: #eceae4;
-	--color-accent: #b0ada6;
+	--color-bg: hsl(30, 8%, 9%);
+	--color-surface: hsl(30, 7%, 14%);
+	--color-muted: hsl(30, 4%, 40%);
+	--color-body: hsl(45, 8%, 67%);
+	--color-heading: hsl(40, 17%, 91%);
+	--color-accent: hsl(45, 8%, 67%);
 }
 
 @layer base {
@@ -43,5 +43,5 @@ summary::-webkit-details-marker {
 
 /* GLightbox overlay override */
 .goverlay {
-	background: rgba(44, 42, 39, 0.95);
+	background: hsla(30, 4%, 16%, 0.95);
 }
