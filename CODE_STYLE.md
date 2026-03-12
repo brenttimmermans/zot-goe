@@ -1,438 +1,278 @@
-# Code Style Guide
+# CODING_STYLE.md
 
-## Naming Conventions
+> Personal coding style guide for frontend/fullstack TypeScript.
+> Use this at the start of AI coding sessions.
 
-### Files & Directories
-
-| Type            | Pattern    | Example                                        |
-| --------------- | ---------- | ---------------------------------------------- |
-| **Pages**       | PascalCase | `index.astro`, `contact.astro`, `[slug].astro` |
-| **Components**  | PascalCase | `Navbar.astro`, `ProjectCard.astro`            |
-| **Layouts**     | PascalCase | `BaseLayout.astro`                             |
-| **Styles**      | kebab-case | `global.css`, `fonts.css`                      |
-| **Content**     | kebab-case | `spa-24-001.yaml`                              |
-| **Directories** | lowercase  | `components/`, `pages/`, `layouts/`            |
-
-### Variables & Functions
-
-```typescript
-// Constants: UPPER_SNAKE_CASE
-const MAX_FEATURED_PROJECTS = 4;
-
-// Variables: camelCase
-const allProjects = await getCollection("projects");
-const formattedDate = date.toLocaleDateString("en-US", {...});
-
-// Functions: camelCase
-function isActive(href: string): boolean { ... }
-
-// Component Props: PascalCase (interface)
-interface Props {
-  title: string;
-  description: string;
-  date: Date;
-}
-```
-
-### CSS Classes
-
-```html
-<!-- Tailwind utility classes: lowercase with hyphens -->
-<div class="max-w-7xl mx-auto px-6 py-20">
-  <h1 class="text-4xl font-bold text-heading mb-12">Title</h1>
-</div>
-
-<!-- Custom theme colors: lowercase -->
-<div class="bg-bg text-heading border-muted"></div>
-```
-
-## File Organization
-
-### Astro Component Structure
-
-```astro
----
-// 1. Imports (Astro, components, utilities)
-import BaseLayout from "../layouts/BaseLayout.astro";
-import { getCollection } from "astro:content";
-
-// 2. Type definitions
-interface Props {
-  title: string;
-  description: string;
-}
-
-// 3. Component logic
-const { title, description } = Astro.props;
-const projects = await getCollection("projects");
-
-// 4. Computed values
-const sorted = projects.sort((a, b) =>
-  new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
-);
 ---
 
-<!-- 5. HTML template -->
-<BaseLayout title={title}>
-  <h1>{title}</h1>
-  <p>{description}</p>
-</BaseLayout>
-```
+## Rule Interpretation & Precedence
 
-### Content Schema (TypeScript)
+### Requirement levels
 
-```typescript
-// src/content/config.ts
-import { defineCollection, z } from "astro:content";
+- **MUST**: mandatory default behavior
+- **SHOULD**: preferred default; deviate only with clear project reason
+- **MAY**: optional preference
 
-const projects = defineCollection({
-  type: "data",
-  schema: z.object({
-    title: z.string(),
-    description: z.string(),
-    date: z.coerce.date(),
-    // ... other fields
-  }),
-});
+### Conflict resolution order
 
-export const collections = { projects };
-```
+1. Existing repository conventions and architecture
+2. Enforced formatter/linter/tooling configuration
+3. This document
+4. Examples in this document
 
-## Import Style
+### AI execution guardrails
 
-```typescript
-// 1. Astro imports
-import { getCollection, type CollectionEntry } from "astro:content";
+- AI agents **MUST NOT** perform broad refactors unless explicitly requested.
+- AI agents **MUST NOT** rename files, change export patterns, reorganize folders,
+  or alter alias strategy unless explicitly requested.
+- AI agents **SHOULD** implement the smallest change that satisfies the task.
 
-// 2. Component imports (relative paths)
-import BaseLayout from "../layouts/BaseLayout.astro";
-import ProjectCard from "../components/ProjectCard.astro";
+---
 
-// 3. Type imports
-import type { Props } from "./types";
+## Agent Quick Rules (Default Behavior)
 
-// 4. External library imports
-import GLightbox from "glightbox";
-import "glightbox/dist/css/glightbox.min.css";
-```
+Use this section as the first-pass checklist.
 
-## Code Patterns
+1. All functions **MUST** have explicit parameter and return types.
+2. Components **MUST** use `export default function` (except `forwardRef` form).
+3. Utilities/hooks/data functions **MUST** use function declarations.
+4. Event handlers and inline sub-components **MUST** use arrow functions.
+5. Type-only imports **MUST** use `import type`.
+6. Cross-directory imports **MUST** use `~/` when available in project config.
+7. Same-folder or one-level-up imports **MUST** use relative paths.
+8. Async code **MUST** use `async/await`, not `.then()` chains.
+9. Props **MUST** be destructured in function signatures.
+10. Boolean coercion **MUST** use `Boolean()`, not `!!`.
+11. Semantic HTML and required accessibility attributes **MUST** be used.
+12. Design tokens **MUST** be CSS variables; colors **MUST** use `hsl()`/`hsla()`.
 
-### Conditional Rendering
+---
 
-```astro
-<!-- If/else in template -->
-{success ? (
-  <div class="bg-surface rounded p-8">
-    <h2>Message sent!</h2>
-  </div>
-) : (
-  <ContactForm />
-)}
+## Formatting
 
-<!-- Map with index -->
-{featured.map((project, index) => (
-  <ProjectCard
-    title={project.data.title}
-    textPositionIndex={index === 1 ? 2 : 0}
-  />
-))}
-```
+| Setting | Value |
+| --- | --- |
+| Semicolons | Always |
+| Quotes | Single quotes |
+| Tab width | 2 spaces |
+| Trailing commas | All |
+| Print width | 80 |
+| Arrow parens | Omit for single arg (`x => x`) |
 
-### Sorting & Filtering
+---
 
-```typescript
-// Sort by date (newest first)
-const sorted = allProjects.sort(
-  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
-);
+## TypeScript & JavaScript
 
-// Slice for featured (first 4)
-const featured = sorted.slice(0, 4);
+### Typing rules
 
-// Type-safe collection entries
-const allProjects: CollectionEntry<"projects">[] = await getCollection("projects");
-```
+- All functions **MUST** have explicit parameter and return types.
+- `interface` **MUST** be used for object shapes.
+- `type` **MUST** be used for unions, primitives, and utility-derived types.
+- Interfaces **MUST NOT** use an `I` prefix.
+- Closed sets **SHOULD** use string enums.
+- Generics **MUST** be used only when a real cross-call-site type relationship
+  exists and cannot be expressed clearly with concrete types/unions/overloads.
+- `Pick` and `Partial` **SHOULD** be used for narrowing and optional object
+  modeling where appropriate.
 
-### Dynamic Routes
-
-```typescript
-// In [slug].astro
-export async function getStaticPaths() {
-  const projects = await getCollection("projects");
-  return projects.map((project) => ({
-    params: { slug: project.id },
-    props: { project },
-  }));
+```ts
+interface CharacterDetailPageProps {
+  character: Character;
+  previous: number | null;
+  next: number | null;
 }
 
-const { project } = Astro.props as { project: CollectionEntry<"projects"> };
+type Gender = 'male' | 'female';
 ```
 
-### Structured Data (JSON-LD)
+### Function style
 
-```typescript
-const structuredData = {
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  name: "Zot Goe Photography",
-  url: "https://zotgoe.be",
-};
-```
+- Components **MUST** use `export default function`.
+- Utilities/hooks/data functions **MUST** use function declarations.
+- Event handlers and inline sub-components **MUST** use arrow functions.
+- `forwardRef` is the explicit exception and **MUST** set `.displayName`.
 
-Then in template:
-
-```astro
-{structuredData && (
-  <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
-)}
-```
-
-### Form Handling
-
-```astro
-<form action="https://api.web3forms.com/submit" method="POST" class="space-y-6">
-  <input type="hidden" name="access_key" value="YOUR_KEY" />
-  <input type="hidden" name="redirect" value="/contact?success=true" />
-  <input type="checkbox" name="botcheck" class="hidden" style="display:none" />
-
-  <div>
-    <label for="name" class="block text-sm font-medium text-heading mb-2">
-      Name
-    </label>
-    <input
-      type="text"
-      id="name"
-      name="name"
-      required
-      autocomplete="name"
-      placeholder="Your name"
-      class="w-full px-4 py-3 bg-surface border border-muted/30 rounded"
-    />
-  </div>
-</form>
-```
-
-### Image Optimization
-
-```astro
-<!-- Hero/critical images: eager loading -->
-<img
-  src="/images/hero.png"
-  alt="Featured photography"
-  loading="eager"
-  decoding="async"
-  class="w-full h-auto"
-/>
-
-<!-- Gallery/non-critical: lazy loading -->
-<img
-  src={src}
-  alt={`${title} photo`}
-  loading="lazy"
-  decoding="async"
-  class="w-full rounded"
-/>
-```
-
-### Active Link Detection
-
-```typescript
-function isActive(href: string): boolean {
-  if (href === "/") return currentPath === "/";
-  return currentPath.startsWith(href);
+```ts
+export default function Header(): JSX.Element {
+  return <header />;
 }
 ```
 
-Then in template:
+### Runtime/code patterns
 
-```astro
-<a
-  href={link.href}
-  class={isActive(link.href)
-    ? `${baseLinkClass} text-heading font-medium`
-    : `${baseLinkClass} text-muted hover:text-accent`
-  }
->
-  {link.label}
-</a>
+- Async logic **MUST** use `async/await`.
+- Type-only imports **MUST** use `import type`.
+- `??` **SHOULD** be used for fallbacks.
+- `?.` **MUST** be used only where presence is not guaranteed by types.
+- Props **MUST** be destructured in signature, with inline defaults.
+- Prop forwarding **SHOULD** use `...props` where appropriate.
+- Rename destructured fields **SHOULD** be used when it improves clarity.
+- Boolean coercion **MUST** use `Boolean()`.
+
+```ts
+import type { Character } from './types';
+
+const hasPreviousLink = Boolean(previous);
 ```
 
-## Styling Patterns
+### Import and alias rules
 
-### Tailwind Classes
+- Import ordering **MUST** follow repo tooling when configured.
+- Cross-directory imports **MUST** use `~/` when available.
+- If `~/` is not configured, imports **MUST** follow existing project alias
+  strategy.
+- Relative imports **MUST** be used for same-folder and one-level-up paths.
 
-```astro
-<!-- Layout -->
-<div class="max-w-7xl mx-auto px-6 py-20">
-
-<!-- Typography -->
-<h1 class="text-4xl md:text-5xl font-bold text-heading mb-4">
-
-<!-- Spacing -->
-<div class="flex flex-col gap-6">
-
-<!-- Responsive -->
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-
-<!-- Hover/transitions -->
-<a class="text-accent hover:text-heading transition-colors">
-
-<!-- Focus states (auto-applied in global.css) -->
-<!-- All interactive elements get focus-visible outline -->
+```ts
+import Image from '~/app/components/Image/Image';
+import styles from './Footer.module.css';
+import { useTheme } from '../hooks/useTheme';
 ```
 
-### Custom CSS
+### Naming conventions
 
-```css
-/* src/styles/global.css */
-@import "tailwindcss";
-@import "./fonts.css";
+| Category | Convention | Example |
+| --- | --- | --- |
+| Components | PascalCase | `Header` |
+| Component files | PascalCase `.tsx` | `Header.tsx` |
+| Page/layout files | Framework convention | `page.tsx`, `layout.tsx` |
+| Utility/lib files | camelCase `.ts` | `ensureArray.ts` |
+| Variables/functions | camelCase | `openDialog` |
+| Event handlers | `handle` + verb (+ noun) | `handleToggle` |
+| Module constants | SCREAMING_SNAKE_CASE | `ICON_SIZE` |
+| Types/interfaces | PascalCase | `Character` |
+| Enum members | PascalCase key, lowercase string value | `Street = 'street'` |
+| Props interfaces | Descriptive PascalCase | `ModalProps` |
+| CSS custom properties | `--color-{role}` / `--spacing-{size}` | `--spacing-L` |
+| Test factory functions | `_create` + noun | `_createCharacter()` |
 
-@theme {
-  --color-bg: #f5f4f0;
-  --color-surface: #eceae4;
-  --color-muted: #b0ada6;
-  --color-body: #4a4845;
-  --color-heading: #2c2a27;
-  --color-accent: #6b6863;
-}
+---
 
-@layer base {
-  body {
-    @apply bg-bg text-body;
-    font-family: "Montserrat Variable", sans-serif;
-  }
-}
+## Component & UI Structure
+
+- Components **MUST** be one-per-file and file name **MUST** match component
+  name.
+- Component default export style **MUST** be `export default function`
+  (except APIs like `forwardRef`).
+- Reusable-within-file sub-components **SHOULD** remain in the same file as
+  `const` arrow functions.
+- Shared UI primitives **SHOULD** live under `components/Common/`.
+- Props **MUST** be destructured in signatures; `PropsWithChildren` **SHOULD**
+  be used when children are required.
+- Conditional rendering: `&&` **SHOULD** be used for optional single elements;
+  ternary **SHOULD** be used for mutually exclusive branches.
+- Derived booleans **SHOULD** be computed before JSX return.
+- DOM-driven behavior **SHOULD** use `useRef`; `useState` **MUST** be used only
+  for values that drive re-renders.
+- `useEffect` **MUST** have explicit dependency arrays and inline cleanup when
+  needed.
+- `useCallback` / `useMemo` **MUST** be used only for measured or contract-driven
+  reasons.
+- Wrapped library primitives **SHOULD** forward original props and alias imports.
+- Data-fetching functions **SHOULD** return named objects for clear destructuring.
+- Semantic HTML **MUST** be used correctly.
+- Accessibility rules:
+  - `<a>` uses `aria-disabled`, not `disabled`
+  - images **MUST** have `alt`
+
+---
+
+## CSS & Styling
+
+### Stack policy
+
+- Styling approach **MUST** follow the existing project stack.
+- Tailwind, CSS Modules, or CSS-in-JS are all valid when aligned with project
+  conventions.
+
+### CSS conventions
+
+- CSS Module imports **MUST** be named `styles`.
+- CSS Module class names **MUST** use kebab-case.
+- Conditional class merging **SHOULD** use `clsx`.
+- Design tokens (color, spacing, font size, transition) **MUST** be CSS variables
+  on `:root`.
+- Raw design-token values in component styles **SHOULD NOT** be used.
+- Token scale **MUST** use T-shirt suffixes (`-S`, `-M`, `-L`, `-XL`).
+- Colors **MUST** use `hsl()` / `hsla()` (not hex or `rgb()`).
+- Responsive rules **MUST** be mobile-first with `min-width` breakpoints.
+- Flexbox **SHOULD** be primary layout primitive; Grid **SHOULD** be used for
+  galleries/multi-area layouts.
+- Transitions **MUST** target specific properties, never `transition: all`.
+- Adjacent sibling selectors **SHOULD** be used for repeated-item spacing.
+- Descendant selectors under a module root **SHOULD** be preferred over excessive
+  class proliferation.
+
+---
+
+## File & Project Structure
+
+### Baseline layout
+
+```txt
+app/ (or src/)
+  assets/images/
+  components/Common/
+  hooks/
+  lib/
+  styles/
+  util/
+  types.ts
+  config.ts
 ```
 
-## Accessibility
+### Rules
 
-### Semantic HTML
+- Component-specific styles/hooks/sub-components **MUST** be co-located in the
+  component folder.
+- Route-specific non-reusable components **SHOULD** live next to route files.
+- Global styles **MUST** live in `styles/`.
+- Tests **MUST** be co-located with source (`.test.ts` suffix).
+- Barrel re-exports (`index.ts` as aggregators) are not used; imports **MUST**
+  target concrete files.
+- Global asset declarations **SHOULD** be centralized in one `index.d.ts`.
+- App-level constants and magic numbers **MUST** live in `config.ts`.
+- Module constants **MUST** use SCREAMING_SNAKE_CASE.
 
-```astro
-<!-- Use semantic elements -->
-<nav>Navigation</nav>
-<main id="main-content">Content</main>
-<section>Section</section>
-<article>Article</article>
-<footer>Footer</footer>
+---
 
-<!-- Skip to content link (always included) -->
-<a href="#main-content" class="sr-only focus:not-sr-only">
-  Skip to content
-</a>
-```
+## Testing
 
-### ARIA & Labels
+- Test files **MUST** be co-located with source files.
+- `describe` **SHOULD** reference function symbols directly.
+- `it` descriptions **SHOULD** use "should" phrasing.
+- Test factory helpers **SHOULD** use `_createX` naming and accept `Partial<T>`
+  overrides.
+- Assertions **SHOULD** use `toEqual` for objects/arrays and `toBe` for
+  primitives.
+- Test scope **SHOULD** prioritize pure functions/reducers.
+- Component rendering tests **MAY** be added for non-trivial or failure-prone
+  behavior.
 
-```astro
-<!-- Always use labels for form inputs -->
-<label for="name" class="block text-sm font-medium">Name</label>
-<input id="name" name="name" required />
+---
 
-<!-- Alt text for images -->
-<img src="photo.jpg" alt="Descriptive text" />
+## Optional Personal Conventions
 
-<!-- Gallery descriptions -->
-<a href={src} data-description={`Image ${i + 1}`}>
-  <img alt={`${title} photo ${i + 1}`} />
-</a>
-```
+These are style preferences, not hard constraints.
 
-### Focus Management
+- Comments **SHOULD** explain why, not what.
+- Vendored CSS **SHOULD** include source attribution comments.
+- Temporary code **MAY** use emoji bookend markers.
+- Feature flags **MAY** be module-level booleans.
+- Placeholder arrays **SHOULD** use `Array.from({ length: n })`.
+- API URLs **SHOULD** be built with `new URL()`.
+- TypeScript `strict` mode **MUST** be enabled.
+- `any` **SHOULD** be avoided except pragmatic test escape hatches.
 
-```css
-/* Global focus styles (in global.css) */
-:where(a, button, input, textarea, select, summary) {
-  @apply focus-visible:outline focus-visible:outline-2 
-         focus-visible:outline-offset-2 focus-visible:outline-accent;
-}
-```
+---
 
-## Do's and Don'ts
+## Tooling Enforcement Map
 
-### ✅ Do
-
-- Use TypeScript strict mode (enforced in `tsconfig.json`)
-- Type component props with interfaces
-- Use `type` keyword for type imports
-- Organize imports: Astro → components → utilities → external
-- Use Tailwind utilities instead of custom CSS when possible
-- Add `alt` text to all images
-- Include `loading="lazy"` for non-critical images
-- Use semantic HTML elements
-- Add structured data (JSON-LD) to pages
-- Sort projects by date (newest first)
-- Use `z.coerce.date()` for date fields in schemas
-
-### ❌ Don't
-
-- Use `any` type (strict mode prevents this)
-- Mix CSS-in-JS with Tailwind
-- Hardcode colors (use theme variables)
-- Forget `alt` text on images
-- Use `loading="eager"` on all images (performance)
-- Nest too deeply in Tailwind classes
-- Skip focus states
-- Use `<div>` for navigation/sections (use semantic elements)
-- Commit without running lint/format (Husky prevents this)
-- Hardcode Web3Forms API key in repo (use environment variable)
-
-## Linting & Formatting
-
-### Pre-commit
-
-Husky automatically runs on `git commit`:
-
-```bash
-# Staged .astro, .ts, .json, .css, .md, .yaml, .yml files
-biome check --write
-```
-
-### Manual
-
-```bash
-npm run lint      # Lint all files
-npm run format    # Format all files
-npm run check     # Lint + format check (no write)
-biome check --write .  # Lint + format with fixes
-```
-
-### Configuration
-
-- **Biome**: `biome.json` (lint + format rules)
-
-## TypeScript
-
-### Strict Mode
-
-Project uses `astro/tsconfigs/strict`:
-
-```json
-{
-  "extends": "astro/tsconfigs/strict",
-  "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist"]
-}
-```
-
-### Type Patterns
-
-```typescript
-// Collection entries
-const projects: CollectionEntry<"projects">[] = await getCollection("projects");
-
-// Component props
-interface Props {
-  title: string;
-  description: string;
-  date: Date;
-  slug: string;
-  highlights: string[];
-  textPositionIndex?: 0 | 1 | 2 | 3;
-}
-
-// Type guards
-const { project } = Astro.props as { project: CollectionEntry<"projects"> };
-```
+| Area | Enforcement |
+| --- | --- |
+| Semicolons, quotes, trailing commas, print width | Tooling-enforced when formatter exists; otherwise manual MUST |
+| Import ordering/grouping | Tooling-enforced when configured; otherwise manual SHOULD |
+| Type-only imports (`import type`) | Manual MUST (plus lint rule where available) |
+| Alias strategy (`~/` when available) | Manual MUST based on project config |
+| Function typing, naming, exports, structure | Manual MUST/SHOULD |
+| CSS token usage and color format | Manual MUST/SHOULD (lintable per project) |

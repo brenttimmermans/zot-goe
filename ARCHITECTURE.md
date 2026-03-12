@@ -172,7 +172,7 @@ Custom Tailwind theme in `src/styles/global.css`:
 
 Husky + lint-staged automatically:
 
-1. Run `biome check --write` on staged `*.astro`, `*.ts`, `*.json`, `*.css`, `*.md`, `*.yaml`, `*.yml` files
+1. Run `biome check --write` on staged `*.astro`, `*.ts`, `*.tsx`, `*.js`, `*.jsx`, `*.json`, `*.jsonc`, `*.css` files
 
 ## SEO & Metadata
 
