@@ -25,7 +25,7 @@
 		"@biomejs/biome": "^2.3.0"
 	},
 	"lint-staged": {
-		"*.{astro,ts,json,css,md,yaml,yml}": [
+		"*.{astro,ts,tsx,js,jsx,json,jsonc,css}": [
 			"biome check --write"
 		]
 	}
