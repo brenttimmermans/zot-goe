@@ -386,26 +386,22 @@ Then in template:
 Husky automatically runs on `git commit`:
 
 ```bash
-# Staged .astro and .ts files
-npm run lint    # Oxlint
-npm run format  # Oxfmt
-
-# Staged .json, .css, .md, .yaml, .yml files
-npm run format  # Oxfmt
+# Staged .astro, .ts, .json, .css, .md, .yaml, .yml files
+biome check --write
 ```
 
 ### Manual
 
 ```bash
-npm run lint      # Check all files
+npm run lint      # Lint all files
 npm run format    # Format all files
-npm run lint -- --fix  # Auto-fix (if supported)
+npm run check     # Lint + format check (no write)
+biome check --write .  # Lint + format with fixes
 ```
 
 ### Configuration
 
-- **Oxlint**: `.oxlintrc.json` (default rules)
-- **Oxfmt**: `.oxfmtrc.json` (default rules)
+- **Biome**: `biome.json` (lint + format rules)
 
 ## TypeScript
 
