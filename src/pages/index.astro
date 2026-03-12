@@ -35,40 +35,42 @@ const structuredData = {
 >
   <HeroSection />
 
-  <section class="py-20">
-    <div class="max-w-7xl mx-auto px-6">
-      <h2 class="text-3xl font-bold text-heading mb-10">Projects</h2>
-      <div class="flex flex-col gap-6">
-        {featured.map((project, index) => (
-          <ProjectCard
-            title={project.data.title}
-            description={project.data.description}
-            date={project.data.date}
-            slug={project.id}
-            highlights={project.data.highlights}
-            textPositionIndex={index === 1 ? 2 : 0}
-          />
-        ))}
+  <div class="flex flex-col gap-20">
+    <section>
+      <div class="max-w-7xl mx-auto px-6">
+        <h2 class="text-3xl font-bold text-heading mb-10">Projects</h2>
+        <div class="flex flex-col gap-6">
+          {featured.map((project, index) => (
+            <ProjectCard
+              title={project.data.title}
+              description={project.data.description}
+              date={project.data.date}
+              slug={project.id}
+              highlights={project.data.highlights}
+              textPositionIndex={index === 1 ? 2 : 0}
+            />
+          ))}
+        </div>
+        <div class="mt-10 text-center">
+          <a href="/projects" class="text-accent hover:text-heading transition-colors font-medium">
+            View All Projects &rarr;
+          </a>
+        </div>
       </div>
-      <div class="mt-10 text-center">
-        <a href="/projects" class="text-accent hover:text-heading transition-colors font-medium">
-          View All Projects &rarr;
+    </section>
+
+    <section>
+      <div class="max-w-7xl mx-auto px-6 text-center">
+        <h2 class="text-3xl md:text-4xl font-bold text-heading mb-6">
+          Let's work together.
+        </h2>
+        <a
+          href="/contact"
+          class="inline-block text-accent hover:text-heading transition-colors font-medium text-lg"
+        >
+          Get in Touch &rarr;
         </a>
       </div>
-    </div>
-  </section>
-
-  <section class="py-20">
-    <div class="max-w-7xl mx-auto px-6 text-center">
-      <h2 class="text-3xl md:text-4xl font-bold text-heading mb-6">
-        Let's work together.
-      </h2>
-      <a
-        href="/contact"
-        class="inline-block text-accent hover:text-heading transition-colors font-medium text-lg"
-      >
-        Get in Touch &rarr;
-      </a>
-    </div>
-  </section>
+    </section>
+  </div>
 </BaseLayout>

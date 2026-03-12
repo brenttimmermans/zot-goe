@@ -17,10 +17,10 @@ function isActive(href: string): boolean {
 }
 ---
 
-<nav class="sticky top-0 z-50 bg-bg/80 backdrop-blur-sm">
-  <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col md:flex-row items-center gap-4 md:justify-between">
+<nav class="sticky top-0 z-50 bg-bg/80 backdrop-blur-sm h-[var(--navbar-height)]">
+  <div class="max-w-7xl mx-auto px-6 h-full flex flex-row items-center justify-between">
     <a href="/" class="text-xl font-bold text-heading">ZOT GOE</a>
-    <div class="flex flex-col md:flex-row items-center gap-2 md:gap-8 text-center">
+    <div class="flex items-center gap-8">
       {links.map((link) => (
         <a
           href={link.href}
