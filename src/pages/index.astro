@@ -1,11 +1,12 @@
 ---
-import { getCollection, type CollectionEntry } from "astro:content";
-import BaseLayout from "../layouts/BaseLayout.astro";
-import HeroSection from "../components/HeroSection.astro";
-import ProjectCard from "../components/ProjectCard.astro";
+import { getCollection, type CollectionEntry } from 'astro:content';
+import { SITE_URL } from '../config';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HeroSection from '../components/HeroSection.astro';
+import ProjectCard from '../components/ProjectCard.astro';
 
-const allProjects: CollectionEntry<"projects">[] =
-	await getCollection("projects");
+const allProjects: CollectionEntry<'projects'>[] =
+	await getCollection('projects');
 const featured = allProjects
 	.sort(
 		(a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
@@ -13,18 +14,18 @@ const featured = allProjects
 	.slice(0, 4);
 
 const structuredData = {
-	"@context": "https://schema.org",
-	"@graph": [
+	'@context': 'https://schema.org',
+	'@graph': [
 		{
-			"@type": "WebSite",
-			name: "Zot Goe Photography",
-			url: "https://zotgoe.be",
+			'@type': 'WebSite',
+			name: 'Zot Goe Photography',
+			url: SITE_URL,
 		},
 		{
-			"@type": "Person",
-			name: "Zot Goe",
-			url: "https://zotgoe.be",
-			jobTitle: "Photographer",
+			'@type': 'Person',
+			name: 'Zot Goe',
+			url: SITE_URL,
+			jobTitle: 'Photographer',
 		},
 	],
 };

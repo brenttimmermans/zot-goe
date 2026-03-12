@@ -1,8 +1,8 @@
 ---
-import Navbar from "../components/Navbar.astro";
-import Footer from "../components/Footer.astro";
-import ThemeInit from "../components/Theme/Init.astro";
-import "../styles/global.css";
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import ThemeInit from '../components/Theme/Init.astro';
+import '../styles/global.css';
 
 interface Props {
 	title: string;
@@ -14,8 +14,8 @@ interface Props {
 
 const {
 	title,
-	description = "Photography portfolio of Zot Goe",
-	ogImage = "/images/hero.jpg",
+	description = 'Photography portfolio of Zot Goe',
+	ogImage = '/images/hero.jpg',
 	canonicalUrl = Astro.url.href,
 	structuredData,
 } = Astro.props;

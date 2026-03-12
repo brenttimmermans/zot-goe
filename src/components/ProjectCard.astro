@@ -1,6 +1,6 @@
 ---
-import type { CardTextPosition } from "../types/project";
-import { PROJECT_CARD_COLUMNS } from "../constants/project";
+import type { CardTextPosition } from '../types/project';
+import { PROJECT_CARD_COLUMNS } from '../constants/project';
 
 interface Props {
 	title: string;
@@ -22,9 +22,9 @@ const {
 
 const textOrderClass = `md:order-${textPositionIndex + 1}`;
 
-const formattedDate = date.toLocaleDateString("en-US", {
-	year: "numeric",
-	month: "long",
+const formattedDate = date.toLocaleDateString('en-US', {
+	year: 'numeric',
+	month: 'long',
 });
 ---
 

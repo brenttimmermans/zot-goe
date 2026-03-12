@@ -1,4 +1,4 @@
-import type { PROJECT_CARD_COLUMNS } from "../constants/project";
+import type { PROJECT_CARD_COLUMNS } from '../constants/project';
 
 /**
  * Valid positions for the text/description card within a ProjectCard grid.
@@ -9,8 +9,8 @@ import type { PROJECT_CARD_COLUMNS } from "../constants/project";
 type BuildUnion<
 	N extends number,
 	Acc extends number[] = [],
-> = Acc["length"] extends N
+> = Acc['length'] extends N
 	? Acc[number]
-	: BuildUnion<N, [...Acc, Acc["length"]]>;
+	: BuildUnion<N, [...Acc, Acc['length']]>;
 
 export type CardTextPosition = BuildUnion<typeof PROJECT_CARD_COLUMNS>;

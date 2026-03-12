@@ -1,22 +1,23 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
-import ContactForm from "../components/ContactForm.astro";
+import { SITE_URL } from '../config';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ContactForm from '../components/ContactForm.astro';
 
-const success = Astro.url.searchParams.get("success") === "true";
+const success = Astro.url.searchParams.get('success') === 'true';
 
 const structuredData = {
-	"@context": "https://schema.org",
-	"@type": "ContactPage",
-	name: "Contact — Zot Goe Photography",
-	description: "Get in touch with Zot Goe for photography inquiries.",
-	url: "https://zotgoe.be/contact",
+	'@context': 'https://schema.org',
+	'@type': 'ContactPage',
+	name: 'Contact — Zot Goe Photography',
+	description: 'Get in touch with Zot Goe for photography inquiries.',
+	url: `${SITE_URL}/contact`,
 };
 ---
 
 <BaseLayout
   title="Contact"
   description="Get in touch with Zot Goe for photography inquiries, collaborations, and commissions."
-  canonicalUrl="https://zotgoe.be/contact"
+  canonicalUrl={`${SITE_URL}/contact`}
   structuredData={structuredData}
 >
   <section class="py-20">
