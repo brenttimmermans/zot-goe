@@ -4,16 +4,16 @@ import ThemeToggle from "./Theme/Toggle.astro";
 const currentPath = Astro.url.pathname;
 
 const links = [
-  { label: "Home", href: "/" },
-  { label: "Projects", href: "/projects" },
-  { label: "Contact", href: "/contact" },
+	{ label: "Home", href: "/" },
+	{ label: "Projects", href: "/projects" },
+	{ label: "Contact", href: "/contact" },
 ];
 
 const baseLinkClass = "px-2 py-2 rounded transition-colors";
 
 function isActive(href: string): boolean {
-  if (href === "/") return currentPath === "/";
-  return currentPath.startsWith(href);
+	if (href === "/") return currentPath === "/";
+	return currentPath.startsWith(href);
 }
 ---
 

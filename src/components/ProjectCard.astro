@@ -3,29 +3,28 @@ import type { CardTextPosition } from "../types/project";
 import { PROJECT_CARD_COLUMNS } from "../constants/project";
 
 interface Props {
-  title: string;
-  description: string;
-  date: Date;
-  slug: string;
-  highlights: string[];
-  textPositionIndex?: CardTextPosition;
+	title: string;
+	description: string;
+	date: Date;
+	slug: string;
+	highlights: string[];
+	textPositionIndex?: CardTextPosition;
 }
 
-
 const {
-  title,
-  description,
-  date,
-  slug,
-  highlights,
-  textPositionIndex = 0,
+	title,
+	description,
+	date,
+	slug,
+	highlights,
+	textPositionIndex = 0,
 } = Astro.props;
 
 const textOrderClass = `md:order-${textPositionIndex + 1}`;
 
 const formattedDate = date.toLocaleDateString("en-US", {
-  year: "numeric",
-  month: "long",
+	year: "numeric",
+	month: "long",
 });
 ---
 

@@ -12,8 +12,8 @@
 | **Styling**    | Tailwind CSS 4.2.1 + custom theme |
 | **Language**   | TypeScript (strict mode)          |
 | **Content**    | Astro Content Collections (YAML)  |
-| **Linting**    | Oxlint 1.51.0                     |
-| **Formatting** | Oxfmt 0.36.0                      |
+| **Linting**    | Biome 2.x                          |
+| **Formatting** | Biome 2.x                          |
 | **Git Hooks**  | Husky 9.1.7 + lint-staged         |
 | **Gallery**    | GLightbox 3.3.1                   |
 | **SEO**        | Astro Sitemap 3.7.0               |
@@ -52,8 +52,7 @@ zot-goe/
 ├── astro.config.mjs            # Astro configuration
 ├── tailwind.config.mjs          # Tailwind theme config
 ├── tsconfig.json               # TypeScript config (strict)
-├── .oxlintrc.json              # Oxlint rules
-├── .oxfmtrc.json               # Oxfmt rules
+├── biome.json                  # Biome lint & format rules
 ├── .husky/                     # Git hooks
 └── package.json                # Dependencies & scripts
 ```
@@ -153,8 +152,7 @@ Custom Tailwind theme in `src/styles/global.css`:
 
 ### Linting & Formatting
 
-- **Oxlint**: Default config in `.oxlintrc.json`
-- **Oxfmt**: Default config in `.oxfmtrc.json`
+- **Biome**: Config in `biome.json` (lint + format)
 - **Husky**: Pre-commit hook runs lint + format on staged files
 
 ## Build & Deploy
@@ -165,16 +163,16 @@ Custom Tailwind theme in `src/styles/global.css`:
 | `npm run dev`     | Start dev server (localhost:4321) |
 | `npm run build`   | Build to `./dist/`                |
 | `npm run preview` | Preview production build locally  |
-| `npm run lint`    | Run Oxlint                        |
-| `npm run format`  | Run Oxfmt                         |
+| `npm run lint`    | Run Biome lint                    |
+| `npm run format`  | Run Biome format                  |
+| `npm run check`   | Run Biome check (lint + format)   |
 | `npm run astro`   | Run Astro CLI commands            |
 
 ### Pre-commit Hooks
 
 Husky + lint-staged automatically:
 
-1. Lint `*.astro` and `*.ts` files
-2. Format `*.astro`, `*.ts`, `*.json`, `*.css`, `*.md`, `*.yaml`, `*.yml`
+1. Run `biome check --write` on staged `*.astro`, `*.ts`, `*.json`, `*.css`, `*.md`, `*.yaml`, `*.yml` files
 
 ## SEO & Metadata
 
