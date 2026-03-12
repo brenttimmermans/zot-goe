@@ -8,6 +8,9 @@
   --color-body: #4a4845;
   --color-heading: #2c2a27;
   --color-accent: #6b6863;
+
+  --navbar-height: 64px;
+
   --transition-duration: 0.3s;
 }
 
