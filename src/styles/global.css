@@ -2,46 +2,46 @@
 @import "./fonts.css";
 
 @theme {
-  --color-bg: #f5f4f0;
-  --color-surface: #eceae4;
-  --color-muted: #b0ada6;
-  --color-body: #4a4845;
-  --color-heading: #2c2a27;
-  --color-accent: #6b6863;
+	--color-bg: #f5f4f0;
+	--color-surface: #eceae4;
+	--color-muted: #b0ada6;
+	--color-body: #4a4845;
+	--color-heading: #2c2a27;
+	--color-accent: #6b6863;
 
-  --navbar-height: 64px;
+	--navbar-height: 64px;
 
-  --transition-duration: 0.3s;
+	--transition-duration: 0.3s;
 }
 
 [data-theme="dark"] {
-  --color-bg: #1a1917;
-  --color-surface: #252320;
-  --color-muted: #6b6863;
-  --color-body: #b0ada6;
-  --color-heading: #eceae4;
-  --color-accent: #b0ada6;
+	--color-bg: #1a1917;
+	--color-surface: #252320;
+	--color-muted: #6b6863;
+	--color-body: #b0ada6;
+	--color-heading: #eceae4;
+	--color-accent: #b0ada6;
 }
 
 @layer base {
-  body {
-    @apply bg-bg text-body;
-    font-family: "Montserrat Variable", "Helvetica Neue", sans-serif;
-    transition:
-      background-color var(--transition-duration) ease,
-      color var(--transition-duration) ease;
-  }
+	body {
+		@apply bg-bg text-body;
+		font-family: "Montserrat Variable", "Helvetica Neue", sans-serif;
+		transition:
+			background-color var(--transition-duration) ease,
+			color var(--transition-duration) ease;
+	}
 
-  :where(a, button, input, textarea, select, summary) {
-    @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent;
-  }
+	:where(a, button, input, textarea, select, summary) {
+		@apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent;
+	}
 }
 
 summary::-webkit-details-marker {
-  display: none;
+	display: none;
 }
 
 /* GLightbox overlay override */
 .goverlay {
-  background: rgba(44, 42, 39, 0.95);
+	background: rgba(44, 42, 39, 0.95);
 }

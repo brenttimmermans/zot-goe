@@ -5,19 +5,19 @@ import ThemeInit from "../components/Theme/Init.astro";
 import "../styles/global.css";
 
 interface Props {
-  title: string;
-  description?: string;
-  ogImage?: string;
-  canonicalUrl?: string;
-  structuredData?: object;
+	title: string;
+	description?: string;
+	ogImage?: string;
+	canonicalUrl?: string;
+	structuredData?: object;
 }
 
 const {
-  title,
-  description = "Photography portfolio of Zot Goe",
-  ogImage = "/images/hero.jpg",
-  canonicalUrl = Astro.url.href,
-  structuredData,
+	title,
+	description = "Photography portfolio of Zot Goe",
+	ogImage = "/images/hero.jpg",
+	canonicalUrl = Astro.url.href,
+	structuredData,
 } = Astro.props;
 
 const fullTitle = `${title} | Zot Goe Photography`;

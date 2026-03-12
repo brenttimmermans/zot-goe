@@ -8,21 +8,21 @@ import { PROJECT_CARD_COLUMNS } from "../../constants/project";
 
 const allProjects = await getCollection("projects");
 const sorted = allProjects.sort(
-  (a: CollectionEntry<"projects">, b: CollectionEntry<"projects">) =>
-    new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+	(a: CollectionEntry<"projects">, b: CollectionEntry<"projects">) =>
+		new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
 );
 
 const titleHash = (title: string): CardTextPosition => {
-  const sum = [...title].reduce((acc, char) => acc + char.charCodeAt(0), 0);
-  return (sum % PROJECT_CARD_COLUMNS) as CardTextPosition;
+	const sum = [...title].reduce((acc, char) => acc + char.charCodeAt(0), 0);
+	return (sum % PROJECT_CARD_COLUMNS) as CardTextPosition;
 };
 
 const structuredData = {
-  "@context": "https://schema.org",
-  "@type": "CollectionPage",
-  name: "Projects - Zot Goe Photography",
-  description: "Browse all photography projects by Zot Goe.",
-  url: "https://zotgoe.be/projects",
+	"@context": "https://schema.org",
+	"@type": "CollectionPage",
+	name: "Projects - Zot Goe Photography",
+	description: "Browse all photography projects by Zot Goe.",
+	url: "https://zotgoe.be/projects",
 };
 ---
 
