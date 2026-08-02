@@ -9,7 +9,7 @@ const links = [
 	{ label: 'Contact', href: '/contact' },
 ];
 
-const baseLinkClass = 'px-2 py-2 rounded transition-colors';
+const baseLinkClass = 'transition-colors';
 
 function isActive(href: string): boolean {
 	if (href === '/') return currentPath === '/';
@@ -17,22 +17,28 @@ function isActive(href: string): boolean {
 }
 ---
 
-<nav class="sticky top-0 z-50 bg-bg/80 backdrop-blur-sm h-[var(--navbar-height)]">
-  <div class="max-w-7xl mx-auto px-6 h-full flex flex-row items-center justify-between">
+<nav
+  class="sticky top-0 z-50 bg-bg/80 backdrop-blur-sm h-[var(--navbar-height)]"
+>
+  <div
+    class="max-w-7xl mx-auto px-6 h-full flex flex-row items-center justify-between"
+  >
     <a href="/" class="text-xl font-bold text-heading">ZOT GOE</a>
-    <div class="flex items-center gap-8">
-      {links.map((link) => (
-        <a
-          href={link.href}
-          class={
-            isActive(link.href)
-              ? `${baseLinkClass} text-heading font-medium`
-              : `${baseLinkClass} text-muted hover:text-accent`
-          }
-        >
-          {link.label}
-        </a>
-      ))}
+    <div class="flex items-center gap-10">
+      {
+        links.map((link) => (
+          <a
+            href={link.href}
+            class={
+              isActive(link.href)
+                ? `${baseLinkClass} text-heading font-medium`
+                : `${baseLinkClass} text-muted hover:text-accent`
+            }
+          >
+            {link.label}
+          </a>
+        ))
+      }
       <ThemeToggle />
     </div>
   </div>
