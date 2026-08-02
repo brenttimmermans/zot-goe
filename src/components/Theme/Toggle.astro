@@ -6,10 +6,10 @@ import sunSvg from '../../assets/icons/sun.svg?raw';
 <button
   id="theme-toggle"
   aria-label="Toggle theme"
-  class="cursor-pointer p-2 rounded transition-transform duration-200 hover:scale-110 active:scale-95 text-muted hover:text-heading"
+  class="cursor-pointer text-muted hover:text-accent"
 >
-  <span id="moon-icon" class="block w-5 h-5" set:html={moonSvg} />
-  <span id="sun-icon" class="hidden w-5 h-5" set:html={sunSvg} />
+  <span id="moon-icon" class="block w-6 h-6" set:html={moonSvg} />
+  <span id="sun-icon" class="hidden w-6 h-6" set:html={sunSvg} />
 </button>
 
 <script>
