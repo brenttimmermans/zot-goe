@@ -1,0 +1,68 @@
+@theme {
+	--font-sans: "Archivo Variable", "Helvetica Neue", Arial, sans-serif;
+	--font-serif: "Newsreader Variable", Georgia, serif;
+	--font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+	--color-bg: hsl(40, 30%, 98%);
+	--color-surface: hsl(45, 25%, 96%);
+	--color-heading: hsl(48, 14%, 7%);
+	--color-body: hsl(45, 11%, 21%);
+	--color-body-soft: hsl(44, 8%, 27%);
+	--color-muted: hsl(42, 6%, 41%);
+	--color-faint: hsl(41, 6%, 51%);
+	--color-line: hsl(44, 13%, 83%);
+	--color-line-soft: hsl(42, 15%, 87%);
+	--color-nav-link: hsl(44, 8%, 27%);
+	--color-accent: hsl(5, 77%, 60%);
+	--color-accent-hover: hsl(5, 70%, 54%);
+	--color-accent-contrast: hsl(51, 19%, 7%);
+
+	--placeholder-a: hsl(42, 20%, 91%);
+	--placeholder-b: hsl(42, 17%, 87%);
+
+	/* Each --text-* also sets its line-height and letter-spacing so a single
+	   text-* utility carries the full display style — no inline clamp() in pages. */
+	--text-wordmark: clamp(3.5rem, 14vw, 10.5rem);
+	--text-wordmark--line-height: 0.8;
+	--text-wordmark--letter-spacing: -0.055em;
+	--text-display: clamp(3rem, 9vw, 5.75rem);
+	--text-display--line-height: 0.86;
+	--text-display--letter-spacing: -0.045em;
+	--text-about: clamp(2.25rem, 5vw, 3.875rem);
+	--text-about--line-height: 1;
+	--text-about--letter-spacing: -0.04em;
+	--text-lead: clamp(2rem, 4.5vw, 3.25rem);
+	--text-lead--line-height: 1.1;
+	--text-lead--letter-spacing: -0.035em;
+	--text-title: clamp(2rem, 4vw, 2.875rem);
+	--text-title--line-height: 1.05;
+	--text-title--letter-spacing: -0.035em;
+	--text-contact: clamp(2.5rem, 5vw, 3.75rem);
+	--text-contact--line-height: 0.92;
+	--text-contact--letter-spacing: -0.04em;
+
+	--spacing-section: 4.375rem;
+	--spacing-grid: 2.75rem;
+
+	--navbar-height: 72px;
+	--transition-duration: 0.3s;
+}
+
+/* Dark "warm paper" palette transcribed from design screen 3a. */
+[data-theme="dark"] {
+	--color-bg: hsl(51, 19%, 7%);
+	--color-surface: hsl(47, 12%, 11%);
+	--color-heading: hsl(47, 26%, 93%);
+	--color-body: hsl(47, 26%, 93%);
+	--color-body-soft: hsl(43, 12%, 68%);
+	--color-muted: hsl(43, 8%, 53%);
+	--color-faint: hsl(41, 6%, 51%);
+	--color-line: hsl(47, 12%, 15%);
+	--color-line-soft: hsl(40, 13%, 18%);
+	--color-nav-link: hsl(42, 9%, 62%);
+	--color-accent: hsl(5, 86%, 69%);
+	--color-accent-hover: hsl(5, 90%, 75%);
+	--color-accent-contrast: hsl(51, 19%, 7%);
+	--placeholder-a: hsl(46, 14%, 12%);
+	--placeholder-b: hsl(51, 14%, 10%);
+}
