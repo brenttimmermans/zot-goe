@@ -1,8 +1,11 @@
 title: "Spa 24h"
-description: "Abandoned industrial spaces reclaimed by nature across Northern Europe."
+description: "Vierentwintig uur endurance, van de start in volle zon tot de ochtendmist boven Eau Rouge."
 date: 2025-06-15
+category: "Motorsport"
+location: "Spa"
 cover: "/images/projects/spa-24-001/test-image_0001.jpg"
 imageFolder: "spa-24-001"
+featured: true
 highlights:
   - "/images/projects/spa-24-001/test-image_0002.jpg"
   - "/images/projects/spa-24-001/test-image_0003.jpg"
@@ -13,3 +16,16 @@ gallery:
   - "/images/projects/spa-24-001/test-image_0007.jpg"
   - "/images/projects/spa-24-001/test-image_0008.jpg"
   - "/images/projects/spa-24-001/test-image_0009.jpg"
+  - "/images/projects/spa-24-001/test-image_0010.jpg"
+  - "/images/projects/spa-24-001/test-image_0011.jpg"
+  - "/images/projects/spa-24-001/test-image_0012.jpg"
+  - "/images/projects/spa-24-001/test-image_0013.jpg"
+credits:
+  - { label: "Waar", value: "Circuit de Spa-Francorchamps" }
+  - { label: "Wanneer", value: "Juni 2025, 24 uur" }
+  - { label: "Opdracht", value: "Reportage · pers & socials" }
+  - { label: "Oplevering", value: "180 beelden, binnen 3 dagen" }
+brief:
+  - "Vierentwintig uur endurance, van de start in volle zon tot de ochtendmist boven Eau Rouge. De opdracht: sfeer én actie, meteen bruikbaar voor pers en socials."
+  - "Ik fotografeerde discreet aan de pitmuur en in de paddock, en zocht vooral de momenten tussen de rondes door — de vermoeide monteur, de eerste zonnestralen over het asfalt."
+  - "Opgeleverd: 180 bewerkte beelden in web- en drukformaat, drie dagen na de vlag."
