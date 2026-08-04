@@ -2,6 +2,10 @@
 @import "./fonts.css";
 
 @theme {
+	--font-sans: "Archivo Variable", "Helvetica Neue", Arial, sans-serif;
+	--font-serif: "Newsreader Variable", Georgia, serif;
+	--font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
 	--color-bg: hsl(40, 17%, 95%);
 	--color-surface: hsl(40, 17%, 91%);
 	--color-muted: hsl(45, 8%, 67%);
@@ -26,7 +30,7 @@
 @layer base {
 	body {
 		@apply bg-bg text-body;
-		font-family: "Montserrat Variable", "Helvetica Neue", sans-serif;
+		font-family: var(--font-sans);
 		transition:
 			background-color var(--transition-duration) ease,
 			color var(--transition-duration) ease;
