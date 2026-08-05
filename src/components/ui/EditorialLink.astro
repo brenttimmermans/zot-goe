@@ -1,0 +1,28 @@
+---
+interface Props {
+	href: string;
+	variant?: 'underline' | 'boxed' | 'solid';
+	class?: string;
+}
+
+const { href, variant = 'underline', class: className = '' } = Astro.props;
+
+const BASE =
+	'inline-flex items-center gap-3 font-mono text-xs uppercase tracking-[0.1em] transition-colors';
+
+// boxed/solid pin their text colour so the global a:hover (→ accent) can't
+// recolour a button-like link; underline intentionally keeps that hover.
+const VARIANT_CLASSES: Record<NonNullable<Props['variant']>, string> = {
+	underline: 'self-start border-b border-heading pb-1',
+	boxed:
+		'border border-line px-6 py-3.5 text-heading hover:text-heading hover:border-heading',
+	solid: 'bg-heading px-7 py-4 text-bg hover:text-bg hover:bg-accent',
+};
+
+const classes = `${BASE} ${VARIANT_CLASSES[variant]} ${className}`;
+---
+
+<a {href} class={classes}>
+	<slot />
+	<span aria-hidden="true">→</span>
+</a>
