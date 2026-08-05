@@ -1,0 +1,12 @@
+---
+interface Props {
+	accent?: boolean;
+	as?: 'span' | 'div' | 'p';
+	class?: string;
+}
+
+const { accent = false, as: Tag = 'span', class: className = '' } = Astro.props;
+const classes = `eyebrow ${accent ? 'text-accent' : ''} ${className}`;
+---
+
+<Tag class={classes}><slot /></Tag>

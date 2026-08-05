@@ -1,0 +1,18 @@
+---
+// Include once on pages with lightbox <Photo> images; keeps GLightbox's
+// CSS/JS off pages that have no galleries.
+import 'glightbox/dist/css/glightbox.min.css';
+---
+
+<script>
+	import GLightbox from 'glightbox';
+
+	document.addEventListener('DOMContentLoaded', () => {
+		GLightbox({
+			selector: '.glightbox',
+			touchNavigation: true,
+			loop: true,
+			autoplayVideos: false,
+		});
+	});
+</script>

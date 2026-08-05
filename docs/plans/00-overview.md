@@ -23,7 +23,7 @@ Five pages:
 | `/`              | `2a`   | Home — masthead + featured work + about teaser |
 | `/projects`      | `2b`   | Werk — all projects, editorial grid + filters  |
 | `/projects/[slug]` | `2c` | Project detail — brief, credits, gallery, next |
-| `/over`          | `2d`   | Over Brent — bio + "Hoe het werkt" steps       |
+| `/about`          | `2d`   | Over Brent — bio + "Hoe het werkt" steps       |
 | `/contact`       | `1g`   | Contact — editorial copy + form                |
 
 ## 2. Decisions (confirmed with the user)

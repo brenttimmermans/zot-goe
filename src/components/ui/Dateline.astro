@@ -1,0 +1,17 @@
+---
+import { AVAILABILITY, CITY, OWNER } from '../../config';
+
+interface Props {
+	class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+---
+
+<div
+	class={`meta-row flex flex-col gap-2 border-t border-line pt-3.5 md:flex-row md:items-baseline md:justify-between ${className}`}
+>
+	<span>{OWNER} — fotograaf</span>
+	<span>{CITY}</span>
+	<span class="text-accent">{AVAILABILITY}</span>
+</div>

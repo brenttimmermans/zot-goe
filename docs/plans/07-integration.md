@@ -7,8 +7,8 @@
 ## 1. Reconcile shared surfaces
 
 - **Navbar / Footer / BaseLayout** consistent across all five routes; active nav state
-  correct on each (`/`, `/projects`, `/over`, `/contact`; detail highlights `Werk`).
-- **Cross-links resolve:** home→`/over`, home→`/projects`, home→`/contact`;
+  correct on each (`/`, `/projects`, `/about`, `/contact`; detail highlights `Werk`).
+- **Cross-links resolve:** home→`/about`, home→`/projects`, home→`/contact`;
   detail→`/projects`, detail→next slug, detail→`/contact`; about→`/contact`. No `#`
   placeholder hrefs left except real external socials.
 - **Wordmark, EditorialLink, MonoLabel, Photo, Dateline** used consistently — no page
@@ -23,7 +23,7 @@
 - `src/styles/fonts/montserrat-variable.ttf` + any leftover `@font-face`.
 - Stale asset refs (`/images/hero.jpg` vs `hero.png`) in `BaseLayout`/pages.
 - Update `ARCHITECTURE.md` component/route tables to match the new structure
-  (routes, `/over`, `ui/` folder, dropped files).
+  (routes, `/about`, `ui/` folder, dropped files).
 
 ## 3. Dark-mode pass
 

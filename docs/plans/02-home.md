@@ -51,7 +51,7 @@ Photos lead, text is quiet. Nav links top-right.
    - Left: portrait `<Photo heightClass="h-[340px]" caption="portret van brent"/>`
      (real portrait if available in `public/images/`, else placeholder).
    - Right: `<MonoLabel accent>Over</MonoLabel>`, serif lead (21px) + serif body
-     (16px, `text-body-soft`), `<EditorialLink href="/over" variant="underline">Lees
+     (16px, `text-body-soft`), `<EditorialLink href="/about" variant="underline">Lees
      verder</EditorialLink>`. Copy from design `2a` about block.
 
 6. **Footer** — global `Footer`.
