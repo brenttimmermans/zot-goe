@@ -2,6 +2,7 @@
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import ThemeInit from '../components/Theme/Init.astro';
+import { SITE_NAME } from '../config';
 import '../styles/global.css';
 
 interface Props {
@@ -14,17 +15,17 @@ interface Props {
 
 const {
 	title,
-	description = 'Photography portfolio of Zot Goe',
-	ogImage = '/images/hero.jpg',
+	description = 'Event-, concert- en motorsportfotografie uit Gent door Brent Timmermans.',
+	ogImage = '/images/hero.png',
 	canonicalUrl = Astro.url.href,
 	structuredData,
 } = Astro.props;
 
-const fullTitle = `${title} | Zot Goe Photography`;
+const fullTitle = `${title} | ${SITE_NAME}`;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="nl">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -32,7 +33,7 @@ const fullTitle = `${title} | Zot Goe Photography`;
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalUrl} />
-    <link rel="preload" as="image" href="/images/hero.jpg" />
+    <link rel="preload" as="image" href="/images/hero.png" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
     <meta property="og:title" content={fullTitle} />

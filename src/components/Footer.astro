@@ -1,9 +1,15 @@
 ---
+import { EMAIL, SITE_NAME } from '../config';
+
 const currentYear = new Date().getFullYear();
 ---
 
-<footer class="mt-16 py-4 text-center text-muted text-sm">
-  <div class="max-w-7xl mx-auto px-6">
-    <p>&copy; {currentYear} Zot Goe. All rights reserved.</p>
-  </div>
+<footer class="mt-section border-t border-line-soft">
+	<div
+		class="meta-row mx-auto flex max-w-7xl flex-col gap-3 px-page py-10 md:flex-row md:items-center md:justify-between"
+	>
+		<a href={`mailto:${EMAIL}`}>{EMAIL}</a>
+		<span>Gent</span>
+		<span>© {currentYear} {SITE_NAME}</span>
+	</div>
 </footer>
