@@ -19,8 +19,8 @@ Photos lead, text is quiet. Nav links top-right.
 2. **Masthead block**
    - `<Wordmark size="hero">Zot Goe</Wordmark>` — uses the `text-wordmark` token
      utility (weight 800, uppercase; line-height/tracking baked into the token).
-   - `<Dateline>` under it, top hairline: `Brent Timmermans — fotograaf` ·
-     `Gent, België` · `Beschikbaar voor opdrachten` (last in accent).
+   - `<Byline>` under it, top hairline: `Brent Timmermans — fotograaf` (left) ·
+     `Gent, België` (right).
 
 3. **Lead statement** — 2-col grid `lg:grid-cols-[1fr_340px]`, `items-end`, big gap.
    - Left: `TAGLINE` with `text-lead font-semibold` (token), `max-w-[720px]`,
@@ -61,7 +61,7 @@ Photos lead, text is quiet. Nav links top-right.
 - Featured cards, dateline, lead, and about copy: use design `2a` verbatim (Dutch).
   Card titles/categories/years come from the collection; the two real projects fill
   the first slots, remaining slots use recent projects.
-- Do **not** hard-code brand facts — pull `OWNER`, `CITY`, `AVAILABILITY`, `TAGLINE`
+- Do **not** hard-code brand facts — pull `OWNER`, `CITY`, `TAGLINE`
   from `config.ts`.
 
 ## SEO
@@ -71,7 +71,7 @@ Keep `WebSite` + `Person` JSON-LD (translate to Dutch name/jobTitle `Fotograaf`)
 
 ## Responsive
 
-- Masthead wordmark scales via `clamp`. Dateline wraps to stacked rows on mobile
+- Masthead wordmark scales via `clamp`. Byline wraps to stacked rows on mobile
   (`flex-col gap-2 md:flex-row md:justify-between`).
 - Lead grid → single column on mobile (right block below left).
 - Featured grid → single stacked column on mobile; **all `md:mt-*` offsets drop**

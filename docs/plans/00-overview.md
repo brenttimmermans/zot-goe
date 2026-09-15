@@ -82,7 +82,7 @@ with an explicit `Props` interface.
 | `MonoLabel.astro`    | IBM Plex Mono uppercase eyebrow/label; `accent`, `as` props. |
 | `EditorialLink.astro`| `→` link; `variant`: `underline` \| `boxed` \| `solid`. |
 | `Photo.astro`        | `<img>` with paper-placeholder bg, optional `caption`, optional `lightbox` + `gallery` for GLightbox. Supersedes `Image.astro`. |
-| `Dateline.astro`     | Edge-to-edge mono meta row (location · edition · availability). |
+| `Byline.astro`     | Edge-to-edge mono meta row (location · edition · availability). |
 | `SectionRule.astro`  | Hairline `<hr>` token wrapper (or a documented utility class). |
 
 ### Shared domain (Stage 1)

@@ -11,7 +11,7 @@
 - **Cross-links resolve:** home→`/about`, home→`/projects`, home→`/contact`;
   detail→`/projects`, detail→next slug, detail→`/contact`; about→`/contact`. No `#`
   placeholder hrefs left except real external socials.
-- **Wordmark, EditorialLink, MonoLabel, Photo, Dateline** used consistently — no page
+- **Wordmark, EditorialLink, MonoLabel, Photo, Byline** used consistently — no page
   re-implementing a primitive inline. Fold any accidental duplication back into `ui/`.
 
 ## 2. Remove dead files

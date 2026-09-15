@@ -211,7 +211,7 @@ own line-height + letter-spacing, so the utility is all you need). Do **not** re
 | Contact H1        | 60        | `text-contact font-extrabold uppercase`       |
 | Card title        | 19        | `text-lg font-bold tracking-[-0.01em]`        |
 | Serif lead/body   | 16–21     | `font-serif text-base/text-lg leading-relaxed`|
-| Eyebrow / meta    | 10–12     | `.eyebrow` / `.meta-row` (or `<MonoLabel>`)   |
+| Eyebrow / meta    | 10–12     | `<MonoLabel>` / `.meta-row`                   |
 
 For repeated rhythm use `gap-(--gap-section)` / `gap-(--gap-grid)` and `.px-page`
 rather than arbitrary spacing. One-off editorial photo heights/offsets (e.g.
@@ -230,7 +230,6 @@ export const SITE_NAME = 'Zot Goe';
 export const OWNER = 'Brent Timmermans';
 export const EMAIL = 'brent@zotgoe.be';
 export const CITY = 'Gent, België';
-export const AVAILABILITY = 'Beschikbaar voor opdrachten';
 export const TAGLINE =
 	'Event-, concert- en motorsportfotografie voor Gentse merken, organisatoren en mensen.';
 ```
@@ -367,7 +366,7 @@ interface Props { size?: 'sm' | 'nav' | 'hero'; as?: 'a' | 'span'; href?: string
 ```ts
 interface Props { accent?: boolean; as?: keyof HTMLElementTagNameMap; class?: string; }
 ```
-- Renders `.eyebrow`; `accent` → `text-accent`. Slot for text.
+- Mono uppercase label (self-contained utilities); `accent` → `text-accent`. Slot for text.
 
 ### `src/components/ui/EditorialLink.astro`
 ```ts
@@ -391,9 +390,9 @@ interface Props {
 - `lightbox` → wrap in `<a class="glightbox" data-gallery>` + include the GLightbox
   init script (move current `Image.astro` script here). Keep GLightbox import.
 
-### `src/components/ui/Dateline.astro`
-- Edge-to-edge `.meta-row` (justify-between): `CITY` · edition/label slot ·
-  `AVAILABILITY` (availability in accent). Props for the middle text.
+### `src/components/ui/Byline.astro`
+- Edge-to-edge `.meta-row` (justify-between): `OWNER — fotograaf` (left) ·
+  `CITY` (right).
 
 ### `src/components/ProjectCard.astro` (rewrite — shared by Home & Werk)
 ```ts
