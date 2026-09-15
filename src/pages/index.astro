@@ -1,9 +1,23 @@
 ---
+import ProjectCard from '../components/ProjectCard.astro';
 import Byline from '../components/ui/Byline.astro';
 import EditorialLink from '../components/ui/EditorialLink.astro';
 import Wordmark from '../components/ui/Wordmark.astro';
 import { TAGLINE } from '../config';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getSortedProjects } from '../lib/projects';
+
+const projects = await getSortedProjects();
+const flagged = projects.filter((project) => project.data.featured);
+const featured = (flagged.length >= 4 ? flagged : projects).slice(0, 4);
+
+const ROW_COLS = ['md:grid-cols-[7fr_5fr]', 'md:grid-cols-[4fr_6fr]'];
+const CARD_LAYOUT = [
+	{ heightClass: 'h-[520px]', offsetClass: '' },
+	{ heightClass: 'h-[380px]', offsetClass: 'md:mt-[90px]' },
+	{ heightClass: 'h-[400px]', offsetClass: '' },
+	{ heightClass: 'h-[340px]', offsetClass: 'md:mt-[60px]' },
+];
 ---
 
 <BaseLayout title="Home">
@@ -25,6 +39,38 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           Plan een shoot
         </EditorialLink>
       </div>
+    </div>
+  </section>
+
+  <section class="mx-auto mt-section max-w-7xl px-page">
+    <div class="flex flex-col gap-grid md:gap-16">
+      {
+        [0, 1].map((row) => {
+          const cards = featured.slice(row * 2, row * 2 + 2);
+          return cards.length > 0 ? (
+            <div class={`grid gap-grid md:items-start md:gap-16 ${ROW_COLS[row]}`}>
+              {cards.map((project, column) => {
+                const position = row * 2 + column;
+                return (
+                  <ProjectCard
+                    project={project}
+                    index={position}
+                    heightClass={CARD_LAYOUT[position].heightClass}
+                    offsetClass={CARD_LAYOUT[position].offsetClass}
+                    metaStyle="inline"
+                  />
+                );
+              })}
+            </div>
+          ) : null;
+        })
+      }
+    </div>
+
+    <div class="mt-section flex justify-center">
+      <EditorialLink href="/projects" variant="boxed">
+        Alle projecten ({projects.length})
+      </EditorialLink>
     </div>
   </section>
 </BaseLayout>
