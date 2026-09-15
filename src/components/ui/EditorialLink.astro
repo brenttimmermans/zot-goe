@@ -10,8 +10,8 @@ const { href, variant = 'underline', class: className = '' } = Astro.props;
 const BASE =
 	'inline-flex items-center gap-3 font-mono text-xs uppercase tracking-[0.1em] transition-colors';
 
-// boxed/solid pin their text colour so the global a:hover (→ accent) can't
-// recolour a button-like link; underline intentionally keeps that hover.
+// hover:text-* re-pins the colour so the global a:hover→accent can't recolour
+// these button-like variants; underline intentionally keeps the accent hover.
 const VARIANT_CLASSES: Record<NonNullable<Props['variant']>, string> = {
 	underline: 'self-start border-b border-heading pb-1',
 	boxed:

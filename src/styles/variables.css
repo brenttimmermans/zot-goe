@@ -20,8 +20,8 @@
 	--placeholder-a: hsl(42, 20%, 91%);
 	--placeholder-b: hsl(42, 17%, 87%);
 
-	/* Each --text-* also sets its line-height and letter-spacing so a single
-	   text-* utility carries the full display style — no inline clamp() in pages. */
+	/* Tailwind 4 pairs each --text-* with its --line-height/--letter-spacing,
+	   so one text-* utility carries the whole display style. */
 	--text-wordmark: clamp(3.5rem, 14vw, 10.5rem);
 	--text-wordmark--line-height: 0.8;
 	--text-wordmark--letter-spacing: -0.055em;
@@ -48,7 +48,6 @@
 	--transition-duration: 0.3s;
 }
 
-/* Dark "warm paper" palette transcribed from design screen 3a. */
 [data-theme="dark"] {
 	--color-bg: hsl(51, 19%, 7%);
 	--color-surface: hsl(47, 12%, 11%);
