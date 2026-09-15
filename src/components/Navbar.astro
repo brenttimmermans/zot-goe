@@ -1,15 +1,9 @@
 ---
+import { NAV_LINKS } from '../constants/site';
 import ThemeToggle from './Theme/Toggle.astro';
+import Wordmark from './ui/Wordmark.astro';
 
 const currentPath = Astro.url.pathname;
-
-const links = [
-	{ label: 'Home', href: '/' },
-	{ label: 'Projects', href: '/projects' },
-	{ label: 'Contact', href: '/contact' },
-];
-
-const baseLinkClass = 'transition-colors';
 
 function isActive(href: string): boolean {
 	if (href === '/') return currentPath === '/';
@@ -18,28 +12,29 @@ function isActive(href: string): boolean {
 ---
 
 <nav
-  class="sticky top-0 z-50 bg-bg/80 backdrop-blur-sm h-[var(--navbar-height)]"
+	class="sticky top-0 z-50 h-(--navbar-height) bg-bg/80 backdrop-blur-sm"
 >
-  <div
-    class="max-w-7xl mx-auto px-6 h-full flex flex-row items-center justify-between"
-  >
-    <a href="/" class="text-xl font-bold text-heading">ZOT GOE</a>
-    <div class="flex items-center gap-10">
-      {
-        links.map((link) => (
-          <a
-            href={link.href}
-            class={
-              isActive(link.href)
-                ? `${baseLinkClass} text-heading font-medium`
-                : `${baseLinkClass} text-muted hover:text-accent`
-            }
-          >
-            {link.label}
-          </a>
-        ))
-      }
-      <ThemeToggle />
-    </div>
-  </div>
+	<div
+		class="mx-auto flex h-full max-w-7xl items-center justify-between px-page"
+	>
+		<Wordmark size="nav" href="/" />
+		<div class="flex items-center gap-8">
+			{
+				NAV_LINKS.map((link) => (
+					<a
+						href={link.href}
+						class={`font-mono text-xs uppercase tracking-[0.06em] transition-colors ${
+							isActive(link.href)
+								? 'text-accent'
+								: 'text-nav-link hover:text-accent'
+						}`}
+						aria-current={isActive(link.href) ? 'page' : undefined}
+					>
+						{link.label}
+					</a>
+				))
+			}
+			<ThemeToggle />
+		</div>
+	</div>
 </nav>

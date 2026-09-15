@@ -13,7 +13,7 @@ page stages (parallelizable), then Stage 7.
 | 2  | [`02-home.md`](./02-home.md)                | Home `/` (design `2a`) | ✅ after Stage 1 |
 | 3  | [`03-projects-index.md`](./03-projects-index.md) | Werk `/projects` (`2b`) | ✅ after Stage 1 |
 | 4  | [`04-project-detail.md`](./04-project-detail.md) | Detail `/projects/[slug]` (`2c`) | ✅ after Stage 1 |
-| 5  | [`05-about.md`](./05-about.md)              | Over `/over` (`2d`) | ✅ after Stage 1 |
+| 5  | [`05-about.md`](./05-about.md)              | Over `/about` (`2d`) | ✅ after Stage 1 |
 | 6  | [`06-contact.md`](./06-contact.md)          | Contact `/contact` (`1g`) | ✅ after Stage 1 |
 | 7  | [`07-integration.md`](./07-integration.md)  | Reconcile · dead-code · a11y · quality gates | after all pages |
 

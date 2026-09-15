@@ -1,8 +1,8 @@
-# Stage 5 — Over Brent (`/over`, design `2d`)
+# Stage 5 — Over Brent (`/about`, design `2d`)
 
 > Depends on Stage 1. Independent of Stages 2–4, 6. Read [`00-overview.md`](./00-overview.md)
 > and [`01-foundation.md`](./01-foundation.md). **New route** — create
-> `src/pages/over.astro`. May add page-local `ProcessSteps.astro`.
+> `src/pages/about.astro`. May add page-local `ProcessSteps.astro`.
 
 ## Design intent (`2d`)
 
@@ -46,8 +46,8 @@ running serif prose, a tall portrait, then a numbered `Hoe het werkt` steps grid
 
 ## Navigation wiring
 
-- Ensure the global `Navbar`'s `Over` link (`/over`) shows active here.
-- Home's about-teaser "Lees verder" and detail/contact cross-links point to `/over`.
+- Ensure the global `Navbar`'s `Over` link (`/about`) shows active here.
+- Home's about-teaser "Lees verder" and detail/contact cross-links point to `/about`.
   (Home is Stage 2; if the teaser link was stubbed, this route makes it resolve.)
 
 ## Responsive
@@ -58,6 +58,6 @@ running serif prose, a tall portrait, then a numbered `Hoe het werkt` steps grid
 
 ## Done when
 
-`/over` renders the bio spread with portrait and the `Hoe het werkt` steps from
+`/about` renders the bio spread with portrait and the `Hoe het werkt` steps from
 `PROCESS_STEPS`; no stats; matches `2d`; stacks on mobile; both themes; `Over` nav
 link active; `check:types` + `lint` pass.

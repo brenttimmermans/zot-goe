@@ -1,0 +1,61 @@
+---
+interface Props {
+	src?: string;
+	alt: string;
+	caption?: string;
+	ratio?: string;
+	heightClass?: string;
+	lightbox?: boolean;
+	gallery?: string;
+	loading?: 'eager' | 'lazy';
+	class?: string;
+}
+
+const {
+	src,
+	alt,
+	caption,
+	ratio,
+	heightClass,
+	lightbox = false,
+	gallery,
+	loading = 'lazy',
+	class: className = '',
+} = Astro.props;
+
+const sized = Boolean(heightClass || ratio);
+const boxClasses = `photo-placeholder overflow-hidden ${heightClass ?? ''}`;
+const boxStyle = !heightClass && ratio ? `aspect-ratio:${ratio}` : undefined;
+const imgClasses = sized ? 'w-full h-full object-cover' : 'w-full h-auto';
+
+const isLink = lightbox && Boolean(src);
+const Wrapper = isLink ? 'a' : 'div';
+const wrapperProps = isLink
+	? { href: src, class: 'glightbox block', 'data-gallery': gallery }
+	: {};
+---
+
+<figure class={className}>
+	<Wrapper {...wrapperProps}>
+		<div class={boxClasses} style={boxStyle}>
+			{
+				src && (
+					<img
+						src={src}
+						alt={alt}
+						loading={loading}
+						decoding="async"
+						class={imgClasses}
+					/>
+				)
+			}
+		</div>
+	</Wrapper>
+	{
+		caption && (
+			<figcaption class="mt-2.5 font-mono text-[0.6875rem] text-faint">
+				{caption}
+			</figcaption>
+		)
+	}
+</figure>
