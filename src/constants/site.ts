@@ -1,7 +1,4 @@
-export interface NavLink {
-	label: string;
-	href: string;
-}
+import type { NavLink, ProcessStep, Social } from '../types/site';
 
 export const NAV_LINKS: NavLink[] = [
 	{ label: 'Werk', href: '/projects' },
@@ -9,21 +6,10 @@ export const NAV_LINKS: NavLink[] = [
 	{ label: 'Contact', href: '/contact' },
 ];
 
-export interface Social {
-	label: string;
-	href: string;
-}
-
 export const SOCIALS: Social[] = [
 	{ label: 'Instagram · @zotgoe', href: 'https://instagram.com/zotgoe' },
 	{ label: 'LinkedIn', href: 'https://www.linkedin.com/' },
 ];
-
-export interface ProcessStep {
-	no: string;
-	title: string;
-	body: string;
-}
 
 export const PROCESS_STEPS: ProcessStep[] = [
 	{
