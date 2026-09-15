@@ -1,8 +1,11 @@
-title: "Spa 24h 002"
-description: "Abandoned industrial spaces reclaimed by nature across Northern Europe."
-date: 2025-06-15
+title: "Paddock Club"
+description: "Een avond netwerken en hospitality in de paddock, tussen de boxen en de mensen."
+date: 2025-05-02
+category: "Event"
+location: "Spa"
 cover: "/images/projects/spa-24-002/test-image_0014.jpg"
 imageFolder: "spa-24-002"
+featured: true
 highlights:
   - "/images/projects/spa-24-002/test-image_0015.jpg"
   - "/images/projects/spa-24-002/test-image_0016.jpg"
@@ -13,3 +16,14 @@ gallery:
   - "/images/projects/spa-24-002/test-image_0020.jpg"
   - "/images/projects/spa-24-002/test-image_0021.jpg"
   - "/images/projects/spa-24-002/test-image_0022.jpg"
+  - "/images/projects/spa-24-002/test-image_0023.jpg"
+  - "/images/projects/spa-24-002/test-image_0024.jpg"
+  - "/images/projects/spa-24-002/test-image_0025.jpg"
+credits:
+  - { label: "Klant", value: "Paddock Club" }
+  - { label: "Waar", value: "Spa" }
+  - { label: "Wanneer", value: "Mei 2025, één avond" }
+  - { label: "Opdracht", value: "Event · hospitality & socials" }
+brief:
+  - "Een avond netwerken en hospitality in de paddock, tussen de boxen en de mensen. Geen geposeerde groepsfoto's, wel de gesprekken en de blikken ertussen."
+  - "Ik liep discreet mee van de aankomst tot het laatste glas, en leverde nog dezelfde week een selectie op voor pers en socials."

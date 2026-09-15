@@ -1,0 +1,20 @@
+---
+interface Props {
+	size?: 'sm' | 'nav' | 'hero';
+	href?: string;
+	class?: string;
+}
+
+const { size = 'nav', href, class: className = '' } = Astro.props;
+
+const SIZE_CLASSES: Record<NonNullable<Props['size']>, string> = {
+	sm: 'text-sm font-bold uppercase tracking-[0.14em]',
+	nav: 'text-lg font-bold uppercase tracking-[0.14em]',
+	hero: 'text-wordmark font-extrabold uppercase',
+};
+
+const Tag = href ? 'a' : 'span';
+const classes = `text-heading ${SIZE_CLASSES[size]} ${className}`;
+---
+
+<Tag class={classes} {...href ? { href } : {}}><slot>Zot Goe</slot></Tag>

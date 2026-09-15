@@ -33,7 +33,7 @@ hairline divides the two columns.
 - Keep Web3Forms integration: `action=https://api.web3forms.com/submit`, hidden
   `access_key` (leave the existing `YOUR_WEB3FORMS_KEY_HERE` placeholder), hidden
   `redirect` to `/contact?success=true`, honeypot `botcheck`.
-- Fields styled as the design (Dutch labels, mono `.eyebrow` labels):
+- Fields styled as the design (Dutch labels, mono `<MonoLabel>` labels):
   - **Naam** — text input, underline style: `border-0 border-b border-heading
     bg-transparent py-2.5 text-lg` placeholder `Jouw naam` (`text-muted`), focus
     ring via base rule.
