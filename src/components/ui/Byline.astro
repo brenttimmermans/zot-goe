@@ -1,5 +1,5 @@
 ---
-import { AVAILABILITY, CITY, OWNER } from '../../config';
+import { CITY, OWNER } from '../../config';
 
 interface Props {
 	class?: string;
@@ -13,5 +13,4 @@ const { class: className = '' } = Astro.props;
 >
 	<span>{OWNER} — fotograaf</span>
 	<span>{CITY}</span>
-	<span class="text-accent">{AVAILABILITY}</span>
 </div>
