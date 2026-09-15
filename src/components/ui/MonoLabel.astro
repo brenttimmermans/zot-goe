@@ -6,7 +6,8 @@ interface Props {
 }
 
 const { accent = false, as: Tag = 'span', class: className = '' } = Astro.props;
-const classes = `eyebrow ${accent ? 'text-accent' : ''} ${className}`;
+const color = accent ? 'text-accent' : 'text-muted';
+const classes = `font-mono text-[0.6875rem] uppercase tracking-[0.12em] ${color} ${className}`;
 ---
 
 <Tag class={classes}><slot /></Tag>
