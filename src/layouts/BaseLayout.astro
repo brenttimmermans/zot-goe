@@ -35,17 +35,16 @@ const fullTitle = title
 const canonical = canonicalUrl ?? new URL(Astro.url.pathname, Astro.site).href;
 
 async function resolveSocialImage(): Promise<string | undefined> {
-	if (image) {
-		const { src } = await getImage({
-			src: image,
-			width: 1200,
-			height: 630,
-			fit: 'cover',
-			format: 'jpeg',
-		});
-		return new URL(src, Astro.site).href;
-	}
-	return ogImage ? new URL(ogImage, Astro.site).href : undefined;
+	if (!image) return ogImage ? new URL(ogImage, Astro.site).href : undefined;
+
+	const { src } = await getImage({
+		src: image,
+		width: 1200,
+		height: 630,
+		fit: 'cover',
+		format: 'jpeg',
+	});
+	return new URL(src, Astro.site).href;
 }
 
 const socialImage = await resolveSocialImage();
