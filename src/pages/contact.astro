@@ -1,40 +1,30 @@
 ---
-import { SITE_URL } from '../config';
-import BaseLayout from '../layouts/BaseLayout.astro';
-import ContactForm from '../components/ContactForm.astro';
-
-const success = Astro.url.searchParams.get('success') === 'true';
-
-const structuredData = {
-	'@context': 'https://schema.org',
-	'@type': 'ContactPage',
-	name: 'Contact — Zot Goe Photography',
-	description: 'Get in touch with Zot Goe for photography inquiries.',
-	url: `${SITE_URL}/contact`,
-};
+import Photo from '~/components/Common/Photo.astro';
+import ContactForm from '~/components/Contact/ContactForm.astro';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { CONTACT_IMAGE } from '~/lib/siteImages';
 ---
 
-<BaseLayout
-  title="Contact"
-  description="Get in touch with Zot Goe for photography inquiries, collaborations, and commissions."
-  canonicalUrl={`${SITE_URL}/contact`}
-  structuredData={structuredData}
->
-  <section class="py-20">
-    <div class="max-w-xl mx-auto px-6">
-      <h1 class="text-4xl font-bold text-heading mb-4">Get in Touch</h1>
-      <p class="text-body mb-10">
-        Have a project in mind or just want to say hello? Drop me a message below.
-      </p>
-
-      {success ? (
-        <div class="bg-surface rounded p-8 text-center">
-          <h2 class="text-2xl font-bold text-heading mb-2">Message sent!</h2>
-          <p class="text-body">Thank you for reaching out. I'll get back to you soon.</p>
-        </div>
-      ) : (
-        <ContactForm />
-      )}
-    </div>
-  </section>
+<BaseLayout title="Contact">
+	<div
+		class="grid items-start gap-media pb-section-L md:grid-cols-[5fr_7fr] md:px-media"
+	>
+		<Photo
+			src={CONTACT_IMAGE}
+			alt=""
+			sizes="42vw"
+			class="hidden aspect-[3/4] md:block"
+		/>
+		<div class="flex max-w-copy flex-col gap-9 px-gutter pt-8 md:px-10 md:pt-10">
+			<div class="flex flex-col gap-3.5">
+				<h1 class="text-heading font-medium">Vertel me erover</h1>
+				<p class="font-serif text-prose text-pretty text-body">
+					Een concert, een opening, een huwelijk of een raceweekend. Vermeld
+					zeker de datum, het soort shoot en de locatie. Ik antwoord meestal
+					binnen 24 uur.
+				</p>
+			</div>
+			<ContactForm />
+		</div>
+	</div>
 </BaseLayout>
