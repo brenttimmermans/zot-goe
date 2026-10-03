@@ -16,11 +16,13 @@ export function selectFeatured(projects: Project[]): Project[] {
 }
 
 export async function getProjects(): Promise<Project[]> {
-	return sortByNewest(await getCollection('projects'));
+	const projects = await getCollection('projects');
+	return sortByNewest(projects);
 }
 
 export async function getFeaturedProjects(): Promise<Project[]> {
-	return selectFeatured(await getCollection('projects'));
+	const projects = await getCollection('projects');
+	return selectFeatured(projects);
 }
 
 export function getNextProject(
@@ -28,7 +30,9 @@ export function getNextProject(
 	id: string,
 ): Project | undefined {
 	if (projects.length < 2) return undefined;
+
 	const index = projects.findIndex((project) => project.id === id);
 	if (index === -1) return undefined;
+
 	return projects[(index + 1) % projects.length];
 }

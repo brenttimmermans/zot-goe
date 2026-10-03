@@ -8,39 +8,6 @@ import {
 	sortByNewest,
 } from './projects';
 
-const IMAGE: ImageMetadata = {
-	src: '/stand-in.jpg',
-	width: 2560,
-	height: 1707,
-	format: 'jpg',
-};
-
-function _createProject(
-	id: string,
-	overrides: Partial<Project['data']> = {},
-): Project {
-	return {
-		id,
-		collection: 'projects',
-		data: {
-			title: id,
-			discipline: Discipline.Event,
-			kind: 'Expo',
-			date: new Date('2025-01-01'),
-			location: 'Gent',
-			summary: 'Samenvatting',
-			story: ['Verhaal'],
-			cover: { src: IMAGE, alt: 'Cover' },
-			photos: [{ src: IMAGE }],
-			...overrides,
-		},
-	};
-}
-
-function ids(projects: Project[]): string[] {
-	return projects.map((project) => project.id);
-}
-
 describe(sortByNewest, () => {
 	it('should order projects from newest to oldest', () => {
 		const projects = [
@@ -105,3 +72,36 @@ describe(getNextProject, () => {
 		expect(getNextProject(projects, 'x')).toBeUndefined();
 	});
 });
+
+function _createProject(
+	id: string,
+	overrides: Partial<Project['data']> = {},
+): Project {
+	const image: ImageMetadata = {
+		src: '/stand-in.jpg',
+		width: 2560,
+		height: 1707,
+		format: 'jpg',
+	};
+
+	return {
+		id,
+		collection: 'projects',
+		data: {
+			title: id,
+			discipline: Discipline.Event,
+			kind: 'Expo',
+			date: new Date('2025-01-01'),
+			location: 'Gent',
+			summary: 'Samenvatting',
+			story: ['Verhaal'],
+			cover: { src: image, alt: 'Cover' },
+			photos: [{ src: image }],
+			...overrides,
+		},
+	};
+}
+
+function ids(projects: Project[]): string[] {
+	return projects.map((project) => project.id);
+}
