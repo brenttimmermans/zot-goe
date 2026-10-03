@@ -18,6 +18,7 @@ const largestArea = Math.max(...COLLAGE_SLOTS.map(({ w, h }) => w * h));
 
 <section
 	class="hero lg:relative"
+	data-collage
 	style={`--collage-width: ${COLLAGE_WIDTH}; --collage-height: ${COLLAGE_HEIGHT};`}
 >
 	<div
@@ -39,6 +40,8 @@ const largestArea = Math.max(...COLLAGE_SLOTS.map(({ w, h }) => w * h));
 			tiles.map(({ project, photo }, index) => {
 				const { x, y, w, h, depth } = COLLAGE_SLOTS[index];
 				const number = String(index + 1).padStart(2, '0');
+				const floatDuration = (6 + (index % 3) * 1.7).toFixed(1);
+				const floatDelay = (-index * 1.3).toFixed(1);
 
 				return (
 					<a
@@ -47,7 +50,7 @@ const largestArea = Math.max(...COLLAGE_SLOTS.map(({ w, h }) => w * h));
 							'tile group flex flex-col gap-2 even:mt-12 lg:mt-0 lg:even:mt-0',
 							{ 'max-lg:hidden': index >= FLOW_TILE_COUNT },
 						]}
-						style={`--x: ${x}; --y: ${y}; --w: ${w}; --h: ${h}; --depth: ${depth};`}
+						style={`--x: ${x}; --y: ${y}; --w: ${w}; --h: ${h}; --depth: ${depth}; --float-duration: ${floatDuration}s; --float-delay: ${floatDelay}s;`}
 					>
 						<div class="frame">
 							<Photo
@@ -78,10 +81,87 @@ const largestArea = Math.max(...COLLAGE_SLOTS.map(({ w, h }) => w * h));
 	</div>
 </section>
 
+<script>
+	const hero = document.querySelector<HTMLElement>('[data-collage]');
+	const canDrift =
+		matchMedia('(pointer: fine)').matches &&
+		!matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+	function setDrift(element: HTMLElement, mx: number, my: number): void {
+		element.style.setProperty('--mx', mx.toFixed(3));
+		element.style.setProperty('--my', my.toFixed(3));
+	}
+
+	function attachDrift(element: HTMLElement): void {
+		let pendingFrame = 0;
+		let pointerX = 0;
+		let pointerY = 0;
+
+		const updateDrift = (): void => {
+			pendingFrame = 0;
+			const { left, top, width, height } = element.getBoundingClientRect();
+			const mx = ((pointerX - left) / width - 0.5) * 2;
+			const my = ((pointerY - top) / height - 0.5) * 2;
+			setDrift(element, mx, my);
+		};
+
+		const handlePointerMove = (event: PointerEvent): void => {
+			pointerX = event.clientX;
+			pointerY = event.clientY;
+			if (pendingFrame) return;
+
+			pendingFrame = requestAnimationFrame(updateDrift);
+		};
+
+		const handlePointerLeave = (): void => {
+			cancelAnimationFrame(pendingFrame);
+			pendingFrame = 0;
+			setDrift(element, 0, 0);
+		};
+
+		element.addEventListener('pointermove', handlePointerMove);
+		element.addEventListener('pointerleave', handlePointerLeave);
+	}
+
+	if (hero && canDrift) attachDrift(hero);
+</script>
+
 <style>
+	.hero {
+		--mx: 0;
+		--my: 0;
+	}
+
+	.tile {
+		transform: translate(
+			calc(var(--mx) * var(--depth) * -0.35px),
+			calc(var(--my) * var(--depth) * -0.35px)
+		);
+		transition: transform 0.6s var(--ease-drift);
+	}
+
 	.frame {
 		aspect-ratio: var(--w) / var(--h);
 		overflow: hidden;
+		animation: float var(--float-duration) ease-in-out var(--float-delay)
+			infinite;
+	}
+
+	@keyframes float {
+		50% {
+			translate: 0 -5px;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.tile {
+			transform: none;
+			transition: none;
+		}
+
+		.frame {
+			animation: none;
+		}
 	}
 
 	@media (min-width: 64rem) {
