@@ -14,23 +14,28 @@ safe. Then read the plan you're assigned.
 
 Every plan is **one branch, one PR**. Plans in the same wave own disjoint files
 and run in parallel worktrees. A wave starts only after every PR of the previous
-wave is merged into `main`.
+wave is merged into `main` (or, for a spike, closed).
 
 ```
-W0  Plans (this PR)
+W0  Plans
      │
 W1  ┌─ 10 Design system & site shell ─┐   2 parallel
     └─ 11 Content model & images ─────┘
      │
 W2  ┌─ 20 Home ──────────┐
     ├─ 21 Werk index ────┤
-    ├─ 22 Project detail ┤   5 parallel
+    ├─ 22 Project detail ┤   5 parallel pages
     ├─ 23 Over ──────────┤
-    └─ 24 Contact ───────┘
-     │
+    ├─ 24 Contact ───────┘
+    │
+    └─ 25 Astro 7.3.5 ──▶ 26 TypeScript 7 spike   dependency lane, one after
+     │                                            the other, beside the pages
 W3  ┌─ 30 Quality sweep ─┐   2 parallel
     └─ 31 Docs ──────────┘
 ```
+
+The dependency lane owns `package.json` and `package-lock.json`, which no page
+plan touches. 26 waits for 25 because both rewrite the lockfile.
 
 | Plan | Branch | PR title | Design | Port |
 | --- | --- | --- | --- | --- |
@@ -41,6 +46,8 @@ W3  ┌─ 30 Quality sweep ─┐   2 parallel
 | [`22-project.md`](./22-project.md) | `redesign/22-project` | 💄 project detail & gallery | `10c` | 4343 |
 | [`23-over.md`](./23-over.md) | `redesign/23-over` | 💄 over: bio & how it works | `10d` | 4344 |
 | [`24-contact.md`](./24-contact.md) | `redesign/24-contact` | 💄 contact form & thank-you page | `10e` | 4345 |
+| [`25-astro.md`](./25-astro.md) | `redesign/25-astro` | ⬆️ bump Astro to 7.3.5 | — | 4346 |
+| [`26-typescript-7.md`](./26-typescript-7.md) | `redesign/26-typescript-7` | ⬆️ / ⚗️ TypeScript 7 (see plan) | — | — |
 | [`30-quality.md`](./30-quality.md) | `redesign/30-quality` | ✅ quality sweep: a11y, responsive, dark, cleanup | all | 4351 |
 | [`31-docs.md`](./31-docs.md) | `redesign/31-docs` | 📝 architecture, readme & content guide | — | — |
 
@@ -68,6 +75,10 @@ herdr agent read <id> --source recent-unwrapped --lines 120
 When an agent is `blocked` on a permission prompt, the user answers it in that
 pane. The orchestrator never approves prompts for them.
 
+Before a PR merges, the orchestrator brings it up to date with `main`
+(`gh pr update-branch <n> --rebase`) whenever `main` has moved, and waits for
+CI to go green on the result. Merges are squash-only.
+
 ### Agent brief (template)
 
 > You are implementing `docs/plans/<plan>.md` of the Zot Goe redesign in this
@@ -85,12 +96,14 @@ pane. The orchestrator never approves prompts for them.
 > 4. Only touch the files your plan lists under **Owns**. Make the listed
 >    commits in order. Every commit must pass `npm run check:types`.
 > 5. Before pushing, run `npx biome ci . && npm run check:types && npm test &&
->    npm run build` (`npm test` exists once plan 11 has landed). Check the
->    pages at 390, 768, 1280 and 1600 px wide, in light and dark.
-> 6. Push and open the PR with `gh pr create`. Use the PR title from the plan
->    and fill in every section of `.github/PULL_REQUEST_TEMPLATE.md`. Do not
->    merge. Reply with the PR URL and anything you had to change outside
->    **Owns**.
+>    npm run build`. Check the pages at 390, 768, 1280 and 1600 px wide, in
+>    light and dark. Headless Chrome won't go narrower than 500 px, so check
+>    390 px by loading the page inside a 390 px-wide iframe.
+> 6. If `main` moved since you branched, rebase onto `origin/main` first. Push
+>    and open the PR with `gh pr create`. Use the PR title from the plan and
+>    fill in every section of `.github/PULL_REQUEST_TEMPLATE.md`. Keep the
+>    description short. Do not merge. Reply with the PR URL and anything you
+>    had to change outside **Owns**.
 
 ## Decisions (confirmed with Brent, 2026-10-03)
 
@@ -102,3 +115,5 @@ pane. The orchestrator never approves prompts for them.
 3. **Brent merges every PR.** The orchestrator stops at each wave boundary.
 4. **Dutch routes:** `/werk`, `/werk/[slug]`, `/over`, `/contact`. Nothing is in
    production, so `/projects` simply goes away.
+5. **Dependency lane in W2:** bump Astro to 7.3.5, then measure TypeScript 7
+   against 6. The benchmark matters more than adopting TS 7.

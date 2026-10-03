@@ -219,6 +219,10 @@ inside an owned folder are fine. Two plans in the same wave never own the same
 path. The one deliberate exception is `tsconfig.json` in W1: both plans write
 the identical file, and git merges identical changes cleanly.
 
+In W2, only the dependency lane (25, then 26) touches `package.json` and
+`package-lock.json`. A page plan that thinks it needs a new dependency asks
+the orchestrator first.
+
 ### 4.2 Keep `main` green between merges
 
 PRs in a wave merge in any order, so every PR must build on its own against
