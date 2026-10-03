@@ -1,12 +1,16 @@
 ---
-import type { GetStaticPaths } from 'astro';
+import type { GetStaticPaths, ImageMetadata } from 'astro';
+import { getImage } from 'astro:assets';
 import Photo from '~/components/Common/Photo.astro';
 import Gallery from '~/components/Project/Gallery.astro';
 import LightboxLink from '~/components/Project/LightboxLink.astro';
 import NextProject from '~/components/Project/NextProject.astro';
+import { OWNER } from '~/config';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import { formatMonthYear } from '~/lib/format';
 import { getNextProject, getProjects, type Project } from '~/lib/projects';
+
+const STRUCTURED_DATA_IMAGE_WIDTH = 1600;
 
 interface Props {
 	project: Project;
@@ -26,9 +30,38 @@ const { project, next } = Astro.props;
 const { title, kind, date, location, summary, story, cover, photos } =
 	project.data;
 const lightboxTotal = photos.length + 1;
+
+async function getAbsoluteImageUrl(src: ImageMetadata): Promise<string> {
+	const image = await getImage({
+		src,
+		width: Math.min(STRUCTURED_DATA_IMAGE_WIDTH, src.width),
+	});
+
+	return new URL(image.src, Astro.site).href;
+}
+
+const imageUrls = await Promise.all(
+	[cover, ...photos].map((photo) => getAbsoluteImageUrl(photo.src)),
+);
+
+const structuredData = {
+	'@context': 'https://schema.org',
+	'@type': 'ImageGallery',
+	name: title,
+	description: summary,
+	dateCreated: date.toISOString().slice(0, 10),
+	locationCreated: { '@type': 'Place', name: location },
+	creator: { '@type': 'Person', name: OWNER },
+	image: imageUrls,
+};
 ---
 
-<BaseLayout title={title} description={summary}>
+<BaseLayout
+	title={title}
+	description={summary}
+	image={cover.src}
+	structuredData={structuredData}
+>
 	<div class="px-media">
 		<LightboxLink
 			src={cover.src}
