@@ -1,0 +1,28 @@
+---
+interface Props {
+	href: string;
+	variant?: 'underline' | 'plain';
+	arrow?: boolean;
+	class?: string;
+}
+
+const {
+	href,
+	variant = 'underline',
+	arrow = false,
+	class: className,
+} = Astro.props;
+
+// The text-* utility outranks the global a:hover rule, so hover re-states it.
+const VARIANT_CLASSES: Record<NonNullable<Props['variant']>, string> = {
+	underline:
+		'border-b border-ink pb-[3px] text-ink hover:border-accent hover:text-accent',
+	plain: 'text-subtle hover:text-accent',
+};
+---
+
+<a
+	{href}
+	class:list={['text-sm transition-colors', VARIANT_CLASSES[variant], className]}
+	><slot />{arrow && <span aria-hidden="true"> →</span>}</a
+>
