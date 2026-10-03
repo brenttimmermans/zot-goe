@@ -1,11 +1,33 @@
 ---
 import ProcessSteps from '~/components/About/ProcessSteps.astro';
 import Photo from '~/components/Common/Photo.astro';
+import { EMAIL, OWNER } from '~/config';
+import { SOCIALS } from '~/constants/site';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import { PORTRAIT } from '~/lib/siteImages';
+
+const DESCRIPTION =
+	'Brent Timmermans fotografeert sinds 2017 concerten, events, motorsport en huwelijken, in en rond Gent.';
+
+const structuredData = {
+	'@context': 'https://schema.org',
+	'@type': 'AboutPage',
+	mainEntity: {
+		'@type': 'Person',
+		name: OWNER,
+		jobTitle: 'Fotograaf',
+		email: EMAIL,
+		sameAs: SOCIALS.map(({ href }) => href),
+	},
+};
 ---
 
-<BaseLayout title="Over">
+<BaseLayout
+	title="Over"
+	description={DESCRIPTION}
+	image={PORTRAIT}
+	{structuredData}
+>
 	<section class="grid items-start gap-media px-media md:grid-cols-2">
 		<Photo
 			src={PORTRAIT}
