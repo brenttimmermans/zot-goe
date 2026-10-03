@@ -2,6 +2,7 @@
 import type { GetStaticPaths } from 'astro';
 import Photo from '~/components/Common/Photo.astro';
 import BaseLayout from '~/layouts/BaseLayout.astro';
+import { formatMonthYear } from '~/lib/format';
 import { getProjects, type Project } from '~/lib/projects';
 
 interface Props {
@@ -10,6 +11,7 @@ interface Props {
 
 export const getStaticPaths = (async () => {
 	const projects = await getProjects();
+
 	return projects.map((project) => ({
 		params: { slug: project.id },
 		props: { project },
@@ -17,7 +19,8 @@ export const getStaticPaths = (async () => {
 }) satisfies GetStaticPaths;
 
 const { project } = Astro.props;
-const { title, summary, cover, photos } = project.data;
+const { title, kind, date, location, summary, story, cover, photos } =
+	project.data;
 ---
 
 <BaseLayout title={title} description={summary}>
@@ -26,11 +29,24 @@ const { title, summary, cover, photos } = project.data;
 			src={cover.src}
 			alt={cover.alt}
 			sizes="100vw"
-			class="aspect-hero"
+			fit="cover"
+			class="aspect-[4/5] md:aspect-hero"
 			priority
 		/>
 	</div>
-	<h1 class="px-gutter py-section-S text-heading">{title}</h1>
+	<div
+		class="grid items-start gap-8 px-gutter pt-section-S pb-section-L md:grid-cols-2 md:gap-[60px]"
+	>
+		<div class="flex flex-col gap-2.5">
+			<h1 class="text-heading font-medium">{title}</h1>
+			<p class="text-sm text-muted">
+				{kind} · {location} · {formatMonthYear(date)}
+			</p>
+		</div>
+		<div class="flex flex-col gap-4 font-serif text-prose text-body text-pretty">
+			{story.map((paragraph) => <p>{paragraph}</p>)}
+		</div>
+	</div>
 	<div class="flex flex-col gap-media px-media pb-media">
 		{
 			photos.map((photo, index) => (
