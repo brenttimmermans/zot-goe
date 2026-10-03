@@ -26,3 +26,6 @@ pnpm-debug.log*
 # AI generated files
 .plans/
 thoughts/
+
+# Claude Design source exports
+design/
