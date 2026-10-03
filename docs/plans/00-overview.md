@@ -1,165 +1,285 @@
-# Retrofit — "The Quiet Grid" editorial redesign
+# 00: Overview, design spec & ground rules
 
-> Master plan. Read this first, then the stage plan you're assigned.
-> Source design: Claude Design project `Zot Goe.dc.html`.
-> - **Layouts / structure:** Turn 02 (screens `2a`–`2d`) + Contact `1g`.
-> - **Color & dark mode:** Turn 04 "Rood uitgediept" (`4a`/`4b`) sets the coral
->   accent; Turn 03 "Dark mode + accentkleuren" (`3a` dark home, `3b` accent
->   application) defines the dark palette.
-> Turn 01 (`1a`–`1g`) is earlier exploration — ignore except `1g` (Contact).
+> Read this before any wave plan. It is the single source of truth for tokens,
+> shared contracts and the rules that keep parallel worktrees conflict-free.
 
-## 1. What we're building
+## 1. Where we are and where we're going
 
-An editorial "newsprint" portfolio for **Brent Timmermans**, an event / concert /
-motorsport photographer based in Gent (Ghent), Belgium. The look: warm paper
-background, near-black ink, a single coral accent, generous whitespace,
-big display type, and an **asymmetric, organically-staggered** photo grid. Photos
-lead; text is quiet.
+`main` contains stages 1–2 of the old newsprint redesign: Plex Mono labels, a
+giant `ZOT GOE` wordmark, `MonoLabel`/`Byline`/`EditorialLink`, a staggered
+`ProjectCard`, and photos served raw from `public/`. The **Final** design
+(`design/Zot Goe Final.dc.html`, frames `10a`–`10e`) drops nearly all of that:
 
-Five pages:
+| Old (on `main`) | Final |
+| --- | --- |
+| Plex Mono uppercase labels everywhere | No mono. Archivo for UI, Newsreader for prose |
+| Giant wordmark masthead | Quiet `Zot Goe` brand in the header and a **floating photo collage** hero |
+| Hairline rules, bylines, eyebrow labels | Whitespace. One footer hairline, plus rules above the "how it works" steps |
+| Raw `<img>` from `public/images` | `astro:assets` `<Picture>` (AVIF/WebP, srcset) from the content tree |
+| `/projects`, `/projects/[slug]` | `/werk`, `/werk/[slug]`, `/over`, `/contact` |
+| Free-text `category` | `discipline` enum (filter) and `kind` label (display) |
 
-| Route            | Design | Page                                    |
-| ---------------- | ------ | --------------------------------------- |
-| `/`              | `2a`   | Home — masthead + featured work + about teaser |
-| `/projects`      | `2b`   | Werk — all projects, editorial grid + filters  |
-| `/projects/[slug]` | `2c` | Project detail — brief, credits, gallery, next |
-| `/about`          | `2d`   | Over Brent — bio + "Hoe het werkt" steps       |
-| `/contact`       | `1g`   | Contact — editorial copy + form                |
+Kill list (removed during W1–W3): `HeroSection`, `Image`, `ProjectCard` (old),
+`AboutTeaser` (old), `ContactForm` (old), `Navbar`, `Footer` (old),
+`Theme/Init`, `Theme/Toggle`, everything in `components/ui/`, the Plex Mono
+font, `public/images/**`, and the editorial tokens (`text-wordmark`,
+`meta-row`, `px-page`, …).
 
-## 2. Decisions (confirmed with the user)
+Kept: Astro 7, Tailwind 4 (CSS-first `@theme`), TypeScript strict, Biome,
+Husky + lint-staged, GLightbox, `@astrojs/sitemap`, Web3Forms, and the
+light/dark toggle (rebuilt).
 
-1. **Language: Dutch.** Nav is `Werk` / `Over` / `Contact`. All copy in Dutch,
-   matching the design verbatim. `<html lang="nl">`.
-2. **Keep the light/dark toggle — both themes are now designed.** The design ships a
-   concrete dark variant (screen `3a`, "warm dark paper, not black"), so we no longer
-   invent one — we transcribe it into tokens ([`01-foundation.md`](./01-foundation.md)).
-   All new components read from tokens so both themes work — **never** hard-code a hex
-   value (see the tokens-first rule below).
-3. **Extend the content schema.** Add `category`, `location`, `credits`, `brief`,
-   and optional ordering fields so detail/index pages match the design. Schema and
-   updated sample YAML are part of Stage 1.
+## 2. Design language
 
-## 3. Tech (unchanged — build on what's here)
+### 2.1 Colour tokens
 
-Astro 7 · Tailwind CSS 4 (CSS-first `@theme` in `global.css`, no JS config) ·
-TypeScript strict · Biome (tabs, single quotes, width 80) · Astro content
-collections (YAML) · GLightbox (galleries) · Web3Forms (contact) · Astro Sitemap.
-No new runtime frameworks. Fonts move to self-hosted `@fontsource` packages (see
-Stage 1). Follow `CODE_STYLE.md` and `ARCHITECTURE.md`; repo conventions win.
+Every colour is a CSS variable in `@theme`, written as `hsl()` (CODE_STYLE).
+Convert the hex values below. Tailwind generates `bg-*`, `text-*` and
+`border-*` from them. **Never write a raw colour in a component.** Colour and
+font-size tokens share the `text-*` namespace in Tailwind, so their names must
+never overlap. That's why the paragraph colour is `body` and the paragraph
+size is `prose`.
 
-## 4. Design language (summary — full tokens in Stage 1)
+| Token (`--color-*`) | Role | Light | Dark |
+| --- | --- | --- | --- |
+| `bg` | page background | `#FBFAF8` | `#16150F` |
+| `ink` | headings, primary text, button fill | `#14130F` | `#F2F0E9` |
+| `body` | serif paragraphs | `#3B382F` | `#C9C4B8` |
+| `subtle` | nav links, secondary links, step bodies | `#4A473F` | `#B6B1A4` |
+| `muted` | captions, labels, meta, footer | `#77726A`¹ | `#8F8A7D` |
+| `hint` | input placeholders | `#A9A498` | `#6E6A61` |
+| `rule` | step dividers | `#DAD7CF` | `#34312A` |
+| `hairline` | footer top border | `#ECE9E3` | `#26241D` |
+| `field` | input underline | `#CFCBC2` | `#4A463C` |
+| `frame` | image placeholder / loading bg | `#E8E5DF` | `#24221B` |
+| `frame-hover` | frame hover | `#DEDAD2` | `#2C2A22` |
+| `accent` | coral: dot, step numbers, hovers | `#E8574A` | `#F4776B` |
+| `on-accent` | text on an accent fill | `#14130F` | `#16150F` |
 
-- **Type:** three families.
-  - **Archivo** (sans) — display wordmark, headings, nav; weights 400–800.
-  - **Newsreader** (serif) — leads, body prose, captions of substance.
-  - **IBM Plex Mono** — eyebrows, labels, meta, dates, small nav; UPPERCASE,
-    letter-spacing ~0.1em.
-- **Color (light):** paper `#FBFAF8` / `#F7F6F3`, ink `#14130F`, body `#3B382F`,
-  muted `#6E6A61`, faint `#8A857A`, hairlines `#DAD7CF` / `#E4E1DA`, accent **coral
-  `#E8574A`**. Image placeholders: `repeating-linear-gradient(135deg,#EDEAE3,#E5E1D8)`.
-- **Color (dark, screen `3a`):** warm ink `#16150F`, paper text `#F2F0E9`, body-soft
-  `#B6B1A4`, muted `#8F8A7D`, hairlines `#2C2A22` / `#332F27`, accent **coral
-  `#F4776B`**, placeholder gradient `#24221B` / `#1D1C15`.
-- **Tokens-first:** all of the above are CSS variables; components use token-backed
-  utilities only — no raw hex, no scattered arbitrary values. See
-  [`01-foundation.md`](./01-foundation.md) §2.
-- **Layout motifs:** hairline rules between sections; mono meta rows justified
-  edge-to-edge; project cards with **varying image heights and `margin-top`
-  offsets** to create an organic column rhythm; `→` affordances on links; a
-  boxed/outlined secondary button and a solid ink primary button.
-- **Voice:** calm, reportage, first person, Flemish. Short serif sentences.
+¹ The design uses `#8A857A` (3.5:1 on `bg`), which fails WCAG AA for 13–14 px
+text. `#77726A` (≈ `hsl(37, 6%, 44%)`, 4.6:1) keeps the look and passes.
 
-## 5. Component architecture
+The dark palette is a warm, dark paper, not black. Set `color-scheme: light`
+and `color-scheme: dark` per theme so form controls and scrollbars follow.
 
-New folder `src/components/ui/` for brand primitives; domain components stay in
-`src/components/`. One component per file, `ComponentName.astro`, props destructured
-with an explicit `Props` interface.
+### 2.2 Type
 
-### Shared primitives (Stage 1 — `src/components/ui/`)
-| Component            | Role |
-| -------------------- | ---- |
-| `Wordmark.astro`     | "ZOT GOE" logo text; `size` prop (`sm`/`nav`/`hero`). |
-| `MonoLabel.astro`    | IBM Plex Mono uppercase eyebrow/label; `accent`, `as` props. |
-| `EditorialLink.astro`| `→` link; `variant`: `underline` \| `boxed` \| `solid`. |
-| `Photo.astro`        | `<img>` with paper-placeholder bg, optional `caption`, optional `lightbox` + `gallery` for GLightbox. Supersedes `Image.astro`. |
-| `Byline.astro`     | Edge-to-edge mono meta row (location · edition · availability). |
-| `SectionRule.astro`  | Hairline `<hr>` token wrapper (or a documented utility class). |
+Fonts are self-hosted with `@fontsource-variable/archivo` (sans: UI, headings,
+captions) and `@fontsource-variable/newsreader` (serif: prose only, roman
+only). Weights in use are 400, 500 and 600. Mono and italics are gone.
 
-### Shared domain (Stage 1)
-| Component          | Used by | Role |
-| ------------------ | ------- | ---- |
-| `ProjectCard.astro`| Home, Werk | Editorial card: lead image (variable ratio), Archivo title, serif line, mono meta. Props allow height + top-offset for staggering. **Rewrite** of the current card. |
-| `Navbar.astro`     | all | Wordmark left · mono uppercase links right · theme toggle; active state; Dutch labels. **Rewrite.** |
-| `Footer.astro`     | all | Top rule + 3 mono columns: email · Gent · © year. **Rewrite.** |
-| `BaseLayout.astro` | all | Paper bg, `lang="nl"`, SEO/OG/JSON-LD, both themes. **Update.** |
-| `ContactForm.astro`| Contact | Editorial underline inputs, Dutch, Web3Forms. **Rewrite** (lives in Stage 1 as a shared primitive; only Contact consumes it — may be built in Stage 6 if preferred). |
+| Token / utility | Size | Line height | Tracking | Use |
+| --- | --- | --- | --- | --- |
+| `text-micro` | 11px | 1.3 | 0 | collage tile labels |
+| `text-caption` | 13px | 1.4 | 0 | form labels, footer, "Over", "Volgend project" |
+| `text-sm` (Tailwind) | 14px | 1.45 | 0 | nav, captions, filters, links, button |
+| `text-base` (Tailwind) | 16px | 1.5 | 0 | brand (600, −0.01em), inputs, step titles |
+| `text-title` | 22px | 1.25 | −0.02em | next-project title |
+| `text-statement` | 22→26px | 1.28 | −0.022em | home hero statement |
+| `text-heading` | 24→28px | 1.15 | −0.02em | page and section headings (weight 500) |
+| `text-prose` | 17px | 1.65 | 0 | serif paragraphs |
+| `text-prose-lg` | 19→22px | 1.5 | 0 | home about teaser |
 
-### Page-local components (built inside the relevant page stage)
-`ProcessSteps.astro` (About) · `CreditsList.astro` + `ProjectNav.astro` (Detail) ·
-`FilterBar.astro` (Werk) · `AboutTeaser.astro` (Home) · `ContactAside.astro` (Contact).
-Keep these next to / imported by their page; promote to `ui/` only if a second page
-needs them.
+Each `--text-*` token carries its `--line-height` and `--letter-spacing`
+companions, so a single utility gives the whole style. "a→b" means
+`clamp(a, …, b)` with `b` reached at a 1280 px viewport. Paragraphs use
+`text-pretty`.
 
-## 6. Data model
+### 2.3 Space, width, shape, motion
 
-- Extend the `projects` collection (see [`01-foundation.md`](./01-foundation.md) §
-  schema): add `category`, `location`, optional `credits[]`, optional `brief[]`,
-  optional `featured`/`order`. Relax `highlights` to optional. Update the two
-  existing YAML files (`spa-24-001`, `spa-24-002`) with real Dutch values.
-- Site-wide copy (nav links, footer, contact hints, "Hoe het werkt" steps,
-  availability line, socials, email, city) lives in `src/config.ts` /
-  `src/constants/site.ts` — not hard-coded in components.
-- **Filters** on `/projects` derive from the unique set of `category` values.
-- **Next project** on detail = the next entry in the date-sorted list (cyclic).
+| Token | Value | Utility | Use |
+| --- | --- | --- | --- |
+| `--spacing-gutter` | `clamp(1.25rem, 3.125vw, 2.5rem)` | `px-gutter` | text gutter (40 px at 1280) |
+| `--spacing-media` | `clamp(0.75rem, 1.875vw, 1.5rem)` | `px-media`, `gap-media` | photo gutter and grid gap (24 px) |
+| `--spacing-section-S` | `clamp(2.5rem, 4.4vw, 3.5rem)` | `py-section-S` … | ≈ 56 px |
+| `--spacing-section-M` | `clamp(3.5rem, 6.9vw, 5.5rem)` | | ≈ 80–90 px |
+| `--spacing-section-L` | `clamp(4rem, 8.75vw, 7rem)` | | ≈ 100–120 px |
+| `--spacing-section-XL` | `clamp(5rem, 11vw, 8.75rem)` | | ≈ 140 px |
+| `--spacing-header` | `4.5rem` | `h-header` | header height (72 px) |
+| `--container-page` | `100rem` | `max-w-page` | page cap (centred above 1600 px) |
+| `--container-copy` | `35rem` | `max-w-copy` | text columns (520–560 px) |
+| `--aspect-portrait` | `4 / 5` | `aspect-portrait` | about portrait |
+| `--aspect-hero` | `77 / 45` | `aspect-hero` | project hero (1232×720) |
+| `--ease-drift` | `cubic-bezier(0.2, 0.7, 0.2, 1)` | `ease-drift` | collage parallax |
 
-## 7. Stages & parallelization
+The design is drawn at 1280 px wide. Text sits on a 40 px gutter and photos
+on a 24 px gutter, so images run wider than text. Keep that relationship at
+every width. Arbitrary one-off values (`md:mt-[…]`, `aspect-[8/7]`) are fine
+for layout data that appears once. Anything used twice becomes a token.
+
+### 2.4 Interaction
+
+- Links: `a:hover` turns `accent` (a global base rule, as in the design).
+  Transitions name their properties (`transition-colors`, never `all`).
+- Image cards: the frame goes from `frame` to `frame-hover`, and the image
+  drops to `opacity-90`.
+- Focus: `focus-visible` gets a 2 px `accent` outline with a 2 px offset on
+  every interactive element.
+- Motion: only the home collage moves. All motion stops under
+  `prefers-reduced-motion: reduce`.
+
+### 2.5 Shared chrome (built in plan 10)
+
+**Header**, 72 px tall, `px-gutter`, `justify-between`, not sticky:
+
+- Brand: `Zot Goe`, `text-base font-semibold tracking-[-0.01em]`, links to `/`.
+- Nav (`aria-label="Hoofdmenu"`): `Werk` · `Over` · `Contact`, `text-sm
+  text-subtle`, gap 28 px (20 px under `md`). The active link is `text-ink
+  font-medium` with `aria-current="page"`. `/werk/*` marks Werk active, and
+  `/contact/*` marks Contact active.
+- Theme toggle: a 16 px icon button after Contact, `text-subtle`, accent on
+  hover. Sun and moon swap through CSS on `[data-theme]`.
+
+**Footer**: `border-t border-hairline`, `px-gutter py-7`, `text-caption
+text-muted`, three items `justify-between` that wrap on narrow screens:
+`brent@zotgoe.be` (mailto) · `Instagram` (link) · `Gent · © {year}`.
+
+## 3. Architecture (target)
 
 ```
-Stage 1  Foundation ──────────────────────────────  (blocking; do first, alone)
-             │  tokens+dark · fonts · global.css · config/constants ·
-             │  schema + YAML · BaseLayout · Navbar · Footer · ui/* · ProjectCard
-             ▼
-Stage 2  ┌── Home (2a) ────────┐
-Stage 3  ├── Werk index (2b) ──┤   run in PARALLEL — each depends only on
-Stage 4  ├── Project detail (2c)┤   Stage 1 contracts; no cross-dependencies
-Stage 5  ├── Over (2d) ────────┤
-Stage 6  └── Contact (1g) ─────┘
-             ▼
-Stage 7  Integration & polish ──────────────────────  (single agent, after pages)
-             responsive audit · per-page SEO/JSON-LD · lightbox · filter JS ·
-             dark-mode pass · remove dead files · build + lint + types + verify
+src/
+  assets/
+    icons/                sun.svg, moon.svg
+    site/                 portrait.png (stand-in), …
+    stand-in/             01–12.jpg: placeholder photos for seeded projects
+  components/
+    Common/               Photo, TextLink, Button
+    Site/                 Header, Footer, ThemeToggle, ThemeScript
+    Project/              ProjectCard, Gallery, NextProject
+    Home/                 HeroCollage, FeaturedProjects, AboutTeaser
+    Work/                 WorkGrid, WorkFilter
+    About/                ProcessSteps
+    Contact/              ContactForm, Field
+  constants/              site.ts, disciplines.ts
+  content/projects/<slug>/index.yaml (+ that project's own photos)
+  layouts/BaseLayout.astro
+  lib/                    projects.ts, format.ts, siteImages.ts,
+                          collage.ts, workGrid.ts, gallery.ts (+ *.test.ts)
+  pages/                  index, werk/index, werk/[slug], over, contact,
+                          contact/bedankt, 404
+  styles/                 global.css, tokens.css, fonts.css
+  config.ts
 ```
 
-Stage 1 defines the **contracts** (prop interfaces, token names, config shape) that
-every page plan references. Do not start Stages 2–6 until Stage 1's components exist
-and typecheck. Stages 2–6 are independent and safe to assign to different agents
-simultaneously; each touches its own page file plus its own page-local components.
+- Folders are PascalCase and grouped by domain (CODE_STYLE `components/Common/`).
+  A component moves to `Common/` only once a second domain needs it.
+- Imports use `~/` (→ `src/`) across directories, and relative paths within
+  a folder or one level up.
+- Pure logic (layout patterns, formatting, ordering) lives in `src/lib/` with
+  co-located Vitest tests. Components stay thin.
+- One-off page prose stays in the page. Structured or repeated copy (nav,
+  process steps, socials, site facts) lives in `config.ts` / `constants/`.
 
-## 8. Files removed / replaced
+### 3.1 Data model (plan 11)
 
-- `HeroSection.astro` → replaced by the home masthead (Stage 2).
-- `Image.astro` → superseded by `ui/Photo.astro` (Stage 1); update detail page.
-- `constants/project.ts` + `types/project.ts` (the `CardTextPosition` machinery) →
-  retired; the new `ProjectCard` uses explicit layout props instead.
-- Self-hosted Montserrat (`fonts.css`, the `.ttf`) → replaced by the three new
-  self-hosted families.
+`src/content/projects/<slug>/index.yaml`. The id is the folder name. Image
+paths are relative to the YAML file and validated by `image()`.
 
-## 9. Risks / watch-list
+```yaml
+title: Lannoo × Pascal Naessens
+discipline: event            # concert | event | motorsport | huwelijk
+kind: Boekvoorstelling       # display label
+date: 2025-04-10
+location: Gent
+summary: Boekvoorstelling voor pers en genodigden.   # meta description
+featured: 2                  # optional: position on the home page
+story:                       # 1–3 serif paragraphs on the detail page
+  - Lannoo stelde het nieuwe kookboek van Pascal Naessens voor …
+cover: { src: ./cover.jpg, alt: … }                  # landscape preferred
+photos:
+  - { src: ./01.jpg, alt: … }                        # alt optional
+```
 
-- **Real photos vs. placeholders:** the design uses gradient rectangles. Wire real
-  `imageFolder` images; keep `Photo.astro`'s placeholder as the loading/empty state.
-- **Asymmetric grid on mobile:** the `margin-top` offsets and multi-column grids
-  must collapse to a single stacked column (offsets → 0) below `md`. Specify per page.
-- **Dark mode of an editorial paper design:** the dark palette is transcribed from
-  screen `3a`; still verify the coral accent (`#F4776B`) and hairlines (`#2C2A22`)
-  keep contrast on the warm-ink bg, and nudge the token lightness if anything fades.
-- **Contrast/a11y:** muted mono text on paper is intentionally low-contrast; keep it
-  for decorative labels only, never for essential body copy — check AA.
-- **Biome format:** tabs, single quotes, width 80. Run `npm run check` before done.
+### 3.2 Contracts frozen after W1
 
-## 10. Definition of done (whole project)
+W2 builds on these. Their names and signatures don't change in W2. If W2 needs
+an addition, follow §4.3.
 
-`npm run build`, `npm run check:types`, and `npm run lint` all pass; every page
-renders in both themes at mobile + desktop widths; content comes from the collection
-/ config (no hard-coded copy in components); the five routes match their design
-screens; dead files removed.
+| Contract | Owner | Shape |
+| --- | --- | --- |
+| Tokens | 10 | §2 names, exactly |
+| `BaseLayout` | 10 | `{ title?: string; description?: string; image?: ImageMetadata; structuredData?: Record<string, unknown>; noindex?: boolean }`, plus the deprecated `ogImage` and `canonicalUrl` until plan 30 |
+| `Common/TextLink` | 10 | `{ href: string; variant?: 'underline' \| 'plain'; arrow?: boolean; class?: string }` |
+| `Common/Button` | 10 | `{ type?: 'submit' \| 'button'; class?: string }`, a pill with slot content |
+| `Common/Photo` | 11 | `{ src: ImageMetadata; alt: string; sizes: string; fit?: 'cover' \| 'natural'; loading?: 'lazy' \| 'eager'; priority?: boolean; class?: string }` |
+| `Project/ProjectCard` | 11 | `{ project: Project; frameClass: string; sizes: string; showYear?: boolean; loading?: 'lazy' \| 'eager'; class?: string }` |
+| `lib/projects.ts` | 11 | `type Project`; `getProjects()` (newest first); `getFeaturedProjects()`; `getNextProject(projects, id)` |
+| `lib/format.ts` | 11 | `formatMonthYear(date)` → `'april 2025'`; `formatYear(date)` → `'2025'` |
+| `constants/disciplines.ts` | 11 | `enum Discipline`; `DISCIPLINE_LABELS` (plural filter labels) |
+| `lib/siteImages.ts` | 11 | `PORTRAIT`, `CONTACT_IMAGE` (`ImageMetadata`) |
+| `config.ts` | 10 | `SITE_URL`, `SITE_NAME`, `OWNER`, `EMAIL`, `CITY`, `TAGLINE`, `SINCE` |
+| `constants/site.ts` | 10 | `NAV_LINKS`, `SOCIALS`, `PROCESS_STEPS` |
+
+## 4. Parallel-work rules
+
+### 4.1 Ownership
+
+Each plan has an **Owns** list. An agent edits only those paths. New files
+inside an owned folder are fine. Two plans in the same wave never own the same
+path. The one deliberate exception is `tsconfig.json` in W1: both plans write
+the identical file, and git merges identical changes cleanly.
+
+### 4.2 Keep `main` green between merges
+
+PRs in a wave merge in any order, so every PR must build on its own against
+the previous wave:
+
+- **W1 changes to shared files are additive.** Don't rename or remove an
+  export, prop or file that the other W1 plan's untouched files still import.
+  Leftovers get deleted in plan 30.
+- Old pages may look unstyled between W1 and W2. That's expected. Builds,
+  type checks and lint must still pass.
+
+### 4.3 When you need something you don't own
+
+Prefer a component-scoped `<style>` or a local constant. If a shared change is
+unavoidable, keep it minimal and additive, and list it under **Summary of
+changes → Shared** in the PR so the orchestrator can sequence merges.
+
+## 5. Conventions
+
+- Follow `CODE_STYLE.md`. Repo tooling wins on formatting: Biome uses tabs,
+  single quotes and an 80-column width. Biome doesn't format `.astro`
+  templates, so indent template markup with tabs by hand.
+- TypeScript: explicit parameter and return types; `interface` for shapes,
+  `type` for unions; string enums for closed sets; `import type` for
+  types; `Boolean()` over `!!`; `SCREAMING_SNAKE` module constants.
+- Astro: destructure `Astro.props` against a `Props` interface. Client
+  `<script>`s are TypeScript modules, so share logic by importing from `~/lib`.
+  Use component-scoped `<style>` for keyframes and anything Tailwind can't
+  express cleanly.
+- Images always go through `Common/Photo` (`astro:assets`). Pass a real `sizes`
+  for each usage. Load above-the-fold images eagerly or with priority, and
+  everything else lazily.
+- Comments explain *why*, never *what* (AGENTS.md).
+- Commits follow gitmoji (`.agent/skills/git-workflow`). Keep them atomic, and
+  every commit must type-check.
+
+## 6. Verification & definition of done
+
+Each PR, before pushing:
+
+1. `npx biome ci .`, `npm run check:types`, `npm test`, `npm run build` pass.
+2. Pages you touched render at 390, 768, 1280 and 1600 px wide, in light and
+   dark, without overflow or layout breaks.
+3. At 1280 px the page matches its design frame in proportions, spacing and
+   type (within ~10 px).
+4. Keyboard: everything interactive is reachable and has a visible focus ring.
+5. The PR uses the template with every section filled in.
+
+Project done means: all five routes match `10a`–`10e`; both themes are
+polished; Lighthouse is ≥ 95 for Performance, Accessibility, Best Practices
+and SEO on home and detail; there's no dead code or unused dependency; and
+`ARCHITECTURE.md` and `README.md` describe reality.
+
+## 7. Risks
+
+- **Stand-in photos are all motorsport.** That's fine for layout work. Don't
+  tune layouts to these specific crops.
+- **Collage on small screens.** Absolute positioning only kicks in at `lg`.
+  Below that, a flow layout takes over (plan 20).
+- **Build time** grows with Picture variants (≈ 25 sources × widths ×
+  2 formats). Identical transforms are cached and shared between stand-ins.
+  If CI gets slow, trim `widths`.
+- **`design/` is git-ignored**, so worktrees don't contain it. Agents read it
+  via the absolute path in the brief. The plans transcribe what matters.
