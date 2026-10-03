@@ -2,6 +2,8 @@
 @import "./fonts.css";
 @import "./tokens.css";
 
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
 @layer base {
 	html {
 		@apply bg-bg font-sans text-ink antialiased;

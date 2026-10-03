@@ -54,3 +54,20 @@
 
 	--ease-drift: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
+
+[data-theme="dark"] {
+	--color-bg: hsl(51, 19%, 7%);
+	--color-ink: hsl(47, 26%, 93%);
+	--color-body: hsl(42, 14%, 75%);
+	--color-subtle: hsl(43, 11%, 68%);
+	--color-muted: hsl(43, 7%, 53%);
+	--color-hint: hsl(42, 6%, 41%);
+	--color-rule: hsl(42, 11%, 18%);
+	--color-hairline: hsl(47, 13%, 13%);
+	--color-field: hsl(43, 10%, 26%);
+	--color-frame: hsl(47, 14%, 12%);
+	--color-frame-hover: hsl(48, 13%, 15%);
+	--color-accent: hsl(5, 86%, 69%);
+	--color-on-accent: hsl(51, 19%, 7%);
+	color-scheme: dark;
+}
