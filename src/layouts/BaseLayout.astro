@@ -1,67 +1,100 @@
 ---
-import Navbar from '../components/Navbar.astro';
-import Footer from '../components/Footer.astro';
-import ThemeInit from '../components/Theme/Init.astro';
-import { SITE_NAME } from '../config';
-import '../styles/global.css';
+import type { ImageMetadata } from 'astro';
+import { getImage } from 'astro:assets';
+import Footer from '~/components/Site/Footer.astro';
+import Header from '~/components/Site/Header.astro';
+import ThemeScript from '~/components/Site/ThemeScript.astro';
+import { SITE_NAME, TAGLINE } from '~/config';
+import '~/styles/global.css';
 
 interface Props {
-	title: string;
+	title?: string;
 	description?: string;
+	image?: ImageMetadata;
+	structuredData?: Record<string, unknown>;
+	noindex?: boolean;
+	/** @deprecated legacy callers only; removed in plan 30 */
 	ogImage?: string;
+	/** @deprecated legacy callers only; removed in plan 30 */
 	canonicalUrl?: string;
-	structuredData?: object;
 }
 
 const {
 	title,
-	description = 'Zot goe fotografie door Brent Timmermans',
-	ogImage = '/images/hero.png',
-	canonicalUrl = Astro.url.href,
+	description = TAGLINE,
+	image,
 	structuredData,
+	noindex = false,
+	ogImage,
+	canonicalUrl,
 } = Astro.props;
 
-const fullTitle = `${title} | ${SITE_NAME}`;
+const fullTitle = title
+	? `${title} — ${SITE_NAME}`
+	: `${SITE_NAME} — fotograaf in Gent`;
+const canonical = canonicalUrl ?? new URL(Astro.url.pathname, Astro.site).href;
+
+async function resolveSocialImage(): Promise<string | undefined> {
+	if (image) {
+		const { src } = await getImage({
+			src: image,
+			width: 1200,
+			height: 630,
+			fit: 'cover',
+			format: 'jpeg',
+		});
+		return new URL(src, Astro.site).href;
+	}
+	return ogImage ? new URL(ogImage, Astro.site).href : undefined;
+}
+
+const socialImage = await resolveSocialImage();
 ---
 
 <!doctype html>
 <html lang="nl">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <ThemeInit />
-    <title>{fullTitle}</title>
-    <meta name="description" content={description} />
-    <link rel="canonical" href={canonicalUrl} />
-    <link rel="preload" as="image" href="/images/hero.png" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<ThemeScript />
+		<title>{fullTitle}</title>
+		<meta name="description" content={description} />
+		{noindex && <meta name="robots" content="noindex" />}
+		<link rel="canonical" href={canonical} />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-    <meta property="og:title" content={fullTitle} />
-    <meta property="og:description" content={description} />
-    <meta property="og:image" content={ogImage} />
-    <meta property="og:url" content={canonicalUrl} />
-    <meta property="og:type" content="website" />
+		<meta property="og:locale" content="nl_BE" />
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content={fullTitle} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonical} />
+		{socialImage && <meta property="og:image" content={socialImage} />}
 
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={fullTitle} />
-    <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={ogImage} />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={fullTitle} />
+		<meta name="twitter:description" content={description} />
+		{socialImage && <meta name="twitter:image" content={socialImage} />}
 
-    {structuredData && (
-      <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
-    )}
-  </head>
-  <body class="bg-bg text-body min-h-screen flex flex-col">
-    <a
-      href="#main-content"
-      class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:rounded focus:bg-bg focus:px-4 focus:py-2 focus:text-heading focus:shadow"
-    >
-      Skip to content
-    </a>
-    <Navbar />
-    <main id="main-content" class="flex-1">
-      <slot />
-    </main>
-    <Footer />
-  </body>
+		{
+			structuredData && (
+				<script
+					type="application/ld+json"
+					set:html={JSON.stringify(structuredData)}
+				/>
+			)
+		}
+	</head>
+	<body class="mx-auto flex min-h-svh w-full max-w-page flex-col">
+		<a
+			href="#inhoud"
+			class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-ink focus:px-4 focus:py-2 focus:text-sm focus:text-bg"
+		>
+			Naar de inhoud
+		</a>
+		<Header />
+		<main id="inhoud" class="flex-1">
+			<slot />
+		</main>
+		<Footer />
+	</body>
 </html>
