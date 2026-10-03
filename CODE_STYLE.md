@@ -108,11 +108,22 @@ export default function Header(): JSX.Element {
 - Prop forwarding **SHOULD** use `...props` where appropriate.
 - Rename destructured fields **SHOULD** be used when it improves clarity.
 - Boolean coercion **MUST** use `Boolean()`.
+- `await` **MUST NOT** be nested inside another call or expression. Assign the
+  awaited value to a named `const` first.
+- A guard clause (`if (…) return …;`) **SHOULD** be followed by a blank line.
+  A multi-step function **SHOULD** leave a blank line before its final
+  `return`.
 
 ```ts
 import type { Character } from './types';
 
 const hasPreviousLink = Boolean(previous);
+
+export async function getProjects(): Promise<Project[]> {
+  const projects = await getCollection('projects');
+
+  return sortByNewest(projects);
+}
 ```
 
 ### Import and alias rules
@@ -243,6 +254,10 @@ app/ (or src/)
 - `it` descriptions **SHOULD** use "should" phrasing.
 - Test factory helpers **SHOULD** use `_createX` naming and accept `Partial<T>`
   overrides.
+- Test helpers (`_createX` factories and small utilities) **SHOULD** sit at the
+  bottom of the file, after the `describe` blocks, so a reader sees the tests
+  first. Fixture values **SHOULD** live inside the factory, not in module
+  constants above the tests.
 - Assertions **SHOULD** use `toEqual` for objects/arrays and `toBe` for
   primitives.
 - Test scope **SHOULD** prioritize pure functions/reducers.
