@@ -1,14 +1,15 @@
 ---
-import { type CollectionEntry, getCollection } from 'astro:content';
 import type { GetStaticPaths } from 'astro';
+import Photo from '~/components/Common/Photo.astro';
 import BaseLayout from '~/layouts/BaseLayout.astro';
+import { getProjects, type Project } from '~/lib/projects';
 
 interface Props {
-	project: CollectionEntry<'projects'>;
+	project: Project;
 }
 
 export const getStaticPaths = (async () => {
-	const projects = await getCollection('projects');
+	const projects = await getProjects();
 	return projects.map((project) => ({
 		params: { slug: project.id },
 		props: { project },
@@ -16,8 +17,30 @@ export const getStaticPaths = (async () => {
 }) satisfies GetStaticPaths;
 
 const { project } = Astro.props;
+const { title, summary, cover, photos } = project.data;
 ---
 
-<BaseLayout title={project.data.title}>
-	<h1>{project.data.title}</h1>
+<BaseLayout title={title} description={summary}>
+	<div class="px-media">
+		<Photo
+			src={cover.src}
+			alt={cover.alt}
+			sizes="100vw"
+			class="aspect-hero"
+			priority
+		/>
+	</div>
+	<h1 class="px-gutter py-section-S text-heading">{title}</h1>
+	<div class="flex flex-col gap-media px-media pb-media">
+		{
+			photos.map((photo, index) => (
+				<Photo
+					src={photo.src}
+					alt={photo.alt ?? `${title}, foto ${index + 1}`}
+					sizes="100vw"
+					fit="natural"
+				/>
+			))
+		}
+	</div>
 </BaseLayout>
