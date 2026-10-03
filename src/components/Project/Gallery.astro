@@ -1,0 +1,149 @@
+---
+import 'glightbox/dist/css/glightbox.min.css';
+import Photo from '~/components/Common/Photo.astro';
+import { buildGalleryRows, GalleryRowKind } from '~/lib/gallery';
+import type { ProjectPhoto } from '~/lib/projects';
+import LightboxLink from './LightboxLink.astro';
+
+interface Props {
+	title: string;
+	photos: ProjectPhoto[];
+	firstNumber: number;
+	total: number;
+}
+
+interface RowLayout {
+	class: string;
+	sizes: string[];
+}
+
+const FULL = '100vw';
+const HALF = '(min-width: 768px) 50vw, 100vw';
+
+const ROW_LAYOUTS: Record<GalleryRowKind, RowLayout> = {
+	[GalleryRowKind.Wide]: { class: '', sizes: [FULL] },
+	[GalleryRowKind.Pair]: {
+		class: 'md:grid-cols-2 md:items-start',
+		sizes: [HALF, HALF],
+	},
+	[GalleryRowKind.Offset]: {
+		class: 'md:grid-cols-[5fr_7fr] md:items-end',
+		sizes: ['(min-width: 768px) 42vw, 100vw', '(min-width: 768px) 58vw, 100vw'],
+	},
+	[GalleryRowKind.Single]: {
+		class: 'md:mx-auto md:w-7/12',
+		sizes: ['(min-width: 768px) 58vw, 100vw'],
+	},
+};
+
+const { title, photos, firstNumber, total } = Astro.props;
+const rows = buildGalleryRows(photos);
+
+function numberOf(photo: ProjectPhoto): number {
+	return firstNumber + photos.indexOf(photo);
+}
+
+function altOf(photo: ProjectPhoto): string {
+	return photo.alt ?? `${title}, foto ${numberOf(photo)}`;
+}
+---
+
+<div class="flex flex-col gap-media px-media pb-media">
+	{
+		rows.map((row) => {
+			const layout = ROW_LAYOUTS[row.kind];
+
+			return (
+				<div class:list={['grid gap-media', layout.class]}>
+					{row.photos.map((photo, index) => (
+						<LightboxLink
+							src={photo.src}
+							alt={altOf(photo)}
+							number={numberOf(photo)}
+							total={total}
+						>
+							<Photo
+								src={photo.src}
+								alt={altOf(photo)}
+								sizes={layout.sizes[index]}
+								fit="natural"
+							/>
+						</LightboxLink>
+					))}
+				</div>
+			);
+		})
+	}
+</div>
+
+<script>
+	import GLightbox from 'glightbox';
+
+	const BUTTON_LABELS: Record<string, string> = {
+		'.gclose': 'Sluiten',
+		'.gprev': 'Vorige foto',
+		'.gnext': 'Volgende foto',
+	};
+
+	const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+	const lightbox = GLightbox({
+		selector: '.glightbox',
+		touchNavigation: true,
+		loop: true,
+		openEffect: reducedMotion ? 'none' : 'zoom',
+		closeEffect: reducedMotion ? 'none' : 'zoom',
+		slideEffect: reducedMotion ? 'none' : 'slide',
+	});
+
+	// GLightbox leaves focus behind the dialog, never restores it on close and
+	// labels its buttons in English, so the open and close hooks fill that in.
+	let opener: HTMLElement | undefined;
+
+	for (const link of document.querySelectorAll<HTMLElement>('.glightbox')) {
+		link.addEventListener('click', () => {
+			opener = link;
+		});
+	}
+
+	lightbox.on('open', () => {
+		for (const [selector, label] of Object.entries(BUTTON_LABELS)) {
+			document.querySelector(selector)?.setAttribute('aria-label', label);
+		}
+
+		document.querySelector<HTMLElement>('.glightbox-container')?.focus();
+	});
+	lightbox.on('close', () => opener?.focus());
+</script>
+
+<style is:global>
+	.glightbox-clean.glightbox-container .goverlay {
+		background: hsl(from var(--color-bg) h s l / 0.96);
+	}
+
+	.glightbox-clean.glightbox-container .gslide-media {
+		box-shadow: none;
+	}
+
+	.glightbox-clean.glightbox-container .gbtn,
+	.glightbox-clean.glightbox-container .gbtn:hover {
+		background-color: hsl(from var(--color-bg) h s l / 0.8);
+	}
+
+	.glightbox-clean.glightbox-container .gbtn path {
+		fill: var(--color-ink);
+	}
+
+	.glightbox-clean.glightbox-container .gbtn:hover path {
+		fill: var(--color-accent);
+	}
+
+	.glightbox-clean.glightbox-container .gbtn.focused {
+		outline: 2px solid var(--color-accent);
+		outline-offset: 2px;
+	}
+
+	.glightbox-clean.glightbox-container .gloader {
+		border-color: var(--color-ink);
+		border-right-color: transparent;
+	}
+</style>
