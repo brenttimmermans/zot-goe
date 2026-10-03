@@ -1,0 +1,45 @@
+---
+import Photo from '~/components/Common/Photo.astro';
+import { formatYear } from '~/lib/format';
+import type { Project } from '~/lib/projects';
+
+interface Props {
+	project: Project;
+	frameClass: string;
+	sizes: string;
+	showYear?: boolean;
+	loading?: 'lazy' | 'eager';
+	class?: string;
+}
+
+const {
+	project,
+	frameClass,
+	sizes,
+	showYear = false,
+	loading = 'lazy',
+	class: className,
+} = Astro.props;
+const { title, kind, date, cover } = project.data;
+const label = showYear ? `${kind}, ${formatYear(date)}` : kind;
+---
+
+<a
+	href={`/werk/${project.id}`}
+	class:list={['group flex flex-col gap-3', className]}
+>
+	<Photo
+		src={cover.src}
+		alt={cover.alt}
+		sizes={sizes}
+		loading={loading}
+		class:list={[
+			'transition-colors group-hover:bg-frame-hover [&_img]:transition-opacity group-hover:[&_img]:opacity-90',
+			frameClass,
+		]}
+	/>
+	<span class="flex gap-2.5 text-sm">
+		<span class="font-medium">{title}</span>
+		<span class="text-muted">{label}</span>
+	</span>
+</a>
