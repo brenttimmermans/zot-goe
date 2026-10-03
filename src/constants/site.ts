@@ -1,14 +1,13 @@
 import type { NavLink, ProcessStep, Social } from '../types/site';
 
 export const NAV_LINKS: NavLink[] = [
-	{ label: 'Werk', href: '/projects' },
-	{ label: 'Over', href: '/about' },
+	{ label: 'Werk', href: '/werk' },
+	{ label: 'Over', href: '/over' },
 	{ label: 'Contact', href: '/contact' },
 ];
 
 export const SOCIALS: Social[] = [
-	{ label: 'Instagram · @zotgoe', href: 'https://instagram.com/zotgoe' },
-	{ label: 'LinkedIn', href: 'https://www.linkedin.com/' },
+	{ label: 'Instagram', href: 'https://instagram.com/zotgoe' },
 ];
 
 export const PROCESS_STEPS: ProcessStep[] = [
