@@ -1,0 +1,22 @@
+# Stand-in photos: replace with real images.
+title: Beidehand
+discipline: event
+kind: Expo
+date: 2025-06-07
+location: Gent
+summary: Opbouw en opening van de expo, in twee bezoeken.
+featured: 4
+story:
+  - Voor Beidehand fotografeerde ik de opbouw en de vernissage van de expo, verspreid over twee bezoeken.
+  - De beelden waren voor de catalogus en de socials, dus ik wisselde details van het werk af met de mensen errond.
+cover:
+  src: ../../../assets/stand-in/02.jpg
+  alt: Een groep GT-wagens die achter elkaar door een brede bocht rijdt, gezien vanaf het gras.
+photos:
+  - src: ../spa-24h/03.jpg
+  - src: ../spa-24h/04.jpg
+  - src: ../spa-24h/09.jpg
+  - src: ../../../assets/stand-in/07.jpg
+  - src: ../../../assets/stand-in/12.jpg
+  - src: ../spa-24h/06.jpg
+  - src: ../spa-24h/10.jpg
