@@ -1,11 +1,33 @@
 ---
 import Photo from '~/components/Common/Photo.astro';
 import ContactForm from '~/components/Contact/ContactForm.astro';
+import { EMAIL, OWNER, SITE_URL } from '~/config';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import { CONTACT_IMAGE } from '~/lib/siteImages';
+
+const description =
+	'Vertel me over je concert, event, huwelijk of raceweekend. Ik antwoord meestal binnen 24 uur.';
+
+const structuredData = {
+	'@context': 'https://schema.org',
+	'@type': 'ContactPage',
+	name: 'Contact',
+	description,
+	url: new URL('/contact', SITE_URL).href,
+	mainEntity: {
+		'@type': 'Person',
+		name: OWNER,
+		email: EMAIL,
+		address: {
+			'@type': 'PostalAddress',
+			addressLocality: 'Gent',
+			addressCountry: 'BE',
+		},
+	},
+};
 ---
 
-<BaseLayout title="Contact">
+<BaseLayout title="Contact" {description} {structuredData}>
 	<div
 		class="grid items-start gap-media pb-section-L md:grid-cols-[5fr_7fr] md:px-media"
 	>
