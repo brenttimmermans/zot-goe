@@ -1,4 +1,5 @@
 ---
+import WorkFilter from '~/components/Work/WorkFilter.astro';
 import WorkGrid from '~/components/Work/WorkGrid.astro';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import { getProjects } from '~/lib/projects';
@@ -11,6 +12,7 @@ const projects = await getProjects();
 		class="flex flex-col gap-4 px-gutter pt-section-S pb-11 md:flex-row md:items-baseline md:justify-between"
 	>
 		<h1 class="text-heading font-medium">Werk</h1>
+		<WorkFilter projects={projects} />
 	</div>
 	<WorkGrid projects={projects} />
 </BaseLayout>

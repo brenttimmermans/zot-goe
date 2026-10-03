@@ -1,0 +1,108 @@
+---
+import { DISCIPLINE_LABELS, Discipline } from '~/constants/disciplines';
+import type { Project } from '~/lib/projects';
+
+interface Props {
+	projects: Project[];
+}
+
+const { projects } = Astro.props;
+const disciplines = Object.values(Discipline).filter((discipline) =>
+	projects.some((project) => project.data.discipline === discipline),
+);
+---
+
+<div
+	role="group"
+	aria-label="Filter op soort"
+	class="flex flex-wrap gap-x-5.5 gap-y-2 text-sm text-muted"
+	data-work-filter
+	hidden
+>
+	<button
+		type="button"
+		aria-pressed="true"
+		class="cursor-pointer transition-colors hover:text-accent aria-pressed:text-ink"
+		data-filter=""
+	>
+		Alles
+	</button>
+	{
+		disciplines.map((discipline) => (
+			<button
+				type="button"
+				aria-pressed="false"
+				class="cursor-pointer transition-colors hover:text-accent aria-pressed:text-ink"
+				data-filter={discipline}
+			>
+				{DISCIPLINE_LABELS[discipline]}
+			</button>
+		))
+	}
+</div>
+
+<script>
+	import { getWorkSlots } from '~/lib/workGrid';
+
+	const FILTER_PARAM = 'soort';
+
+	const group = document.querySelector<HTMLElement>('[data-work-filter]');
+	const buttons = [
+		...document.querySelectorAll<HTMLButtonElement>('[data-work-filter] button'),
+	];
+	const items = [
+		...document.querySelectorAll<HTMLLIElement>('[data-work-grid] > li'),
+	];
+
+	function showDiscipline(discipline: string): void {
+		for (const button of buttons) {
+			const isPressed = button.dataset.filter === discipline;
+			button.setAttribute('aria-pressed', String(isPressed));
+		}
+
+		const visible = items.filter(
+			(item) => !discipline || item.dataset.discipline === discipline,
+		);
+		for (const item of items) item.hidden = !visible.includes(item);
+
+		const slots = getWorkSlots(visible.length);
+		visible.forEach((item, index) => {
+			const { span, height, centred } = slots[index];
+			item.dataset.span = String(span);
+			item.dataset.height = height;
+			item.toggleAttribute('data-centred', Boolean(centred));
+		});
+	}
+
+	function writeDisciplineToUrl(discipline: string): void {
+		const url = new URL(window.location.href);
+		if (discipline) url.searchParams.set(FILTER_PARAM, discipline);
+		else url.searchParams.delete(FILTER_PARAM);
+		history.replaceState(history.state, '', url);
+	}
+
+	function readDisciplineFromUrl(): string {
+		const discipline = new URLSearchParams(window.location.search).get(
+			FILTER_PARAM,
+		);
+		const isKnown = buttons.some(
+			(button) => button.dataset.filter === discipline,
+		);
+
+		return isKnown && discipline ? discipline : '';
+	}
+
+	const handleFilterClick = (event: MouseEvent): void => {
+		if (!(event.currentTarget instanceof HTMLButtonElement)) return;
+
+		const discipline = event.currentTarget.dataset.filter ?? '';
+		showDiscipline(discipline);
+		writeDisciplineToUrl(discipline);
+	};
+
+	for (const button of buttons) {
+		button.addEventListener('click', handleFilterClick);
+	}
+	showDiscipline(readDisciplineFromUrl());
+	if (group) group.hidden = false;
+</script>
