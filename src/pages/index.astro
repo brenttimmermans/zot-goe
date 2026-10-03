@@ -1,80 +1,99 @@
 ---
-import { getCollection, type CollectionEntry } from 'astro:content';
-import { SITE_URL } from '../config';
-import BaseLayout from '../layouts/BaseLayout.astro';
-import HeroSection from '../components/HeroSection.astro';
+import AboutTeaser from '../components/AboutTeaser.astro';
 import ProjectCard from '../components/ProjectCard.astro';
+import Byline from '../components/ui/Byline.astro';
+import EditorialLink from '../components/ui/EditorialLink.astro';
+import Wordmark from '../components/ui/Wordmark.astro';
+import { OWNER, SITE_NAME, SITE_URL, TAGLINE } from '../config';
+import { SOCIALS } from '../constants/site';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getSortedProjects } from '../lib/projects';
 
-const allProjects: CollectionEntry<'projects'>[] =
-	await getCollection('projects');
-const featured = allProjects
-	.sort(
-		(a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
-	)
-	.slice(0, 4);
+const projects = await getSortedProjects();
+const flagged = projects.filter((project) => project.data.featured);
+const featured = (flagged.length >= 4 ? flagged : projects).slice(0, 4);
+
+const ROW_COLS = ['md:grid-cols-[7fr_5fr]', 'md:grid-cols-[4fr_6fr]'];
+const CARD_LAYOUT = [
+	{ heightClass: 'h-[520px]', offsetClass: '' },
+	{ heightClass: 'h-[380px]', offsetClass: 'md:mt-[90px]' },
+	{ heightClass: 'h-[400px]', offsetClass: '' },
+	{ heightClass: 'h-[340px]', offsetClass: 'md:mt-[60px]' },
+];
 
 const structuredData = {
 	'@context': 'https://schema.org',
 	'@graph': [
-		{
-			'@type': 'WebSite',
-			name: 'Zot Goe Photography',
-			url: SITE_URL,
-		},
+		{ '@type': 'WebSite', name: SITE_NAME, url: SITE_URL },
 		{
 			'@type': 'Person',
-			name: 'Zot Goe',
+			name: OWNER,
 			url: SITE_URL,
-			jobTitle: 'Photographer',
+			jobTitle: 'Fotograaf',
+			address: {
+				'@type': 'PostalAddress',
+				addressLocality: 'Gent',
+				addressCountry: 'BE',
+			},
+			sameAs: SOCIALS.map((social) => social.href),
 		},
 	],
 };
 ---
 
-<BaseLayout
-  title="Home"
-  description="Zot Goe — a photography portfolio capturing the unseen."
-  ogImage="/images/hero.jpg"
-  structuredData={structuredData}
->
-  <HeroSection />
+<BaseLayout title="Home" structuredData={structuredData}>
+  <section class="mx-auto max-w-7xl px-page pt-8 md:pt-14">
+    <Wordmark size="hero" class="block">Zot Goe</Wordmark>
+    <Byline class="mt-6 md:mt-8" />
+  </section>
 
-  <div class="flex flex-col gap-20">
-    <section>
-      <div class="max-w-7xl mx-auto px-6">
-        <h2 class="text-3xl font-bold text-heading mb-10">Projects</h2>
-        <div class="flex flex-col gap-6">
-          {featured.map((project, index) => (
-            <ProjectCard
-              title={project.data.title}
-              description={project.data.description}
-              date={project.data.date}
-              slug={project.id}
-              highlights={project.data.highlights}
-              textPositionIndex={index === 1 ? 2 : 0}
-            />
-          ))}
-        </div>
-        <div class="mt-10 text-center">
-          <a href="/projects" class="text-accent hover:text-heading transition-colors font-medium">
-            View All Projects &rarr;
-          </a>
-        </div>
+  <section class="mx-auto mt-section max-w-7xl px-page">
+    <div class="grid gap-8 lg:grid-cols-[1fr_340px] lg:items-end lg:gap-16">
+      <p class="max-w-[720px] text-lead font-semibold text-heading text-pretty">
+        {TAGLINE}
+      </p>
+      <div class="flex flex-col items-start gap-5">
+        <p class="font-serif text-lg leading-relaxed text-body-soft">
+          Reportage, geen poses. Ik loop mee en fotografeer wat er echt gebeurt.
+        </p>
+        <EditorialLink href="/contact" variant="underline">
+          Plan een shoot
+        </EditorialLink>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section>
-      <div class="max-w-7xl mx-auto px-6 text-center">
-        <h2 class="text-3xl md:text-4xl font-bold text-heading mb-6">
-          Let's work together.
-        </h2>
-        <a
-          href="/contact"
-          class="inline-block text-accent hover:text-heading transition-colors font-medium text-lg"
-        >
-          Get in Touch &rarr;
-        </a>
-      </div>
-    </section>
-  </div>
+  <section class="mx-auto mt-section max-w-7xl px-page">
+    <div class="flex flex-col gap-grid md:gap-16">
+      {
+        [0, 1].map((row) => {
+          const cards = featured.slice(row * 2, row * 2 + 2);
+          return cards.length > 0 ? (
+            <div class={`grid gap-grid md:items-start md:gap-16 ${ROW_COLS[row]}`}>
+              {cards.map((project, column) => {
+                const position = row * 2 + column;
+                return (
+                  <ProjectCard
+                    project={project}
+                    index={position}
+                    heightClass={CARD_LAYOUT[position].heightClass}
+                    offsetClass={CARD_LAYOUT[position].offsetClass}
+                    metaStyle="inline"
+                  />
+                );
+              })}
+            </div>
+          ) : null;
+        })
+      }
+    </div>
+
+    <div class="mt-section flex justify-center">
+      <EditorialLink href="/projects" variant="boxed">
+        Alle projecten ({projects.length})
+      </EditorialLink>
+    </div>
+  </section>
+
+  <AboutTeaser />
 </BaseLayout>
