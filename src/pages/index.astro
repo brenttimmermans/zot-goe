@@ -1,9 +1,11 @@
 ---
+import AboutTeaser from '../components/AboutTeaser.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import Byline from '../components/ui/Byline.astro';
 import EditorialLink from '../components/ui/EditorialLink.astro';
 import Wordmark from '../components/ui/Wordmark.astro';
-import { TAGLINE } from '../config';
+import { OWNER, SITE_NAME, SITE_URL, TAGLINE } from '../config';
+import { SOCIALS } from '../constants/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getSortedProjects } from '../lib/projects';
 
@@ -18,9 +20,28 @@ const CARD_LAYOUT = [
 	{ heightClass: 'h-[400px]', offsetClass: '' },
 	{ heightClass: 'h-[340px]', offsetClass: 'md:mt-[60px]' },
 ];
+
+const structuredData = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{ '@type': 'WebSite', name: SITE_NAME, url: SITE_URL },
+		{
+			'@type': 'Person',
+			name: OWNER,
+			url: SITE_URL,
+			jobTitle: 'Fotograaf',
+			address: {
+				'@type': 'PostalAddress',
+				addressLocality: 'Gent',
+				addressCountry: 'BE',
+			},
+			sameAs: SOCIALS.map((social) => social.href),
+		},
+	],
+};
 ---
 
-<BaseLayout title="Home">
+<BaseLayout title="Home" structuredData={structuredData}>
   <section class="mx-auto max-w-7xl px-page pt-8 md:pt-14">
     <Wordmark size="hero" class="block">Zot Goe</Wordmark>
     <Byline class="mt-6 md:mt-8" />
@@ -73,4 +94,6 @@ const CARD_LAYOUT = [
       </EditorialLink>
     </div>
   </section>
+
+  <AboutTeaser />
 </BaseLayout>
