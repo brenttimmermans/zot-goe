@@ -3,12 +3,14 @@ import type { GetStaticPaths } from 'astro';
 import Photo from '~/components/Common/Photo.astro';
 import Gallery from '~/components/Project/Gallery.astro';
 import LightboxLink from '~/components/Project/LightboxLink.astro';
+import NextProject from '~/components/Project/NextProject.astro';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import { formatMonthYear } from '~/lib/format';
-import { getProjects, type Project } from '~/lib/projects';
+import { getNextProject, getProjects, type Project } from '~/lib/projects';
 
 interface Props {
 	project: Project;
+	next?: Project;
 }
 
 export const getStaticPaths = (async () => {
@@ -16,11 +18,11 @@ export const getStaticPaths = (async () => {
 
 	return projects.map((project) => ({
 		params: { slug: project.id },
-		props: { project },
+		props: { project, next: getNextProject(projects, project.id) },
 	}));
 }) satisfies GetStaticPaths;
 
-const { project } = Astro.props;
+const { project, next } = Astro.props;
 const { title, kind, date, location, summary, story, cover, photos } =
 	project.data;
 const lightboxTotal = photos.length + 1;
@@ -63,4 +65,5 @@ const lightboxTotal = photos.length + 1;
 		firstNumber={2}
 		total={lightboxTotal}
 	/>
+	{next && <NextProject next={next} />}
 </BaseLayout>
