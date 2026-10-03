@@ -1,0 +1,20 @@
+# Stand-in photos: replace with real images.
+title: Cedric & Anouk
+discipline: huwelijk
+kind: Huwelijk
+date: 2025-08-23
+location: Oost-Vlaanderen
+summary: Een dag zonder draaiboek, van ochtend tot laatste dans.
+featured: 1
+story:
+  - Cedric en Anouk wilden hun volledige trouwdag in reportagestijl, zonder geposeerde rijtjes.
+  - Ik volgde hen van de eerste koffie tot de laatste dans, en zocht vooral de momenten ertussen.
+cover:
+  src: ../../../assets/stand-in/05.jpg
+  alt: Laagstaande avondzon die door de bomen over de tribunes en het circuit schijnt.
+photos:
+  - src: ../../../assets/stand-in/04.jpg
+  - src: ../../../assets/stand-in/08.jpg
+  - src: ../../../assets/stand-in/10.jpg
+  - src: ../../../assets/stand-in/03.jpg
+  - src: ../../../assets/stand-in/09.jpg

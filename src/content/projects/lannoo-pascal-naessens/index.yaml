@@ -1,0 +1,20 @@
+# Stand-in photos: replace with real images.
+title: Lannoo × Pascal Naessens
+discipline: event
+kind: Boekvoorstelling
+date: 2025-04-10
+location: Gent
+summary: Boekvoorstelling voor pers en genodigden.
+featured: 2
+story:
+  - Lannoo stelde het nieuwe kookboek van Pascal Naessens voor aan pers en genodigden. Ze zochten sfeerbeelden die nog dezelfde week bruikbaar waren.
+  - "Ik fotografeerde vijf uur, discreet en zonder flits. Opgeleverd: 120 bewerkte beelden voor web, druk en socials, binnen vier dagen."
+cover:
+  src: ../../../assets/stand-in/12.jpg
+  alt: Een gele raceauto die in volle vaart langs de pitgebouwen rijdt, met de achtergrond vervaagd door de beweging.
+photos:
+  - src: ../spa-24h/05.jpg
+  - src: ../spa-24h/07.jpg
+  - src: ../../../assets/stand-in/09.jpg
+  - src: ../../../assets/stand-in/08.jpg
+  - src: ../spa-24h/08.jpg

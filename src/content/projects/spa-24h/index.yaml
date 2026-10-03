@@ -1,0 +1,27 @@
+title: Spa 24h
+discipline: motorsport
+kind: Motorsport
+date: 2025-06-15
+location: Spa-Francorchamps
+summary: Vierentwintig uur endurance, van de start in volle zon tot de ochtendmist boven Eau Rouge.
+featured: 3
+story:
+  - "Vierentwintig uur endurance, van de start in volle zon tot de ochtendmist boven Eau Rouge. De opdracht: sfeer én actie, meteen bruikbaar voor pers en socials."
+  - "Ik fotografeerde discreet aan de pitmuur en in de paddock, en zocht vooral de momenten tussen de rondes door — de vermoeide monteur, de eerste zonnestralen over het asfalt."
+  - "Opgeleverd: 180 bewerkte beelden in web- en drukformaat, drie dagen na de vlag."
+cover:
+  src: ./02.jpg
+  alt: Een GT-wagen met grote achtervleugel op de grid, gezien langs de zijspiegel van de wagen ernaast.
+photos:
+  - src: ./01.jpg
+  - src: ./03.jpg
+  - src: ./04.jpg
+  - src: ./05.jpg
+  - src: ./06.jpg
+  - src: ./07.jpg
+  - src: ./08.jpg
+  - src: ./09.jpg
+  - src: ./10.jpg
+  - src: ./11.jpg
+  - src: ./12.jpg
+  - src: ./13.jpg

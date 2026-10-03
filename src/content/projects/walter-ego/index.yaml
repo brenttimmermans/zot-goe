@@ -1,0 +1,20 @@
+# Stand-in photos: replace with real images.
+title: Walter Ego
+discipline: concert
+kind: Concert
+date: 2026-03-14
+location: Gent
+summary: Debuutconcert in een uitverkochte Charlatan.
+story:
+  - Walter Ego speelde zijn debuutconcert in een uitverkochte Charlatan, en wou die avond vastgelegd zien zoals hij voelde.
+  - Ik stond tussen het publiek en naast het podium, zonder flits, en leverde de persbeelden binnen 48 uur.
+cover:
+  src: ../../../assets/stand-in/06.jpg
+  alt: Vuurwerk boven het circuit bij nacht, met rechts een verlicht reuzenrad.
+photos:
+  - src: ../../../assets/stand-in/07.jpg
+  - src: ../spa-24h/13.jpg
+  - src: ../spa-24h/11.jpg
+  - src: ../../../assets/stand-in/03.jpg
+  - src: ../spa-24h/12.jpg
+  - src: ../../../assets/stand-in/11.jpg

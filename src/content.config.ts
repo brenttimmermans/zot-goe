@@ -1,26 +1,25 @@
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
+import { Discipline } from '~/constants/disciplines';
 
 const projects = defineCollection({
-	loader: glob({ pattern: '**/*.yaml', base: './src/content/projects' }),
-	schema: z.object({
-		title: z.string(),
-		description: z.string(),
-		date: z.coerce.date(),
-		category: z.string(),
-		location: z.string(),
-		cover: z.string(),
-		imageFolder: z.string(),
-		highlights: z.array(z.string()).length(3),
-		gallery: z.array(z.string()).min(1),
-		credits: z
-			.array(z.object({ label: z.string(), value: z.string() }))
-			.optional(),
-		brief: z.array(z.string()).optional(),
-		featured: z.boolean().default(false),
-		order: z.number().optional(),
-	}),
+	loader: glob({ pattern: '*/index.yaml', base: './src/content/projects' }),
+	schema: ({ image }) =>
+		z.object({
+			title: z.string(),
+			discipline: z.enum(Discipline),
+			kind: z.string(),
+			date: z.coerce.date(),
+			location: z.string(),
+			summary: z.string(),
+			featured: z.number().int().positive().optional(),
+			story: z.array(z.string()).min(1).max(3),
+			cover: z.object({ src: image(), alt: z.string() }),
+			photos: z
+				.array(z.object({ src: image(), alt: z.string().optional() }))
+				.min(1),
+		}),
 });
 
 export const collections = { projects };
