@@ -1,0 +1,42 @@
+---
+import { SITE_NAME } from '~/config';
+import { NAV_LINKS } from '~/constants/site';
+import ThemeToggle from './ThemeToggle.astro';
+
+const { pathname } = Astro.url;
+
+function isActive(href: string, currentPath: string): boolean {
+	if (href === '/') return currentPath === '/';
+	return currentPath === href || currentPath.startsWith(`${href}/`);
+}
+---
+
+<header class="flex h-header items-center justify-between gap-5 px-gutter">
+	<a href="/" class="text-base font-semibold tracking-[-0.01em]">{SITE_NAME}</a>
+	<div class="flex items-center gap-5 md:gap-7">
+		<nav aria-label="Hoofdmenu">
+			<ul class="flex items-center gap-5 text-sm md:gap-7">
+				{
+					NAV_LINKS.map(({ label, href }) => {
+						const active = isActive(href, pathname);
+						return (
+							<li>
+								<a
+									{href}
+									class:list={[
+										'hover:text-accent',
+										active ? 'font-medium text-ink' : 'text-subtle',
+									]}
+									aria-current={active ? 'page' : undefined}
+								>
+									{label}
+								</a>
+							</li>
+						);
+					})
+				}
+			</ul>
+		</nav>
+		<ThemeToggle />
+	</div>
+</header>

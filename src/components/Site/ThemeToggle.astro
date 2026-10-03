@@ -1,0 +1,50 @@
+---
+import moonIcon from '~/assets/icons/moon.svg?raw';
+import sunIcon from '~/assets/icons/sun.svg?raw';
+---
+
+<button
+	type="button"
+	aria-label="Donkere modus"
+	aria-pressed="false"
+	class="-m-1 cursor-pointer p-1 text-subtle transition-colors hover:text-accent"
+	data-theme-toggle
+>
+	<span class="block size-4 *:size-full dark:hidden" set:html={moonIcon} />
+	<span class="hidden size-4 *:size-full dark:block" set:html={sunIcon} />
+</button>
+
+<script>
+	type Theme = 'light' | 'dark';
+
+	const THEME_KEY = 'theme';
+
+	const toggle = document.querySelector<HTMLButtonElement>(
+		'[data-theme-toggle]',
+	);
+	const darkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+
+	function currentTheme(): Theme {
+		return document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+	}
+
+	function applyTheme(theme: Theme): void {
+		document.documentElement.dataset.theme = theme;
+		toggle?.setAttribute('aria-pressed', String(theme === 'dark'));
+	}
+
+	const handleToggle = (): void => {
+		const next: Theme = currentTheme() === 'dark' ? 'light' : 'dark';
+		localStorage.setItem(THEME_KEY, next);
+		applyTheme(next);
+	};
+
+	const handleSchemeChange = (event: MediaQueryListEvent): void => {
+		if (localStorage.getItem(THEME_KEY)) return;
+		applyTheme(event.matches ? 'dark' : 'light');
+	};
+
+	applyTheme(currentTheme());
+	toggle?.addEventListener('click', handleToggle);
+	darkScheme.addEventListener('change', handleSchemeChange);
+</script>
