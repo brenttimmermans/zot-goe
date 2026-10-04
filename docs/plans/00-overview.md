@@ -17,7 +17,7 @@ giant `ZOT GOE` wordmark, `MonoLabel`/`Byline`/`EditorialLink`, a staggered
 | Hairline rules, bylines, eyebrow labels | Whitespace. One footer hairline, plus rules above the "how it works" steps |
 | Raw `<img>` from `public/images` | `astro:assets` `<Picture>` (AVIF/WebP, srcset) from the content tree |
 | `/projects`, `/projects/[slug]` | `/werk`, `/werk/[slug]`, `/over`, `/contact` |
-| Free-text `category` | `discipline` enum (filter) and `kind` label (display) |
+| Free-text `category` | `category` enum (filter) and `kind` label (display) |
 
 Kill list (removed during W1–W3): `HeroSection`, `Image`, `ProjectCard` (old),
 `AboutTeaser` (old), `ContactForm` (old), `Navbar`, `Footer` (old),
@@ -150,7 +150,7 @@ src/
     Work/                 WorkGrid, WorkFilter
     About/                ProcessSteps
     Contact/              ContactForm, Field
-  constants/              site.ts, disciplines.ts
+  constants/              site.ts, categories.ts
   content/projects/<slug>/index.yaml (+ that project's own photos)
   layouts/BaseLayout.astro
   lib/                    projects.ts, format.ts, siteImages.ts,
@@ -177,7 +177,7 @@ paths are relative to the YAML file and validated by `image()`.
 
 ```yaml
 title: Lannoo × Pascal Naessens
-discipline: event            # concert | event | motorsport | huwelijk
+category: event              # concert | event | motorsport | huwelijk
 kind: Boekvoorstelling       # display label
 date: 2025-04-10
 location: Gent
@@ -205,7 +205,7 @@ an addition, follow §4.3.
 | `Project/ProjectCard` | 11 | `{ project: Project; frameClass: string; sizes: string; showYear?: boolean; loading?: 'lazy' \| 'eager'; class?: string }` |
 | `lib/projects.ts` | 11 | `type Project`; `getProjects()` (newest first); `getFeaturedProjects()`; `getNextProject(projects, id)` |
 | `lib/format.ts` | 11 | `formatMonthYear(date)` → `'april 2025'`; `formatYear(date)` → `'2025'` |
-| `constants/disciplines.ts` | 11 | `enum Discipline`; `DISCIPLINE_LABELS` (plural filter labels) |
+| `constants/categories.ts` | 11 | `enum Category`; `CATEGORY_LABELS` (plural filter labels) |
 | `lib/siteImages.ts` | 11 | `PORTRAIT`, `CONTACT_IMAGE` (`ImageMetadata`) |
 | `config.ts` | 10 | `SITE_URL`, `SITE_NAME`, `OWNER`, `EMAIL`, `CITY`, `TAGLINE`, `SINCE` |
 | `constants/site.ts` | 10 | `NAV_LINKS`, `SOCIALS`, `PROCESS_STEPS` |

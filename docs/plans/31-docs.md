@@ -31,7 +31,7 @@ against `main` once 30 is merged. The orchestrator handles that check.
      `/contact/bedankt`, `/404`.
    - **Components by folder**: Common, Site, Project, Home, Work, About,
      Contact.
-   - **Data model**: the YAML fields, `image()` paths, the `Discipline` enum,
+   - **Data model**: the YAML fields, `image()` paths, the `Category` enum,
      and the `featured` rank.
    - **Image pipeline**: `Photo` → `<Picture>`, AVIF/WebP, `sizes`.
    - **Theming**: tokens, the dark palette, `data-theme`, the toggle and the

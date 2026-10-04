@@ -1,0 +1,75 @@
+---
+import ProjectCard from '~/components/Project/ProjectCard.astro';
+import type { Project } from '~/lib/projects';
+import { getWorkSlots, type WorkSlot } from '~/lib/workGrid';
+
+interface Props {
+	projects: Project[];
+}
+
+const SIZES: Record<WorkSlot['span'], string> = {
+	8: '(min-width: 768px) 66vw, 100vw',
+	6: '(min-width: 768px) 50vw, 100vw',
+	4: '(min-width: 768px) 33vw, 100vw',
+};
+const EAGER_COUNT = 2;
+
+const { projects } = Astro.props;
+const slots = getWorkSlots(projects.length);
+---
+
+<ul
+	class="grid gap-x-media gap-y-section-S px-media pb-section-L md:grid-cols-12"
+	data-work-grid
+>
+	{
+		projects.map((project, index) => {
+			const { span, height, centred } = slots[index];
+
+			return (
+				<li
+					data-category={project.data.category}
+					data-span={span}
+					data-height={height}
+					data-centred={centred}
+				>
+					<ProjectCard
+						project={project}
+						frameClass="aspect-[4/3] md:aspect-auto md:h-(--row-h)"
+						sizes={SIZES[span]}
+						showYear
+						loading={index < EAGER_COUNT ? 'eager' : 'lazy'}
+					/>
+				</li>
+			);
+		})
+	}
+</ul>
+
+<style>
+	@media (min-width: 48rem) {
+		li[data-span="4"] {
+			grid-column: span 4;
+		}
+
+		li[data-span="6"] {
+			grid-column: span 6;
+		}
+
+		li[data-span="8"] {
+			grid-column: span 8;
+		}
+
+		li[data-centred] {
+			grid-column: 3 / span 8;
+		}
+
+		li[data-height="tall"] {
+			--row-h: clamp(20rem, 40.6vw, 32.5rem);
+		}
+
+		li[data-height="short"] {
+			--row-h: clamp(17.5rem, 34.4vw, 27.5rem);
+		}
+	}
+</style>

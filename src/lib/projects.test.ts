@@ -1,6 +1,6 @@
 import type { ImageMetadata } from 'astro';
 import { describe, expect, it } from 'vitest';
-import { Discipline } from '~/constants/disciplines';
+import { Category } from '~/constants/categories';
 import {
 	getNextProject,
 	type Project,
@@ -89,7 +89,7 @@ function _createProject(
 		collection: 'projects',
 		data: {
 			title: id,
-			discipline: Discipline.Event,
+			category: Category.Event,
 			kind: 'Expo',
 			date: new Date('2025-01-01'),
 			location: 'Gent',
