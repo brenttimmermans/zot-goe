@@ -1,6 +1,6 @@
 import type { ImageMetadata } from 'astro';
 import { describe, expect, it } from 'vitest';
-import { Discipline } from '~/constants/disciplines';
+import { Category } from '~/constants/categories';
 import { type CollageTile, pickCollageTiles } from './collage';
 import type { Project } from './projects';
 
@@ -74,7 +74,7 @@ function _createProject(id: string, photoAlts: string[]): Project {
 		collection: 'projects',
 		data: {
 			title: id,
-			discipline: Discipline.Event,
+			category: Category.Event,
 			kind: 'Expo',
 			date: new Date('2025-01-01'),
 			location: 'Gent',
