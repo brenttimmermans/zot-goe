@@ -1,5 +1,11 @@
 # Plans: Zot Goe "Final" redesign
 
+> **Status, 2026-10-04: implemented.** Plans: #8, #11. W1: 10 #9, 11 #10.
+> W2: 20 #15, 21 #14, 22 #16, 23 #12, 24 #13, 25 #17; 26 in review.
+> W3: 30 in review, 31 in review. These plans are now history;
+> [`ARCHITECTURE.md`](../../ARCHITECTURE.md) and the
+> [README](../../README.md) describe the current site.
+
 These plans move the site from the newsprint "Quiet Grid" redesign (stages 1–2,
 already on `main`) to the **Final** design: `design/Zot Goe Final.dc.html`,
 frames `10a`–`10e`. That direction is quieter. It has no mono labels, no giant
