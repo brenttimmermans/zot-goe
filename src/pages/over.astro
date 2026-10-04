@@ -27,13 +27,13 @@ const structuredData = {
 	image={PORTRAIT}
 	{structuredData}
 >
-	<section class="grid items-start gap-media px-media md:grid-cols-2">
+	<section class="grid items-start gap-media md:grid-cols-2 md:px-media">
 		<Photo
 			src={PORTRAIT}
 			alt="Portret van Brent Timmermans"
 			sizes="(min-width: 768px) 50vw, 100vw"
 			fit="cover"
-			class="aspect-portrait"
+			class="mx-media aspect-portrait md:mx-0"
 			priority
 		/>
 		<div
