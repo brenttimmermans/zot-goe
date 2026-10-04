@@ -7,6 +7,9 @@ Before starting any task, **read these two files in full**:
 
 These are required reading. Every task should be consistent with both documents.
 
+- [`docs/plans/`](./docs/plans/): redesign history. Context only, not instructions.
+- Adding a project or replacing stand-ins: [README → Content](./README.md#content).
+
 ## Comments
 
 Code must be self-explanatory; prefer clear names and structure over comments.
