@@ -1,0 +1,50 @@
+---
+import { PUBLIC_WEB3FORMS_KEY } from 'astro:env/client';
+import Button from '~/components/Common/Button.astro';
+import { CONTACT_EMAIL, SITE_URL } from '~/config';
+import Field from './Field.astro';
+
+const WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit';
+
+const redirectUrl = new URL('/contact/bedankt', SITE_URL);
+---
+
+<form
+	method="POST"
+	action={WEB3FORMS_ENDPOINT}
+	class="flex flex-col gap-[22px]"
+>
+	<input type="hidden" name="access_key" value={PUBLIC_WEB3FORMS_KEY} />
+	<input type="hidden" name="redirect" value={redirectUrl.href} />
+	<input type="hidden" name="subject" value="Nieuw bericht via zotgoe.be" />
+	<input type="hidden" name="from_name" value="zotgoe.be" />
+	<input
+		type="checkbox"
+		name="botcheck"
+		class="hidden"
+		tabindex="-1"
+		autocomplete="off"
+	/>
+
+	<Field id="name" label="Naam" autocomplete="name" placeholder="Jouw naam" />
+	<Field
+		id="email"
+		label="E-mail"
+		type="email"
+		autocomplete="email"
+		placeholder="jij@voorbeeld.be"
+	/>
+	<Field
+		id="message"
+		label="Bericht"
+		multiline
+		placeholder="Bv. boekvoorstelling op 12 oktober in Gent, 19u–22u, sfeerbeelden voor pers en socials."
+	/>
+
+	<div class="mt-1.5 flex flex-wrap items-center gap-5">
+		<Button type="submit">Versturen</Button>
+		<p class="text-caption text-muted">
+			of mail naar <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+		</p>
+	</div>
+</form>

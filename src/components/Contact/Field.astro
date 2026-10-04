@@ -1,0 +1,50 @@
+---
+interface Props {
+	id: string;
+	label: string;
+	type?: 'text' | 'email';
+	multiline?: boolean;
+	autocomplete?: string;
+	placeholder: string;
+}
+
+const {
+	id,
+	label,
+	type = 'text',
+	multiline = false,
+	autocomplete,
+	placeholder,
+} = Astro.props;
+
+// The inset shadow thickens the underline on focus without shifting layout.
+const CONTROL_CLASSES =
+	'w-full border-b border-field bg-transparent py-2 text-base text-ink transition-[border-color,box-shadow] placeholder:text-hint focus:border-accent focus:shadow-[inset_0_-1px_0_var(--color-accent)] focus:outline-hidden';
+---
+
+<div class="flex flex-col gap-1.5">
+	<label for={id} class="text-caption text-muted">{label}</label>
+	{
+		multiline ? (
+			<textarea
+				{id}
+				name={id}
+				rows="4"
+				{autocomplete}
+				{placeholder}
+				required
+				class:list={[CONTROL_CLASSES, 'min-h-[7.5rem] resize-y']}
+			/>
+		) : (
+			<input
+				{id}
+				name={id}
+				{type}
+				{autocomplete}
+				{placeholder}
+				required
+				class={CONTROL_CLASSES}
+			/>
+		)
+	}
+</div>

@@ -1,0 +1,16 @@
+---
+import TextLink from '~/components/Common/TextLink.astro';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Bedankt" noindex>
+	<div class="flex max-w-copy flex-col gap-[18px] px-gutter py-section-L">
+		<h1 class="text-heading font-medium">Bedankt, je bericht is onderweg</h1>
+		<p class="font-serif text-prose text-pretty text-body">
+			Ik antwoord meestal binnen 24 uur. Tot snel.
+		</p>
+		<TextLink href="/werk" variant="plain" arrow>
+			Bekijk ondertussen mijn werk
+		</TextLink>
+	</div>
+</BaseLayout>
