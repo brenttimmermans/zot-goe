@@ -7,7 +7,6 @@
 	--color-body: hsl(45, 11%, 21%);
 	--color-subtle: hsl(44, 8%, 27%);
 	--color-muted: hsl(37, 6%, 44%);
-	/* Placeholders sit at AA (4.5:1); the design's #A9A498 only reaches 2.4:1. */
 	--color-hint: hsl(42, 9%, 43%);
 	--color-rule: hsl(44, 13%, 83%);
 	--color-hairline: hsl(40, 19%, 91%);
