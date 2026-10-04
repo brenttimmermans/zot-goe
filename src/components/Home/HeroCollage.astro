@@ -1,0 +1,189 @@
+---
+import Photo from '~/components/Common/Photo.astro';
+import { OWNER, SINCE, TAGLINE } from '~/config';
+import {
+	COLLAGE_HEIGHT,
+	COLLAGE_SLOTS,
+	COLLAGE_WIDTH,
+	pickCollageTiles,
+} from '~/lib/collage';
+import { getProjects } from '~/lib/projects';
+
+const FLOW_TILE_COUNT = 6;
+
+const projects = await getProjects();
+const tiles = pickCollageTiles(projects, COLLAGE_SLOTS.length);
+const largestArea = Math.max(...COLLAGE_SLOTS.map(({ w, h }) => w * h));
+---
+
+<section
+	class="hero lg:relative"
+	style={`--collage-width: ${COLLAGE_WIDTH}; --collage-height: ${COLLAGE_HEIGHT};`}
+>
+	<div
+		class="flex flex-col gap-[18px] px-gutter pt-section-S lg:absolute lg:top-[37.2%] lg:left-[33.6%] lg:w-[min(26.25rem,34vw)] lg:p-0"
+	>
+		<p class="text-caption text-muted">{OWNER}, fotograaf in Gent</p>
+		<h1 class="text-statement font-medium text-pretty">{TAGLINE}</h1>
+		<a href="/contact" class="flex items-center gap-2 self-start text-sm">
+			<span class="size-[7px] rounded-full bg-accent" aria-hidden="true"
+			></span>
+			Beschikbaar — plan een shoot <span aria-hidden="true">→</span>
+		</a>
+	</div>
+
+	<div
+		class="grid grid-cols-2 items-start gap-x-media gap-y-8 px-media pt-section-S md:grid-cols-3 lg:contents"
+	>
+		{
+			tiles.map(({ project, photo }, index) => {
+				const { x, y, w, h, depth } = COLLAGE_SLOTS[index];
+				const number = String(index + 1).padStart(2, '0');
+
+				return (
+					<a
+						href={`/werk/${project.id}`}
+						class:list={[
+							'tile group flex flex-col gap-2 even:mt-12 lg:mt-0 lg:even:mt-0',
+							{ 'max-lg:hidden': index >= FLOW_TILE_COUNT },
+						]}
+						style={`--x: ${x}; --y: ${y}; --w: ${w}; --h: ${h}; --depth: ${depth};`}
+						data-collage-tile
+					>
+						<div class="frame">
+							<Photo
+								src={photo.src}
+								alt={photo.alt ?? project.data.title}
+								sizes={`(min-width: 1024px) ${Math.round((w / COLLAGE_WIDTH) * 100)}vw, 50vw`}
+								loading="eager"
+								priority={w * h === largestArea}
+								class="size-full transition-colors group-hover:bg-frame-hover [&_img]:transition-opacity group-hover:[&_img]:opacity-90"
+							/>
+						</div>
+						<span class="text-micro text-muted">
+							{number} {project.data.title}
+						</span>
+					</a>
+				);
+			})
+		}
+	</div>
+
+	<div
+		class="absolute inset-x-0 bottom-7 hidden justify-between px-gutter text-caption text-muted lg:flex"
+	>
+		<a href="#uitgelicht">
+			Scroll voor projecten <span aria-hidden="true">↓</span>
+		</a>
+		<span>{SINCE} — nu</span>
+	</div>
+</section>
+
+<script>
+	const tiles = document.querySelectorAll<HTMLElement>('[data-collage-tile]');
+	const canDrift =
+		matchMedia('(pointer: fine)').matches &&
+		!matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+	function setDrift(element: HTMLElement, mx: number, my: number): void {
+		element.style.setProperty('--mx', mx.toFixed(3));
+		element.style.setProperty('--my', my.toFixed(3));
+	}
+
+	function attachDrift(element: HTMLElement): void {
+		let pendingFrame = 0;
+		let pointerX = 0;
+		let pointerY = 0;
+
+		const updateDrift = (): void => {
+			pendingFrame = 0;
+			const { left, top, width, height } = element.getBoundingClientRect();
+			// Measure from the untransformed tile, or the drift feeds back into itself.
+			const { e: driftX, f: driftY } = new DOMMatrixReadOnly(
+				getComputedStyle(element).transform,
+			);
+			const mx = ((pointerX - (left - driftX)) / width - 0.5) * 2;
+			const my = ((pointerY - (top - driftY)) / height - 0.5) * 2;
+			setDrift(element, mx, my);
+		};
+
+		const handlePointerMove = (event: PointerEvent): void => {
+			pointerX = event.clientX;
+			pointerY = event.clientY;
+			if (pendingFrame) return;
+
+			pendingFrame = requestAnimationFrame(updateDrift);
+		};
+
+		const handlePointerLeave = (): void => {
+			cancelAnimationFrame(pendingFrame);
+			pendingFrame = 0;
+			setDrift(element, 0, 0);
+		};
+
+		element.addEventListener('pointermove', handlePointerMove);
+		element.addEventListener('pointerleave', handlePointerLeave);
+	}
+
+	if (canDrift) tiles.forEach(attachDrift);
+</script>
+
+<style>
+	/* The hovered tile leans toward the pointer: leaning away would slide it
+	   out from under the cursor at its edge and make the hover flicker. */
+	.tile {
+		--mx: 0;
+		--my: 0;
+		transform: translate(
+			calc(var(--mx) * var(--depth) * 0.35px),
+			calc(var(--my) * var(--depth) * 0.35px)
+		);
+		transition: transform 0.6s var(--ease-drift);
+	}
+
+	.frame {
+		aspect-ratio: var(--w) / var(--h);
+		overflow: hidden;
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.tile:hover .frame,
+		.tile:focus-visible .frame {
+			animation: float 6s ease-in-out infinite;
+		}
+	}
+
+	@keyframes float {
+		50% {
+			translate: 0 -5px;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.tile {
+			transform: none;
+			transition: none;
+		}
+	}
+
+	@media (min-width: 64rem) {
+		.hero {
+			height: clamp(40rem, calc(100svh - var(--spacing-header)), 56rem);
+			container-type: size;
+		}
+
+		/* Positions follow the hero's own proportions, but sizes scale by its
+		   tighter axis so tiles keep their shape in wide-short or narrow-tall
+		   boxes instead of stretching into each other. */
+		.tile {
+			--unit: min(
+				100cqw / var(--collage-width),
+				100cqh / var(--collage-height)
+			);
+			position: absolute;
+			left: calc(var(--x) / var(--collage-width) * 100%);
+			top: calc(var(--y) / var(--collage-height) * 100%);
+			width: calc(var(--w) * var(--unit));
+		}
+	}
+</style>
