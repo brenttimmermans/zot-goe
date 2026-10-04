@@ -5,6 +5,7 @@ import Footer from '~/components/Site/Footer.astro';
 import Header from '~/components/Site/Header.astro';
 import ThemeScript from '~/components/Site/ThemeScript.astro';
 import { CITY, SITE_NAME, TAGLINE } from '~/config';
+import { DEFAULT_OG_IMAGE } from '~/lib/siteImages';
 import '~/styles/global.css';
 
 interface Props {
@@ -15,10 +16,14 @@ interface Props {
 	noindex?: boolean;
 }
 
+// Sharp can't read CSS variables, so this mirrors the light --color-bg that
+// transparent images are flattened onto for JPEG.
+const SOCIAL_IMAGE_BACKGROUND = 'hsl(40, 27%, 98%)';
+
 const {
 	title,
 	description = TAGLINE,
-	image,
+	image = DEFAULT_OG_IMAGE,
 	structuredData,
 	noindex = false,
 } = Astro.props;
@@ -28,16 +33,19 @@ const fullTitle = title
 	: `${SITE_NAME} — fotograaf in ${CITY}`;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 
-async function resolveSocialImage(): Promise<string | undefined> {
-	if (!image) return undefined;
-
+async function resolveSocialImage(): Promise<string> {
+	const isPortrait = image.height > image.width;
 	const { src } = await getImage({
 		src: image,
 		width: 1200,
 		height: 630,
 		fit: 'cover',
+		// A centred landscape crop of a portrait cuts through the face.
+		position: isPortrait ? 'top' : 'center',
 		format: 'jpeg',
+		background: SOCIAL_IMAGE_BACKGROUND,
 	});
+
 	return new URL(src, Astro.site).href;
 }
 
@@ -61,12 +69,12 @@ const socialImage = await resolveSocialImage();
 		<meta property="og:title" content={fullTitle} />
 		<meta property="og:description" content={description} />
 		<meta property="og:url" content={canonical} />
-		{socialImage && <meta property="og:image" content={socialImage} />}
+		<meta property="og:image" content={socialImage} />
 
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content={fullTitle} />
 		<meta name="twitter:description" content={description} />
-		{socialImage && <meta name="twitter:image" content={socialImage} />}
+		<meta name="twitter:image" content={socialImage} />
 
 		{
 			structuredData && (

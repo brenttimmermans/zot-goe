@@ -2,10 +2,9 @@
 import AboutTeaser from '~/components/Home/AboutTeaser.astro';
 import FeaturedProjects from '~/components/Home/FeaturedProjects.astro';
 import HeroCollage from '~/components/Home/HeroCollage.astro';
-import { CITY, EMAIL, OWNER, SITE_NAME, SITE_URL, TAGLINE } from '~/config';
+import { CITY, EMAIL, OWNER, SITE_NAME, SITE_URL } from '~/config';
 import { SOCIALS } from '~/constants/site';
 import BaseLayout from '~/layouts/BaseLayout.astro';
-import { DEFAULT_OG_IMAGE } from '~/lib/siteImages';
 
 const structuredData = {
 	'@context': 'https://schema.org',
@@ -27,11 +26,7 @@ const structuredData = {
 };
 ---
 
-<BaseLayout
-	description={TAGLINE}
-	image={DEFAULT_OG_IMAGE}
-	structuredData={structuredData}
->
+<BaseLayout structuredData={structuredData}>
 	<HeroCollage />
 	<FeaturedProjects />
 	<AboutTeaser />
