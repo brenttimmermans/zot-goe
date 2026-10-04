@@ -7,14 +7,14 @@ interface Props {
 }
 
 const { projects } = Astro.props;
-const disciplines = Object.values(Discipline).filter((discipline) =>
-	projects.some((project) => project.data.discipline === discipline),
+const categories = Object.values(Discipline).filter((category) =>
+	projects.some((project) => project.data.discipline === category),
 );
 ---
 
 <div
 	role="group"
-	aria-label="Filter op soort"
+	aria-label="Filter op categorie"
 	class="flex flex-wrap gap-x-5.5 gap-y-2 text-sm text-muted"
 	data-work-filter
 	hidden
@@ -28,14 +28,14 @@ const disciplines = Object.values(Discipline).filter((discipline) =>
 		Alles
 	</button>
 	{
-		disciplines.map((discipline) => (
+		categories.map((category) => (
 			<button
 				type="button"
 				aria-pressed="false"
 				class="cursor-pointer transition-colors hover:text-accent aria-pressed:text-ink"
-				data-filter={discipline}
+				data-filter={category}
 			>
-				{DISCIPLINE_LABELS[discipline]}
+				{DISCIPLINE_LABELS[category]}
 			</button>
 		))
 	}
@@ -44,7 +44,7 @@ const disciplines = Object.values(Discipline).filter((discipline) =>
 <script>
 	import { getWorkSlots } from '~/lib/workGrid';
 
-	const FILTER_PARAM = 'soort';
+	const FILTER_PARAM = 'categorie';
 
 	const group = document.querySelector<HTMLElement>('[data-work-filter]');
 	const buttons = [
@@ -54,14 +54,14 @@ const disciplines = Object.values(Discipline).filter((discipline) =>
 		...document.querySelectorAll<HTMLLIElement>('[data-work-grid] > li'),
 	];
 
-	function showDiscipline(discipline: string): void {
+	function showCategory(category: string): void {
 		for (const button of buttons) {
-			const isPressed = button.dataset.filter === discipline;
+			const isPressed = button.dataset.filter === category;
 			button.setAttribute('aria-pressed', String(isPressed));
 		}
 
 		const visible = items.filter(
-			(item) => !discipline || item.dataset.discipline === discipline,
+			(item) => !category || item.dataset.category === category,
 		);
 		for (const item of items) item.hidden = !visible.includes(item);
 
@@ -74,35 +74,35 @@ const disciplines = Object.values(Discipline).filter((discipline) =>
 		});
 	}
 
-	function writeDisciplineToUrl(discipline: string): void {
+	function writeCategoryToUrl(category: string): void {
 		const url = new URL(window.location.href);
-		if (discipline) url.searchParams.set(FILTER_PARAM, discipline);
+		if (category) url.searchParams.set(FILTER_PARAM, category);
 		else url.searchParams.delete(FILTER_PARAM);
 		history.replaceState(history.state, '', url);
 	}
 
-	function readDisciplineFromUrl(): string {
-		const discipline = new URLSearchParams(window.location.search).get(
+	function readCategoryFromUrl(): string {
+		const category = new URLSearchParams(window.location.search).get(
 			FILTER_PARAM,
 		);
 		const isKnown = buttons.some(
-			(button) => button.dataset.filter === discipline,
+			(button) => button.dataset.filter === category,
 		);
 
-		return isKnown && discipline ? discipline : '';
+		return isKnown && category ? category : '';
 	}
 
 	const handleFilterClick = (event: MouseEvent): void => {
 		if (!(event.currentTarget instanceof HTMLButtonElement)) return;
 
-		const discipline = event.currentTarget.dataset.filter ?? '';
-		showDiscipline(discipline);
-		writeDisciplineToUrl(discipline);
+		const category = event.currentTarget.dataset.filter ?? '';
+		showCategory(category);
+		writeCategoryToUrl(category);
 	};
 
 	for (const button of buttons) {
 		button.addEventListener('click', handleFilterClick);
 	}
-	showDiscipline(readDisciplineFromUrl());
+	showCategory(readCategoryFromUrl());
 	if (group) group.hidden = false;
 </script>
