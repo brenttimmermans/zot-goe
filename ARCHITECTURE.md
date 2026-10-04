@@ -120,10 +120,10 @@ tags. `@astrojs/sitemap` builds `sitemap-index.xml`.
 | Page | JSON-LD | `og:image` |
 | --- | --- | --- |
 | `/` | `WebSite` + `Person` | `DEFAULT_OG_IMAGE` |
-| `/werk` | `CollectionPage` | — |
+| `/werk` | `CollectionPage` | `DEFAULT_OG_IMAGE` |
 | `/werk/[slug]` | `ImageGallery` | cover |
 | `/over` | `AboutPage` | portrait |
-| `/contact` | `ContactPage` | — |
+| `/contact` | `ContactPage` | `DEFAULT_OG_IMAGE` |
 
 ## Quality gates
 
