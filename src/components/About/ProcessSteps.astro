@@ -1,0 +1,24 @@
+---
+import TextLink from '~/components/Common/TextLink.astro';
+import { PROCESS_STEPS } from '~/constants/site';
+---
+
+<section class="flex flex-col gap-9 px-gutter py-section-M">
+	<div class="flex flex-wrap items-baseline justify-between gap-4">
+		<h2 class="text-heading font-medium">Hoe het werkt</h2>
+		<TextLink href="/contact" arrow>Stuur een bericht</TextLink>
+	</div>
+	<ol class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+		{
+			PROCESS_STEPS.map(({ no, title, body }) => (
+				<li class="flex flex-col gap-2 border-t border-rule pt-[18px]">
+					<span class="text-caption text-accent" aria-hidden="true">
+						{no}
+					</span>
+					<h3 class="text-base font-medium">{title}</h3>
+					<p class="font-serif text-base leading-[1.6] text-subtle">{body}</p>
+				</li>
+			))
+		}
+	</ol>
+</section>
