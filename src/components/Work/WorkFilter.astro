@@ -1,5 +1,5 @@
 ---
-import { DISCIPLINE_LABELS, Discipline } from '~/constants/disciplines';
+import { CATEGORY_LABELS, Category } from '~/constants/categories';
 import type { Project } from '~/lib/projects';
 
 interface Props {
@@ -7,8 +7,8 @@ interface Props {
 }
 
 const { projects } = Astro.props;
-const categories = Object.values(Discipline).filter((category) =>
-	projects.some((project) => project.data.discipline === category),
+const categories = Object.values(Category).filter((category) =>
+	projects.some((project) => project.data.category === category),
 );
 ---
 
@@ -35,7 +35,7 @@ const categories = Object.values(Discipline).filter((category) =>
 				class="cursor-pointer transition-colors hover:text-accent aria-pressed:text-ink"
 				data-filter={category}
 			>
-				{DISCIPLINE_LABELS[category]}
+				{CATEGORY_LABELS[category]}
 			</button>
 		))
 	}

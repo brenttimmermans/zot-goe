@@ -1,14 +1,14 @@
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
-import { Discipline } from '~/constants/disciplines';
+import { Category } from '~/constants/categories';
 
 const projects = defineCollection({
 	loader: glob({ pattern: '*/index.yaml', base: './src/content/projects' }),
 	schema: ({ image }) =>
 		z.object({
 			title: z.string(),
-			discipline: z.enum(Discipline),
+			category: z.enum(Category),
 			kind: z.string(),
 			date: z.coerce.date(),
 			location: z.string(),
