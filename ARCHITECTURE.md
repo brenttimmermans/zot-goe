@@ -1,273 +1,135 @@
 # Architecture
 
-## Overview
-
-**Zot Goe** is the portfolio of Brent Timmermans, an event, concert,
-motorsport and wedding photographer in Gent. The site is in Dutch
-(`lang="nl"`, `og:locale` `nl_BE`) and fully static: Astro renders every page
-at build time into `dist/`, with no server and no adapter. Projects live as
-YAML plus photos in a content collection. The only client JavaScript is the
-theme toggle, the hero collage drift, the work filter and the lightbox.
+Photography portfolio of Brent Timmermans. Dutch (`lang="nl"`), fully static:
+Astro builds every page into `dist/`. No server, no adapter.
 
 ## Stack
 
-| Layer | Technology | Version |
-| --- | --- | --- |
-| Runtime | Node | 24 (`.node-version`) |
-| Framework | Astro (static output, content collections, `astro:assets`, `astro:env`) | 7.3.5 |
-| Styling | Tailwind CSS via `@tailwindcss/vite`, CSS-first `@theme` | 4.3.3 |
-| Language | TypeScript, `astro/tsconfigs/strict` | 6.0.3 |
-| Type check | `@astrojs/check` | 0.9.10 |
-| Fonts | `@fontsource-variable/archivo`, `@fontsource-variable/newsreader` | 5.3.0 |
-| Lightbox | GLightbox | 3.3.1 |
-| Sitemap | `@astrojs/sitemap` | 3.7.4 |
-| Contact form | Web3Forms (plain HTML POST) | — |
-| Lint & format | Biome | 2.5.6 |
-| Tests | Vitest | 5.0.3 |
-| Git hooks | Husky + lint-staged | 9.1.7 / 17.3.0 |
+| | |
+| --- | --- |
+| Runtime | Node 24 |
+| Framework | Astro 7.3.5 |
+| Styling | Tailwind CSS 4.3.3 (CSS-first `@theme`, no config file) |
+| Language | TypeScript 6.0.3, strict |
+| Fonts | Archivo (UI), Newsreader (prose), via Fontsource |
+| Lightbox | GLightbox 3.3.1 |
+| Contact form | Web3Forms |
+| Lint & format | Biome 2.5.6 |
+| Tests | Vitest 5.0.3 |
+| Hooks | Husky + lint-staged |
 
-## Directory structure
+## Structure
 
 ```
-zot-goe/
-├── src/
-│   ├── assets/
-│   │   ├── icons/              sun.svg, moon.svg (inlined with ?raw)
-│   │   ├── site/               portrait.png (stand-in)
-│   │   └── stand-in/           01–12.jpg, placeholder photos for seeded projects
-│   ├── components/
-│   │   ├── Common/             Photo, TextLink, Button
-│   │   ├── Site/               Header, Footer, ThemeToggle, ThemeScript
-│   │   ├── Project/            ProjectCard, Gallery, LightboxLink, Lightbox, NextProject
-│   │   ├── Home/               HeroCollage, FeaturedProjects, AboutTeaser
-│   │   ├── Work/               WorkGrid, WorkFilter
-│   │   ├── About/              ProcessSteps
-│   │   └── Contact/            ContactForm, Field
-│   ├── constants/              categories.ts (Category, CATEGORY_LABELS), site.ts
-│   ├── content/projects/<slug>/index.yaml (+ that project's own photos)
-│   ├── layouts/BaseLayout.astro
-│   ├── lib/                    projects, format, siteImages, collage, workGrid,
-│   │                           gallery (+ co-located *.test.ts)
-│   ├── pages/                  index, werk/index, werk/[slug], over, contact,
-│   │                           contact/bedankt, 404
-│   ├── styles/                 global.css, tokens.css, fonts.css
-│   ├── types/site.ts           NavLink, Social, ProcessStep
-│   ├── config.ts               site facts: SITE_URL, SITE_NAME, OWNER, EMAIL, …
-│   ├── content.config.ts       projects collection schema
-│   └── env.ts                  astro:env schema (PUBLIC_WEB3FORMS_KEY)
-├── public/                     favicon.svg, robots.txt
-├── docs/plans/                 the redesign plans (history)
-├── .github/workflows/ci.yml
-├── .husky/                     pre-commit, pre-push
-├── astro.config.mjs
-├── biome.json
-├── tsconfig.json               strict, `~/*` → `src/*`
-└── vitest.config.ts
+src/
+  assets/            icons/, site/portrait.png, stand-in/ (placeholder photos)
+  components/        Common, Site, Project, Home, Work, About, Contact
+  constants/         categories.ts, site.ts (nav, socials, process steps)
+  content/projects/  <slug>/index.yaml + photos
+  layouts/           BaseLayout.astro
+  lib/               pure logic + co-located *.test.ts
+  pages/             routes
+  styles/            global.css, tokens.css, fonts.css
+  types/site.ts
+  config.ts          site facts (URL, name, owner, email, tagline)
+  content.config.ts  project schema
+  env.ts             PUBLIC_WEB3FORMS_KEY schema
+public/              favicon.svg, robots.txt
+docs/plans/          redesign history
 ```
 
-Folders under `components/` are PascalCase and grouped by domain. A component
-moves to `Common/` only once a second domain needs it. Imports use `~/` across
-directories and relative paths within a folder or one level up.
+Imports use `~/` (→ `src/`) across folders, relative paths within one.
 
 ## Routes
 
-| Route | File | Content |
-| --- | --- | --- |
-| `/` | `pages/index.astro` | Hero collage, featured projects, about teaser |
-| `/werk` | `pages/werk/index.astro` | All projects, newest first, with category filter |
-| `/werk/[slug]` | `pages/werk/[slug].astro` | Cover, meta line, story, gallery with lightbox, next project |
-| `/over` | `pages/over.astro` | Portrait, bio, the four "how it works" steps |
-| `/contact` | `pages/contact.astro` | Photo and contact form |
-| `/contact/bedankt` | `pages/contact/bedankt.astro` | Thank-you page after the form posts (`noindex`) |
-| `/404` | `pages/404.astro` | Not found (`noindex`) |
-
-`[slug]` is the project folder name. `getStaticPaths` builds one page per
-project.
+| Route | Shows |
+| --- | --- |
+| `/` | Hero collage, featured projects, about teaser |
+| `/werk` | All projects, newest first, category filter |
+| `/werk/[slug]` | Cover, story, gallery + lightbox, next project |
+| `/over` | Portrait, bio, "Hoe het werkt" steps |
+| `/contact` | Contact form |
+| `/contact/bedankt` | Thank-you page (`noindex`) |
+| `/404` | Not found (`noindex`) |
 
 ## Components
 
-| Folder | Component | Role |
-| --- | --- | --- |
-| `Common` | `Photo` | The only way to render an image (see [Image pipeline](#image-pipeline)) |
-| | `TextLink` | Link with `underline` or `plain` variant and optional `→` arrow |
-| | `Button` | Pill button with slot content |
-| `Site` | `Header` | `Zot Goe` brand, main nav with `aria-current`, theme toggle |
-| | `Footer` | Hairline footer: email, socials, `Gent · © {year}` |
-| | `ThemeScript` | Inline head script that sets `data-theme` before first paint |
-| | `ThemeToggle` | Sun/moon button that flips and stores the theme |
-| `Project` | `ProjectCard` | Cover in a frame plus title and `kind` (optionally with year) |
-| | `Gallery` | Detail-page photo rows from `buildGalleryRows` |
-| | `LightboxLink` | Wraps a photo in a link to its full-size WebP for GLightbox |
-| | `Lightbox` | Loads GLightbox, Dutch button labels, focus handling, themed chrome |
-| | `NextProject` | "Volgend project" link at the bottom of a detail page |
-| `Home` | `HeroCollage` | Floating photo collage with the tagline |
-| | `FeaturedProjects` | Five featured projects in three staggered rows |
-| | `AboutTeaser` | Serif intro with a link to `/over` |
-| `Work` | `WorkGrid` | 12-column project grid from `getWorkSlots` |
-| | `WorkFilter` | Category buttons that filter and re-flow the grid |
-| `About` | `ProcessSteps` | `PROCESS_STEPS` as numbered steps, each under a rule |
-| `Contact` | `ContactForm` | Web3Forms form: name, email, message, honeypot |
-| | `Field` | Label plus underlined input or textarea |
+| Folder | Components |
+| --- | --- |
+| `Common` | `Photo` (all images), `TextLink`, `Button` |
+| `Site` | `Header`, `Footer`, `ThemeToggle`, `ThemeScript` |
+| `Project` | `ProjectCard`, `Gallery`, `LightboxLink`, `Lightbox`, `NextProject` |
+| `Home` | `HeroCollage`, `FeaturedProjects`, `AboutTeaser` |
+| `Work` | `WorkGrid`, `WorkFilter` |
+| `About` | `ProcessSteps` |
+| `Contact` | `ContactForm`, `Field` |
 
-`BaseLayout` wraps every page: `<head>` meta, skip link (`#inhoud`), header,
-`<main>`, footer. Props: `title`, `description` (defaults to `TAGLINE`),
-`image` (`ImageMetadata` for `og:image`), `structuredData` and `noindex`.
-
-Site-wide facts live in `src/config.ts`. Repeated copy (nav, socials, process
-steps) lives in `src/constants/site.ts`. One-off prose stays in its page.
+`BaseLayout` props: `title`, `description`, `image`, `structuredData`,
+`noindex`.
 
 ## Data model
 
-One collection, `projects`, defined in `src/content.config.ts`. A `glob`
-loader reads `src/content/projects/*/index.yaml`; the entry id is the folder
-name, which is also the URL slug.
+`src/content/projects/<slug>/index.yaml`. The folder name is the slug. Field
+reference: [README → Adding a project](./README.md#adding-a-project).
 
-| Field | Type | Used for |
-| --- | --- | --- |
-| `title` | string | Card, detail `<h1>`, collage label, page title |
-| `category` | `Category` enum | `/werk` filter |
-| `kind` | string | Display label on cards and the detail meta line |
-| `date` | date (`YYYY-MM-DD`) | Sort order (newest first), "april 2025" / "2025" |
-| `location` | string | Detail meta line, JSON-LD |
-| `summary` | string | Meta description, JSON-LD |
-| `featured` | positive integer, optional | Rank on the home page (1 comes first) |
-| `story` | 1–3 strings | Serif paragraphs on the detail page |
-| `cover` | `{ src, alt }` | Card, detail hero, `og:image`, lightbox photo 1 |
-| `photos` | 1+ `{ src, alt? }` | Detail gallery, in order |
+- Image paths are relative to the YAML and checked by `image()`: a bad path
+  fails the build.
+- `category` is the `Category` enum (`constants/categories.ts`): `concert`,
+  `event`, `motorsport`, `huwelijk`.
+- `featured` is a home-page rank. Five slots; extra ranks are ignored.
+- Read only through `lib/projects.ts`: `getProjects()` (newest first),
+  `getFeaturedProjects()`, `getNextProject()`.
 
-- Image `src` paths are relative to the YAML file and validated by `image()`,
-  so a typo fails the build. A project may point at photos in another folder
-  (the stand-ins do).
-- `Category` (`src/constants/categories.ts`) is a string enum: `concert`,
-  `event`, `motorsport`, `huwelijk`. `CATEGORY_LABELS` holds the plural filter
-  labels. The filter only shows categories that have projects.
-- `featured`: `getFeaturedProjects()` keeps projects with a rank and sorts by
-  it. `FeaturedProjects` has five slots, so ranks beyond the fifth project are
-  ignored.
-- A photo without `alt` gets `"<title>, foto <n>"` in the gallery and the
-  project title in the collage.
+## Images
 
-`src/lib/projects.ts` is the only reader of the collection: `getProjects()`
-(newest first), `getFeaturedProjects()` and `getNextProject()` (the next
-older project, wrapping around).
+| Where | Output |
+| --- | --- |
+| `Common/Photo` | `<Picture>`, AVIF + WebP, 480–2400 px, caller passes `sizes` |
+| `Project/LightboxLink` | One WebP, max 2400 px |
+| `BaseLayout` `image` | 1200×630 JPEG for `og:image` |
 
-## Image pipeline
-
-Every photo is an imported `ImageMetadata` (from the content tree,
-`src/assets/` or `src/lib/siteImages.ts`), never a file in `public/`.
-
-- **`Common/Photo`** renders Astro's `<Picture>` with `formats={['avif',
-  'webp']}` and widths 480, 800, 1200, 1600, 2000, 2400, capped at the source
-  width. Each caller passes a real `sizes` for its layout. `fit="cover"` fills
-  the frame; `fit="natural"` keeps the photo's own ratio. The wrapper has a
-  `bg-frame` background while the image loads.
-- **Loading**: lazy by default. Above-the-fold images use `loading="eager"`
-  and one image per page gets `priority` (`fetchpriority="high"`): the largest
-  collage tile, the project cover, the portrait.
-- **Lightbox**: `LightboxLink` points at a single WebP up to 2400 px wide,
-  made with `getImage`.
-- **Social**: `BaseLayout` turns `image` into a 1200×630 JPEG for
-  `og:image` and `twitter:image`. The project page lists 1600 px versions of
-  every photo in its JSON-LD.
-- **Site images** (`src/lib/siteImages.ts`): `PORTRAIT`, `CONTACT_IMAGE` and
-  `DEFAULT_OG_IMAGE`.
-
-Identical transforms are cached, so stand-ins shared between projects are
-only processed once.
+- Lazy by default; one `priority` image per page.
+- Never serve photos from `public/`.
+- Site images (`PORTRAIT`, `CONTACT_IMAGE`, `DEFAULT_OG_IMAGE`) live in
+  `lib/siteImages.ts`.
 
 ## Theming
 
-- **Tokens** live in `src/styles/tokens.css` inside Tailwind's `@theme`, so
-  each one becomes utilities (`bg-bg`, `text-ink`, `border-hairline`,
-  `px-gutter`, `text-prose`, `max-w-copy`, …). Colours are `hsl()` and
-  components never use raw colours. Colour roles: `bg`, `ink`, `body`,
-  `subtle`, `muted`, `hint`, `rule`, `hairline`, `field`, `frame`,
-  `frame-hover`, `accent` (coral) and `on-accent`.
-- **Type**: Archivo for UI and headings, Newsreader for prose (`font-serif`).
-  Each `--text-*` token carries its line height and letter spacing, so
-  `text-heading` or `text-prose` is the whole style. Fluid sizes use `clamp()`
-  up to a 1280 px viewport.
-- **Space**: `gutter` (text, 40 px at 1280), `media` (photos and grid gaps,
-  24 px), `section-S`…`section-XL`, `header`. Pages cap at `max-w-page`
-  (100rem).
-- **Dark palette**: a warm dark paper, not black. `[data-theme="dark"]` in
-  `tokens.css` overrides every colour variable and sets `color-scheme: dark`.
-  `global.css` defines the `dark:` variant on the same attribute.
-- **No-flash script**: `Site/ThemeScript` is an inline script at the top of
-  `<head>`. It sets `<html data-theme>` from `localStorage.theme`, falling
-  back to `prefers-color-scheme`.
-- **Toggle**: `Site/ThemeToggle` flips `data-theme`, stores the choice in
-  `localStorage.theme` and keeps `aria-pressed` in sync. Until the visitor
-  picks a theme, it follows system changes. The sun and moon icons swap with
-  `dark:`.
-- **Global rules** (`global.css`): links turn `accent` on hover, every
-  interactive element gets a 2 px accent `focus-visible` outline, and the
-  selection is accent on `on-accent`.
+- **Tokens**: `styles/tokens.css` `@theme`. All colours are `hsl()` roles
+  (`bg`, `ink`, `body`, `muted`, `accent`, …). Never use raw colours.
+- **Dark**: `[data-theme="dark"]` overrides the colour tokens; `dark:`
+  variant keys off the same attribute.
+- **No flash**: `ThemeScript` (inline in `<head>`) sets `data-theme` from
+  `localStorage.theme`, falling back to the system setting.
+- **Toggle**: `ThemeToggle` flips and stores the theme.
 
-## Layout logic
+## Layout logic (`src/lib/`)
 
-Layout decisions that can be tested live in `src/lib/` as pure functions.
-Components only map their output to classes.
-
-- **`collage.ts`**: `COLLAGE_SLOTS` holds eight tiles (x, y, w, h, depth) in
-  design pixels inside a 1280×888 box. `pickCollageTiles()` takes covers
-  first, then each project's next photo, round-robin over the newest-first
-  projects, so every project appears before any repeats. From `lg` (1024 px)
-  `HeroCollage` positions tiles absolutely inside a size container and scales
-  them by the tighter axis. Below `lg` it shows the first six tiles in a two-
-  or three-column flow. On fine pointers, a hovered tile drifts toward the
-  cursor by its `depth`. All motion stops under `prefers-reduced-motion`.
-- **`workGrid.ts`**: `getWorkSlots(count)` repeats a six-card pattern on a
-  12-column grid (8+4, 4+8, 6+6; tall rows, then a short row). An odd last
-  card is centred at 8 columns. `WorkFilter` runs the same function in the
-  browser to re-flow the visible cards after filtering, and keeps the filter
-  in `?categorie=`. The filter stays hidden until its script runs.
-- **`gallery.ts`**: `buildGalleryRows(photos)` groups photos by orientation.
-  A landscape photo gets a full-width `wide` row, or a `pair` with the next
-  landscape when the previous row was already wide. A portrait pairs with the
-  next portrait (`pair`) or landscape (`offset`, 5:7 columns). A last lone
-  portrait is a centred `single`.
-- **`format.ts`**: `formatMonthYear()` ("april 2025", `nl-BE`, UTC) and
-  `formatYear()`.
-
-## Contact form
-
-`ContactForm` is a plain `<form method="POST">` to
-`https://api.web3forms.com/submit`, with no client JavaScript. Hidden fields
-carry the access key, the subject and an absolute `redirect` to
-`/contact/bedankt`; `botcheck` is a honeypot. The key comes from
-`PUBLIC_WEB3FORMS_KEY`, declared in `src/env.ts` as an optional public
-`astro:env` variable and read from `.env` at build time.
+| File | Does |
+| --- | --- |
+| `collage.ts` | 8 hero slots in a 1280×888 box; picks covers first, round-robin over projects |
+| `workGrid.ts` | `/werk` 12-col pattern (8+4, 4+8, 6+6); odd last card centred. Reused by the filter in the browser |
+| `gallery.ts` | Groups photos by orientation into `wide`, `pair`, `offset`, `single` rows |
+| `format.ts` | `formatMonthYear()` → "april 2025", `formatYear()` |
 
 ## SEO
 
-`BaseLayout` writes the title (`<title> — Zot Goe`, or `Zot Goe — fotograaf
-in Gent` on the home page), description, canonical URL, Open Graph and
-Twitter tags, and `robots: noindex` when asked. `@astrojs/sitemap` generates
-`sitemap-index.xml` from `site: 'https://zotgoe.be'`, and `public/robots.txt`
-points at it.
+`BaseLayout` writes title, description, canonical, Open Graph and Twitter
+tags. `@astrojs/sitemap` builds `sitemap-index.xml`.
 
 | Page | JSON-LD | `og:image` |
 | --- | --- | --- |
-| `/` | `@graph` of `WebSite` and `Person` (address, email, `sameAs` socials) | `DEFAULT_OG_IMAGE` |
-| `/werk` | `CollectionPage` with an `ItemList` of project URLs | — |
-| `/werk/[slug]` | `ImageGallery`: name, summary, date, place, creator, image URLs | cover |
-| `/over` | `AboutPage` with `Person` | portrait |
-| `/contact` | `ContactPage` with `Person` | — |
-| `/contact/bedankt`, `/404` | none, `noindex` | — |
+| `/` | `WebSite` + `Person` | `DEFAULT_OG_IMAGE` |
+| `/werk` | `CollectionPage` | — |
+| `/werk/[slug]` | `ImageGallery` | cover |
+| `/over` | `AboutPage` | portrait |
+| `/contact` | `ContactPage` | — |
 
 ## Quality gates
 
-- **Tests**: Vitest, configured through Astro's `getViteConfig` so `astro:*`
-  modules resolve. Tests sit next to their source in `src/lib/*.test.ts` and
-  cover the pure layout and data functions.
-- **Lint & format**: Biome (`biome.json`): tabs, single quotes, 80 columns,
-  recommended rules, organised imports. It lints `.astro` frontmatter but
-  doesn't format the template markup.
-- **Types**: `npm run check:types` runs `astro check`.
-- **Hooks**: `pre-commit` runs lint-staged (`biome check --write` on staged
-  files). `pre-push` runs `npx biome ci . && npm run check:types && npm test
-  && npm run build`.
-- **CI**: `.github/workflows/ci.yml` runs the same four steps after `npm ci`
-  on every push to `main` and every pull request, with Node from
-  `.node-version`.
+| When | Runs |
+| --- | --- |
+| Commit | `biome check --write` on staged files |
+| Push and CI (`.github/workflows/ci.yml`) | `npx biome ci .`, `npm run check:types`, `npm test`, `npm run build` |
+
+Tests: `src/lib/*.test.ts`, Vitest through Astro's `getViteConfig`.
