@@ -32,6 +32,3 @@ export const PROCESS_STEPS: ProcessStep[] = [
 		body: 'Bewerkte selectie in web- en drukformaat, binnen een week. Sneller kan, in overleg.',
 	},
 ];
-
-export const CONTACT_HINT =
-	'Datum · Soort shoot · Locatie · Waarvoor je de beelden gaat gebruiken';

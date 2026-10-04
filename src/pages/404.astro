@@ -1,0 +1,17 @@
+---
+import TextLink from '~/components/Common/TextLink.astro';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Niet gevonden" noindex>
+	<div class="flex max-w-copy flex-col gap-[18px] px-gutter py-section-L">
+		<h1 class="text-heading font-medium">Deze pagina bestaat niet (meer)</h1>
+		<p class="font-serif text-prose text-pretty text-body">
+			Misschien is de link verouderd of zit er een tikfout in het adres.
+		</p>
+		<div class="flex flex-wrap gap-x-6 gap-y-3">
+			<TextLink href="/werk" variant="plain" arrow>Bekijk mijn werk</TextLink>
+			<TextLink href="/" variant="plain" arrow>Naar de homepage</TextLink>
+		</div>
+	</div>
+</BaseLayout>

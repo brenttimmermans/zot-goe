@@ -12,7 +12,7 @@ interface Props {
 	class?: string;
 }
 
-const WIDTHS = [480, 800, 1200, 1600, 2000, 2400];
+const WIDTHS = [480, 800, 1200, 1600, 2400];
 
 const {
 	src,
@@ -34,7 +34,8 @@ const widths = [...WIDTHS.filter((width) => width < maxWidth), maxWidth];
 		alt={alt}
 		sizes={sizes}
 		widths={widths}
-		formats={['avif', 'webp']}
+		formats={['avif']}
+		fallbackFormat="webp"
 		loading={priority ? undefined : loading}
 		priority={priority}
 		class:list={[fit === 'cover' ? 'size-full object-cover' : 'h-auto w-full']}

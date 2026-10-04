@@ -15,9 +15,8 @@ const categories = Object.values(Category).filter((category) =>
 <div
 	role="group"
 	aria-label="Filter op categorie"
-	class="flex flex-wrap gap-x-5.5 gap-y-2 text-sm text-muted"
+	class="flex flex-wrap gap-x-5.5 gap-y-2 text-sm text-muted noscript:hidden"
 	data-work-filter
-	hidden
 >
 	<button
 		type="button"
@@ -46,7 +45,6 @@ const categories = Object.values(Category).filter((category) =>
 
 	const FILTER_PARAM = 'categorie';
 
-	const group = document.querySelector<HTMLElement>('[data-work-filter]');
 	const buttons = [
 		...document.querySelectorAll<HTMLButtonElement>('[data-work-filter] button'),
 	];
@@ -104,5 +102,4 @@ const categories = Object.values(Category).filter((category) =>
 		button.addEventListener('click', handleFilterClick);
 	}
 	showCategory(readCategoryFromUrl());
-	if (group) group.hidden = false;
 </script>

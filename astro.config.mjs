@@ -8,7 +8,10 @@ import { ENV_SCHEMA } from './src/env';
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://zotgoe.be',
-	integrations: [sitemap()],
+	integrations: [
+		sitemap({ filter: (page) => !page.includes('/contact/bedankt') }),
+	],
+	prefetch: { prefetchAll: true, defaultStrategy: 'viewport' },
 	env: {
 		schema: ENV_SCHEMA,
 	},
