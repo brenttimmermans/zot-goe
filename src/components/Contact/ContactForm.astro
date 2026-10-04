@@ -7,7 +7,6 @@ import Field from './Field.astro';
 const WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit';
 
 const redirectUrl = new URL('/contact/bedankt', SITE_URL);
-const showMissingKeyNote = !PUBLIC_WEB3FORMS_KEY && import.meta.env.DEV;
 ---
 
 <form
@@ -48,11 +47,4 @@ const showMissingKeyNote = !PUBLIC_WEB3FORMS_KEY && import.meta.env.DEV;
 			of mail naar <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
 		</p>
 	</div>
-	{
-		showMissingKeyNote && (
-			<p class="text-caption text-accent">
-				PUBLIC_WEB3FORMS_KEY ontbreekt: formulier verstuurt niet.
-			</p>
-		)
-	}
 </form>
