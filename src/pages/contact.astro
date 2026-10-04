@@ -1,7 +1,7 @@
 ---
 import Photo from '~/components/Common/Photo.astro';
 import ContactForm from '~/components/Contact/ContactForm.astro';
-import { EMAIL, OWNER, SITE_URL } from '~/config';
+import { CITY, EMAIL, OWNER, SITE_URL } from '~/config';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import { CONTACT_IMAGE } from '~/lib/siteImages';
 
@@ -20,7 +20,7 @@ const structuredData = {
 		email: EMAIL,
 		address: {
 			'@type': 'PostalAddress',
-			addressLocality: 'Gent',
+			addressLocality: CITY,
 			addressCountry: 'BE',
 		},
 	},

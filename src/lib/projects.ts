@@ -17,6 +17,7 @@ export function selectFeatured(projects: Project[]): Project[] {
 
 export async function getProjects(): Promise<Project[]> {
 	const projects = await getCollection('projects');
+
 	return sortByNewest(projects);
 }
 

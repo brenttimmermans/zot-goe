@@ -7,6 +7,12 @@ import Field from './Field.astro';
 const WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit';
 
 const redirectUrl = new URL('/contact/bedankt', SITE_URL);
+
+if (!PUBLIC_WEB3FORMS_KEY) {
+	console.warn(
+		'[ContactForm] PUBLIC_WEB3FORMS_KEY is not set, so the contact form will not deliver messages.',
+	);
+}
 ---
 
 <form

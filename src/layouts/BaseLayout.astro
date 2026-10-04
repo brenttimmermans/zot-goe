@@ -4,7 +4,7 @@ import { getImage } from 'astro:assets';
 import Footer from '~/components/Site/Footer.astro';
 import Header from '~/components/Site/Header.astro';
 import ThemeScript from '~/components/Site/ThemeScript.astro';
-import { SITE_NAME, TAGLINE } from '~/config';
+import { CITY, SITE_NAME, TAGLINE } from '~/config';
 import '~/styles/global.css';
 
 interface Props {
@@ -13,10 +13,6 @@ interface Props {
 	image?: ImageMetadata;
 	structuredData?: Record<string, unknown>;
 	noindex?: boolean;
-	/** @deprecated legacy callers only; removed in plan 30 */
-	ogImage?: string;
-	/** @deprecated legacy callers only; removed in plan 30 */
-	canonicalUrl?: string;
 }
 
 const {
@@ -25,17 +21,15 @@ const {
 	image,
 	structuredData,
 	noindex = false,
-	ogImage,
-	canonicalUrl,
 } = Astro.props;
 
 const fullTitle = title
 	? `${title} — ${SITE_NAME}`
-	: `${SITE_NAME} — fotograaf in Gent`;
-const canonical = canonicalUrl ?? new URL(Astro.url.pathname, Astro.site).href;
+	: `${SITE_NAME} — fotograaf in ${CITY}`;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
 
 async function resolveSocialImage(): Promise<string | undefined> {
-	if (!image) return ogImage ? new URL(ogImage, Astro.site).href : undefined;
+	if (!image) return undefined;
 
 	const { src } = await getImage({
 		src: image,
