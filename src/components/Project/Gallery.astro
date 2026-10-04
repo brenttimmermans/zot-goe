@@ -1,0 +1,76 @@
+---
+import Photo from '~/components/Common/Photo.astro';
+import { buildGalleryRows, GalleryRowKind } from '~/lib/gallery';
+import type { ProjectPhoto } from '~/lib/projects';
+import LightboxLink from './LightboxLink.astro';
+
+interface Props {
+	title: string;
+	photos: ProjectPhoto[];
+	firstNumber: number;
+	total: number;
+}
+
+interface RowLayout {
+	class: string;
+	sizes: string[];
+}
+
+const FULL = '100vw';
+const HALF = '(min-width: 768px) 50vw, 100vw';
+
+const ROW_LAYOUTS: Record<GalleryRowKind, RowLayout> = {
+	[GalleryRowKind.Wide]: { class: '', sizes: [FULL] },
+	[GalleryRowKind.Pair]: {
+		class: 'md:grid-cols-2 md:items-start',
+		sizes: [HALF, HALF],
+	},
+	[GalleryRowKind.Offset]: {
+		class: 'md:grid-cols-[5fr_7fr] md:items-end',
+		sizes: ['(min-width: 768px) 42vw, 100vw', '(min-width: 768px) 58vw, 100vw'],
+	},
+	[GalleryRowKind.Single]: {
+		class: 'md:mx-auto md:w-7/12',
+		sizes: ['(min-width: 768px) 58vw, 100vw'],
+	},
+};
+
+const { title, photos, firstNumber, total } = Astro.props;
+const rows = buildGalleryRows(photos);
+
+function numberOf(photo: ProjectPhoto): number {
+	return firstNumber + photos.indexOf(photo);
+}
+
+function altOf(photo: ProjectPhoto): string {
+	return photo.alt ?? `${title}, foto ${numberOf(photo)}`;
+}
+---
+
+<div class="flex flex-col gap-media px-media pb-media">
+	{
+		rows.map((row) => {
+			const layout = ROW_LAYOUTS[row.kind];
+
+			return (
+				<div class:list={['grid gap-media', layout.class]}>
+					{row.photos.map((photo, index) => (
+						<LightboxLink
+							src={photo.src}
+							alt={altOf(photo)}
+							number={numberOf(photo)}
+							total={total}
+						>
+							<Photo
+								src={photo.src}
+								alt={altOf(photo)}
+								sizes={layout.sizes[index]}
+								fit="natural"
+							/>
+						</LightboxLink>
+					))}
+				</div>
+			);
+		})
+	}
+</div>
