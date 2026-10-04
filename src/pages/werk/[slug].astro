@@ -1,46 +1,104 @@
 ---
-import type { GetStaticPaths } from 'astro';
+import type { GetStaticPaths, ImageMetadata } from 'astro';
+import { getImage } from 'astro:assets';
 import Photo from '~/components/Common/Photo.astro';
+import Gallery from '~/components/Project/Gallery.astro';
+import Lightbox from '~/components/Project/Lightbox.astro';
+import LightboxLink from '~/components/Project/LightboxLink.astro';
+import NextProject from '~/components/Project/NextProject.astro';
+import { OWNER } from '~/config';
 import BaseLayout from '~/layouts/BaseLayout.astro';
-import { getProjects, type Project } from '~/lib/projects';
+import { formatMonthYear } from '~/lib/format';
+import { getNextProject, getProjects, type Project } from '~/lib/projects';
+
+const STRUCTURED_DATA_IMAGE_WIDTH = 1600;
 
 interface Props {
 	project: Project;
+	next?: Project;
 }
 
 export const getStaticPaths = (async () => {
 	const projects = await getProjects();
+
 	return projects.map((project) => ({
 		params: { slug: project.id },
-		props: { project },
+		props: { project, next: getNextProject(projects, project.id) },
 	}));
 }) satisfies GetStaticPaths;
 
-const { project } = Astro.props;
-const { title, summary, cover, photos } = project.data;
+const { project, next } = Astro.props;
+const { title, kind, date, location, summary, story, cover, photos } =
+	project.data;
+const lightboxTotal = photos.length + 1;
+
+async function getAbsoluteImageUrl(src: ImageMetadata): Promise<string> {
+	const image = await getImage({
+		src,
+		width: Math.min(STRUCTURED_DATA_IMAGE_WIDTH, src.width),
+	});
+
+	return new URL(image.src, Astro.site).href;
+}
+
+const imageUrls = await Promise.all(
+	[cover, ...photos].map((photo) => getAbsoluteImageUrl(photo.src)),
+);
+
+const structuredData = {
+	'@context': 'https://schema.org',
+	'@type': 'ImageGallery',
+	name: title,
+	description: summary,
+	dateCreated: date.toISOString().slice(0, 10),
+	locationCreated: { '@type': 'Place', name: location },
+	creator: { '@type': 'Person', name: OWNER },
+	image: imageUrls,
+};
 ---
 
-<BaseLayout title={title} description={summary}>
+<BaseLayout
+	title={title}
+	description={summary}
+	image={cover.src}
+	structuredData={structuredData}
+>
 	<div class="px-media">
-		<Photo
+		<LightboxLink
 			src={cover.src}
 			alt={cover.alt}
-			sizes="100vw"
-			class="aspect-hero"
-			priority
-		/>
+			number={1}
+			total={lightboxTotal}
+		>
+			<Photo
+				src={cover.src}
+				alt={cover.alt}
+				sizes="100vw"
+				fit="cover"
+				class="aspect-[4/5] md:aspect-hero"
+				priority
+			/>
+		</LightboxLink>
 	</div>
-	<h1 class="px-gutter py-section-S text-heading">{title}</h1>
-	<div class="flex flex-col gap-media px-media pb-media">
-		{
-			photos.map((photo, index) => (
-				<Photo
-					src={photo.src}
-					alt={photo.alt ?? `${title}, foto ${index + 1}`}
-					sizes="100vw"
-					fit="natural"
-				/>
-			))
-		}
+	<div
+		class="grid items-start gap-8 px-gutter pt-section-S pb-section-L md:grid-cols-2 md:gap-[60px]"
+	>
+		<div class="flex flex-col gap-2.5">
+			<h1 class="text-heading font-medium">{title}</h1>
+			<p class="text-sm text-muted">
+				{kind} · {location} · {formatMonthYear(date)}
+			</p>
+		</div>
+		<div class="flex flex-col gap-4 font-serif text-prose text-body text-pretty">
+			{story.map((paragraph) => <p>{paragraph}</p>)}
+		</div>
 	</div>
+	<Gallery
+		title={title}
+		photos={photos}
+		firstNumber={2}
+		total={lightboxTotal}
+	/>
+	{next && <NextProject next={next} />}
+	<Lightbox />
 </BaseLayout>
