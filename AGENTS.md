@@ -7,6 +7,9 @@ Before starting any task, **read these two files in full**:
 
 These are required reading. Every task should be consistent with both documents.
 
+- [`docs/plans/`](./docs/plans/) is the history of the "Final" redesign: why the site looks and is structured the way it is. Read it for context, not as current instructions.
+- To add a project or replace stand-in photos, follow the [Content](./README.md#content) section of the README.
+
 ## Comments
 
 Code must be self-explanatory; prefer clear names and structure over comments.
