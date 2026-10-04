@@ -92,5 +92,6 @@ Five projects use placeholder photos. Only `spa-24h` is real.
 
 ## Deploy
 
-`npm run build`, then upload `dist/` to any static host. Set
-`PUBLIC_WEB3FORMS_KEY` in the build environment.
+Cloudflare Pages builds and hosts the site: `npm run build`, output is the
+static `dist/`. Every PR gets a preview build (the "Cloudflare Pages" check).
+Set `PUBLIC_WEB3FORMS_KEY` in the Pages build environment.
