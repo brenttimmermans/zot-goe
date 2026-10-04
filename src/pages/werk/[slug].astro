@@ -3,6 +3,7 @@ import type { GetStaticPaths, ImageMetadata } from 'astro';
 import { getImage } from 'astro:assets';
 import Photo from '~/components/Common/Photo.astro';
 import Gallery from '~/components/Project/Gallery.astro';
+import Lightbox from '~/components/Project/Lightbox.astro';
 import LightboxLink from '~/components/Project/LightboxLink.astro';
 import NextProject from '~/components/Project/NextProject.astro';
 import { OWNER } from '~/config';
@@ -99,4 +100,5 @@ const structuredData = {
 		total={lightboxTotal}
 	/>
 	{next && <NextProject next={next} />}
+	<Lightbox />
 </BaseLayout>

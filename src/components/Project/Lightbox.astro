@@ -1,0 +1,75 @@
+---
+import 'glightbox/dist/css/glightbox.min.css';
+---
+
+<script>
+	import GLightbox from 'glightbox';
+
+	const BUTTON_LABELS: Record<string, string> = {
+		'.gclose': 'Sluiten',
+		'.gprev': 'Vorige foto',
+		'.gnext': 'Volgende foto',
+	};
+
+	const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+	const lightbox = GLightbox({
+		selector: '.glightbox',
+		touchNavigation: true,
+		loop: true,
+		openEffect: reducedMotion ? 'none' : 'zoom',
+		closeEffect: reducedMotion ? 'none' : 'zoom',
+		slideEffect: reducedMotion ? 'none' : 'slide',
+	});
+
+	// GLightbox leaves focus behind the dialog, never restores it on close and
+	// labels its buttons in English, so the open and close hooks fill that in.
+	let opener: HTMLElement | undefined;
+
+	for (const link of document.querySelectorAll<HTMLElement>('.glightbox')) {
+		link.addEventListener('click', () => {
+			opener = link;
+		});
+	}
+
+	lightbox.on('open', () => {
+		for (const [selector, label] of Object.entries(BUTTON_LABELS)) {
+			document.querySelector(selector)?.setAttribute('aria-label', label);
+		}
+
+		document.querySelector<HTMLElement>('.glightbox-container')?.focus();
+	});
+	lightbox.on('close', () => opener?.focus());
+</script>
+
+<style is:global>
+	.glightbox-clean.glightbox-container .goverlay {
+		background: hsl(from var(--color-bg) h s l / 0.96);
+	}
+
+	.glightbox-clean.glightbox-container .gslide-media {
+		box-shadow: none;
+	}
+
+	.glightbox-clean.glightbox-container .gbtn,
+	.glightbox-clean.glightbox-container .gbtn:hover {
+		background-color: hsl(from var(--color-bg) h s l / 0.8);
+	}
+
+	.glightbox-clean.glightbox-container .gbtn path {
+		fill: var(--color-ink);
+	}
+
+	.glightbox-clean.glightbox-container .gbtn:hover path {
+		fill: var(--color-accent);
+	}
+
+	.glightbox-clean.glightbox-container .gbtn.focused {
+		outline: 2px solid var(--color-accent);
+		outline-offset: 2px;
+	}
+
+	.glightbox-clean.glightbox-container .gloader {
+		border-color: var(--color-ink);
+		border-right-color: transparent;
+	}
+</style>
