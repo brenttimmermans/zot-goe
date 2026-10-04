@@ -2,7 +2,7 @@
 
 > **Status (2026-10-04): implemented.** Plans #8 #11 · W1: 10 #9, 11 #10 ·
 > W2: 20 #15, 21 #14, 22 #16, 23 #12, 24 #13, 25 #17, 26 no-go (TS 7 spike, not merged) ·
-> W3: 30 and 31 in review. Current docs: [`ARCHITECTURE.md`](../../ARCHITECTURE.md),
+> W3: 30 #20, 31 #19 · fix #18. Current docs: [`ARCHITECTURE.md`](../../ARCHITECTURE.md),
 > [`README.md`](../../README.md).
 
 These plans move the site from the newsprint "Quiet Grid" redesign (stages 1–2,
