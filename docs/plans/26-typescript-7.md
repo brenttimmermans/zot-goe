@@ -76,3 +76,24 @@ median of 10 runs):
 
 Follow it with the machine details, the method in two lines, and one
 paragraph of verdict.
+
+## Result
+
+| Check | TS 6.0.3 | TS 7 | Speed-up | Peak RSS 6 → 7 |
+| --- | --- | --- | --- | --- |
+| `tsc --noEmit` | 0.713 s | 0.127 s (7.0.2) | 5.6× | 376 → 171 MB |
+| `astro check` | 2.847 s | refuses TS 7 | n/a | 672 MB → n/a |
+| `astro sync` + `tsc` with `@astrojs/ts-content-mapper` | 2.847 s | 1.263 s (7.1 nightly) | 2.3× | 672 → 205 MB |
+
+Medians of 10 runs, alternating toolchains after a warm-up, on an Apple M1 Pro
+(10 cores), Node 24.21.0. Every toolchain caught the same deliberately
+injected `.ts` and `.astro` errors.
+
+**Verdict: no-go** (Brent, 2026-10-04). `astro check` refuses TS 7, and Astro
+is deprecating it rather than adding support. Its replacement,
+`@astrojs/ts-content-mapper` 0.2.0, needs TS 7.1. On 7.0.2,
+`--runExternalCode` is an unknown option and the mapper is silently ignored,
+which would quietly skip every `.astro` file. On the 7.1 nightly it catches
+the same errors and is 2.3× faster, but it reports 3 errors inside Astro's own
+`Picture.astro` and `Font.astro`. Revisit once TS 7.1 is stable and a mapper
+or Astro release clears those errors.

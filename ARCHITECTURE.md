@@ -1,192 +1,135 @@
 # Architecture
 
-## Overview
+Photography portfolio of Brent Timmermans. Dutch (`lang="nl"`), fully static:
+Astro builds every page into `dist/`. No server, no adapter.
 
-**Zot Goe** is a photography portfolio website built with Astro, Tailwind CSS, and TypeScript. It showcases photography projects with a gallery view, project details, and a contact form for inquiries.
+## Stack
 
-## Tech Stack
+| | |
+| --- | --- |
+| Runtime | Node 24 |
+| Framework | Astro 7.3.5 |
+| Styling | Tailwind CSS 4.3.3 (CSS-first `@theme`, no config file) |
+| Language | TypeScript 6.0.3, strict |
+| Fonts | Archivo (UI), Newsreader (prose), via Fontsource |
+| Lightbox | GLightbox 3.3.1 |
+| Contact form | Web3Forms |
+| Lint & format | Biome 2.5.6 |
+| Tests | Vitest 5.0.3 |
+| Hooks | Husky + lint-staged |
 
-| Layer          | Technology                        |
-| -------------- | --------------------------------- |
-| **Framework**  | Astro 5.17.1                      |
-| **Styling**    | Tailwind CSS 4.2.1 + custom theme |
-| **Language**   | TypeScript (strict mode)          |
-| **Content**    | Astro Content Collections (YAML)  |
-| **Linting**    | Biome 2.x                          |
-| **Formatting** | Biome 2.x                          |
-| **Git Hooks**  | Husky 9.1.7 + lint-staged         |
-| **Gallery**    | GLightbox 3.3.1                   |
-| **SEO**        | Astro Sitemap 3.7.0               |
-
-## Directory Structure
-
-```
-zot-goe/
-├── src/
-│   ├── pages/                    # Route-based pages (auto-generates routes)
-│   │   ├── index.astro          # Home page with featured projects
-│   │   ├── contact.astro        # Contact form page
-│   │   └── projects/
-│   │       ├── index.astro      # All projects listing
-│   │       └── [slug].astro     # Dynamic project detail page
-│   ├── components/              # Reusable Astro components
-│   │   ├── BaseLayout.astro     # Root layout with SEO/meta
-│   │   ├── Navbar.astro         # Navigation with active state
-│   │   ├── Footer.astro         # Footer with copyright
-│   │   ├── HeroSection.astro    # Homepage hero
-│   │   ├── ProjectCard.astro    # Project preview card
-│   │   └── ContactForm.astro    # Web3Forms contact form
-│   ├── layouts/
-│   │   └── BaseLayout.astro     # Main layout wrapper
-│   ├── content/
-│   │   ├── config.ts            # Content collection schema
-│   │   └── projects/            # Project data (YAML)
-│   │       ├── spa-24-001.yaml
-│   │       └── spa-24-002.yaml
-│   └── styles/
-│       ├── global.css           # Tailwind + theme variables
-│       ├── fonts.css            # Font imports
-│       └── fonts/
-│           └── montserrat-variable.ttf
-├── public/                      # Static assets (images, favicon)
-├── astro.config.mjs            # Astro configuration
-├── tailwind.config.mjs          # Tailwind theme config
-├── tsconfig.json               # TypeScript config (strict)
-├── biome.json                  # Biome lint & format rules
-├── .husky/                     # Git hooks
-└── package.json                # Dependencies & scripts
-```
-
-## Core Components
-
-### Pages
-
-| File                              | Purpose                                                 |
-| --------------------------------- | ------------------------------------------------------- |
-| `src/pages/index.astro`           | Home page: hero + featured projects (4 latest) + CTA    |
-| `src/pages/projects/index.astro`  | All projects listing, sorted by date (newest first)     |
-| `src/pages/projects/[slug].astro` | Dynamic project detail with masonry gallery + GLightbox |
-| `src/pages/contact.astro`         | Contact form with success state                         |
-
-### Layouts
-
-| File                           | Purpose                                                     |
-| ------------------------------ | ----------------------------------------------------------- |
-| `src/layouts/BaseLayout.astro` | Root layout: SEO meta, navbar, footer, skip-to-content link |
-
-### Components
-
-| File                | Purpose                                                       |
-| ------------------- | ------------------------------------------------------------- |
-| `Navbar.astro`      | Sticky navigation with active link detection                  |
-| `Footer.astro`      | Footer with copyright year                                    |
-| `HeroSection.astro` | Large hero with title + image                                 |
-| `ProjectCard.astro` | Project preview: title, description, date, 3 highlight images |
-| `ContactForm.astro` | Form with Web3Forms integration (requires API key)            |
-
-### Content
-
-| File                          | Purpose                                                 |
-| ----------------------------- | ------------------------------------------------------- |
-| `src/content/config.ts`       | Zod schema for projects collection                      |
-| `src/content/projects/*.yaml` | Project data: title, description, date, images, gallery |
-
-## Data Flow
+## Structure
 
 ```
-User Request
-    ↓
-Astro Router (file-based routing)
-    ↓
-Page Component (e.g., [slug].astro)
-    ↓
-getCollection("projects") → Content Collection
-    ↓
-Render with BaseLayout + Components
-    ↓
-Tailwind CSS + Global Styles
-    ↓
-HTML + Structured Data (JSON-LD)
-    ↓
-Browser (with GLightbox script for galleries)
+src/
+  assets/            icons/, site/portrait.png, stand-in/ (placeholder photos)
+  components/        Common, Site, Project, Home, Work, About, Contact
+  constants/         categories.ts, site.ts (nav, socials, process steps)
+  content/projects/  <slug>/index.yaml + photos
+  layouts/           BaseLayout.astro
+  lib/               pure logic + co-located *.test.ts
+  pages/             routes
+  styles/            global.css, tokens.css, fonts.css
+  types/site.ts
+  config.ts          site facts (URL, name, owner, email, tagline)
+  content.config.ts  project schema
+  env.ts             PUBLIC_WEB3FORMS_KEY schema
+public/              favicon.svg, robots.txt
+docs/plans/          redesign history
 ```
 
-### Project Data Schema
+Imports use `~/` (→ `src/`) across folders, relative paths within one.
 
-```typescript
-{
-  title: string              // Project name
-  description: string        // Short description
-  date: Date                 // Project date (YYYY-MM-DD)
-  cover: string              // OG image path
-  imageFolder: string        // Folder containing images
-  highlights: string[]       // 3 highlight image paths
-  gallery: string[]          // All gallery image paths (1+)
-}
-```
+## Routes
 
-## External Integrations
+| Route | Shows |
+| --- | --- |
+| `/` | Hero collage, featured projects, about teaser |
+| `/werk` | All projects, newest first, category filter |
+| `/werk/[slug]` | Cover, story, gallery + lightbox, next project |
+| `/over` | Portrait, bio, "Hoe het werkt" steps |
+| `/contact` | Contact form |
+| `/contact/bedankt` | Thank-you page (`noindex`) |
+| `/404` | Not found (`noindex`) |
 
-| Service           | Purpose                    | Config                                                 |
-| ----------------- | -------------------------- | ------------------------------------------------------ |
-| **Web3Forms**     | Contact form submission    | `ContactForm.astro` (requires API key in `access_key`) |
-| **GLightbox**     | Image gallery lightbox     | `src/pages/projects/[slug].astro`                      |
-| **Astro Sitemap** | Auto-generated sitemap.xml | `astro.config.mjs`                                     |
+## Components
 
-## Configuration
+| Folder | Components |
+| --- | --- |
+| `Common` | `Photo` (all images), `TextLink`, `Button` |
+| `Site` | `Header`, `Footer`, `ThemeToggle`, `ThemeScript` |
+| `Project` | `ProjectCard`, `Gallery`, `LightboxLink`, `Lightbox`, `NextProject` |
+| `Home` | `HeroCollage`, `FeaturedProjects`, `AboutTeaser` |
+| `Work` | `WorkGrid`, `WorkFilter` |
+| `About` | `ProcessSteps` |
+| `Contact` | `ContactForm`, `Field` |
 
-### Environment
+`BaseLayout` props: `title`, `description`, `image`, `structuredData`,
+`noindex`.
 
-- **Site URL**: `https://zotgoe.be` (in `astro.config.mjs`)
-- **Language**: English (`lang="en"` in BaseLayout)
+## Data model
 
-### Styling
+`src/content/projects/<slug>/index.yaml`. The folder name is the slug. Field
+reference: [README → Adding a project](./README.md#adding-a-project).
 
-Custom Tailwind theme in `src/styles/global.css`:
+- Image paths are relative to the YAML and checked by `image()`: a bad path
+  fails the build.
+- `category` is the `Category` enum (`constants/categories.ts`): `concert`,
+  `event`, `motorsport`, `huwelijk`.
+- `featured` is a home-page rank. Five slots; extra ranks are ignored.
+- Read only through `lib/projects.ts`: `getProjects()` (newest first),
+  `getFeaturedProjects()`, `getNextProject()`.
 
-```css
---color-bg: #f5f4f0 /* Background */ --color-surface: #eceae4 /* Card/surface */
-  --color-muted: #b0ada6 /* Secondary text */ --color-body: #4a4845 /* Body text */
-  --color-heading: #2c2a27 /* Headings */ --color-accent: #6b6863 /* Links/hover */;
-```
+## Images
 
-### Linting & Formatting
+| Where | Output |
+| --- | --- |
+| `Common/Photo` | `<Picture>`, AVIF + WebP, 480–2400 px, caller passes `sizes` |
+| `Project/LightboxLink` | One WebP, max 2400 px |
+| `BaseLayout` `image` | 1200×630 JPEG for `og:image` |
 
-- **Biome**: Config in `biome.json` (lint + format)
-- **Husky**: Pre-commit hook runs lint + format on staged files
+- Lazy by default; one `priority` image per page.
+- Never serve photos from `public/`.
+- Site images (`PORTRAIT`, `CONTACT_IMAGE`, `DEFAULT_OG_IMAGE`) live in
+  `lib/siteImages.ts`.
 
-## Build & Deploy
+## Theming
 
-| Command           | Action                            |
-| ----------------- | --------------------------------- |
-| `npm install`     | Install dependencies              |
-| `npm run dev`     | Start dev server (localhost:4321) |
-| `npm run build`   | Build to `./dist/`                |
-| `npm run preview` | Preview production build locally  |
-| `npm run lint`    | Run Biome lint                    |
-| `npm run format`  | Run Biome format                  |
-| `npm run check`   | Run Biome check (lint + format)   |
-| `npm run astro`   | Run Astro CLI commands            |
+- **Tokens**: `styles/tokens.css` `@theme`. All colours are `hsl()` roles
+  (`bg`, `ink`, `body`, `muted`, `accent`, …). Never use raw colours.
+- **Dark**: `[data-theme="dark"]` overrides the colour tokens; `dark:`
+  variant keys off the same attribute.
+- **No flash**: `ThemeScript` (inline in `<head>`) sets `data-theme` from
+  `localStorage.theme`, falling back to the system setting.
+- **Toggle**: `ThemeToggle` flips and stores the theme.
 
-### Pre-commit Hooks
+## Layout logic (`src/lib/`)
 
-Husky + lint-staged automatically:
+| File | Does |
+| --- | --- |
+| `collage.ts` | 8 hero slots in a 1280×888 box; picks covers first, round-robin over projects |
+| `workGrid.ts` | `/werk` 12-col pattern (8+4, 4+8, 6+6); odd last card centred. Reused by the filter in the browser |
+| `gallery.ts` | Groups photos by orientation into `wide`, `pair`, `offset`, `single` rows |
+| `format.ts` | `formatMonthYear()` → "april 2025", `formatYear()` |
 
-1. Run `biome check --write` on staged `*.astro`, `*.ts`, `*.tsx`, `*.js`, `*.jsx`, `*.json`, `*.jsonc`, `*.css` files
+## SEO
 
-## SEO & Metadata
+`BaseLayout` writes title, description, canonical, Open Graph and Twitter
+tags. `@astrojs/sitemap` builds `sitemap-index.xml`.
 
-All pages include:
+| Page | JSON-LD | `og:image` |
+| --- | --- | --- |
+| `/` | `WebSite` + `Person` | `DEFAULT_OG_IMAGE` |
+| `/werk` | `CollectionPage` | `DEFAULT_OG_IMAGE` |
+| `/werk/[slug]` | `ImageGallery` | cover |
+| `/over` | `AboutPage` | portrait |
+| `/contact` | `ContactPage` | `DEFAULT_OG_IMAGE` |
 
-- Meta description
-- Open Graph tags (title, description, image, URL)
-- Twitter Card tags
-- Canonical URL
-- Structured data (JSON-LD) for schema.org
+## Quality gates
 
-Examples:
+| When | Runs |
+| --- | --- |
+| Commit | `biome check --write` on staged files |
+| Push and CI (`.github/workflows/ci.yml`) | `npx biome ci .`, `npm run check:types`, `npm test`, `npm run build` |
 
-- Home: `WebSite` + `Person` schema
-- Projects: `CollectionPage` schema
-- Project detail: `ImageGallery` schema
-- Contact: `ContactPage` schema
+Tests: `src/lib/*.test.ts`, Vitest through Astro's `getViteConfig`.
