@@ -1,0 +1,80 @@
+---
+import TextLink from '~/components/Common/TextLink.astro';
+import ProjectCard from '~/components/Project/ProjectCard.astro';
+import { getFeaturedProjects } from '~/lib/projects';
+
+interface FeaturedSlot {
+	row: number;
+	frameClass: string;
+	sizes: string;
+	class?: string;
+}
+
+const ROW_CLASSES = [
+	'md:grid-cols-[7fr_5fr] md:items-end md:gap-media',
+	'md:mx-auto md:w-[77%]',
+	'md:grid-cols-[4fr_5fr] md:items-start md:gap-media',
+];
+
+const SLOTS: FeaturedSlot[] = [
+	{
+		row: 0,
+		frameClass: 'aspect-[8/7]',
+		sizes: '(min-width: 768px) 58vw, 100vw',
+	},
+	{
+		row: 0,
+		frameClass: 'aspect-[11/10]',
+		sizes: '(min-width: 768px) 42vw, 100vw',
+	},
+	{
+		row: 1,
+		frameClass: 'aspect-[8/5]',
+		sizes: '(min-width: 768px) 77vw, 100vw',
+	},
+	{
+		row: 2,
+		frameClass: 'aspect-[9/8]',
+		sizes: '(min-width: 768px) 45vw, 100vw',
+		class: 'md:mt-[min(9.4vw,7.5rem)]',
+	},
+	{
+		row: 2,
+		frameClass: 'aspect-[21/20]',
+		sizes: '(min-width: 768px) 55vw, 100vw',
+	},
+];
+
+const projects = await getFeaturedProjects();
+const cards = SLOTS.slice(0, projects.length).map((slot, index) => ({
+	...slot,
+	project: projects[index],
+}));
+const rows = ROW_CLASSES.map((rowClass, row) => ({
+	rowClass,
+	cards: cards.filter((card) => card.row === row),
+})).filter(({ cards }) => cards.length > 0);
+---
+
+<section id="uitgelicht" class="px-media pt-section-M">
+	<h2 class="sr-only">Uitgelicht werk</h2>
+	<div class="flex flex-col gap-y-section-S md:gap-y-section-M">
+		{
+			rows.map(({ rowClass, cards }) => (
+				<div class:list={['grid gap-y-section-S', rowClass]}>
+					{cards.map(({ project, frameClass, sizes, class: className }) => (
+						<ProjectCard
+							project={project}
+							frameClass={frameClass}
+							sizes={sizes}
+							class={className}
+						/>
+					))}
+				</div>
+			))
+		}
+	</div>
+	<p class="flex justify-center pt-section-M">
+		<TextLink href="/werk">Alle projecten</TextLink>
+	</p>
+</section>
