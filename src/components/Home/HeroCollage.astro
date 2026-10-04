@@ -13,7 +13,6 @@ const FLOW_TILE_COUNT = 6;
 
 const projects = await getProjects();
 const tiles = pickCollageTiles(projects, COLLAGE_SLOTS.length);
-const largestArea = Math.max(...COLLAGE_SLOTS.map(({ w, h }) => w * h));
 ---
 
 <section
@@ -39,13 +38,14 @@ const largestArea = Math.max(...COLLAGE_SLOTS.map(({ w, h }) => w * h));
 			tiles.map(({ project, photo }, index) => {
 				const { x, y, w, h, depth } = COLLAGE_SLOTS[index];
 				const number = String(index + 1).padStart(2, '0');
+				const isFlowTile = index < FLOW_TILE_COUNT;
 
 				return (
 					<a
 						href={`/werk/${project.id}`}
 						class:list={[
 							'tile group flex flex-col gap-2 even:mt-12 lg:mt-0 lg:even:mt-0',
-							{ 'max-lg:hidden': index >= FLOW_TILE_COUNT },
+							{ 'max-lg:hidden': !isFlowTile },
 						]}
 						style={`--x: ${x}; --y: ${y}; --w: ${w}; --h: ${h}; --depth: ${depth};`}
 						data-collage-tile
@@ -54,9 +54,9 @@ const largestArea = Math.max(...COLLAGE_SLOTS.map(({ w, h }) => w * h));
 							<Photo
 								src={photo.src}
 								alt={photo.alt ?? project.data.title}
-								sizes={`(min-width: 1024px) ${Math.round((w / COLLAGE_WIDTH) * 100)}vw, 50vw`}
-								loading="eager"
-								priority={w * h === largestArea}
+								sizes={`(min-width: 1024px) ${Math.round((w / COLLAGE_WIDTH) * 100)}vw, (min-width: 768px) 33vw, 50vw`}
+								loading={isFlowTile ? 'eager' : 'lazy'}
+								priority={index === 0}
 								class="size-full transition-colors group-hover:bg-frame-hover [&_img]:transition-opacity group-hover:[&_img]:opacity-90"
 							/>
 						</div>

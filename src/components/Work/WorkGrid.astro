@@ -39,6 +39,7 @@ const slots = getWorkSlots(projects.length);
 						sizes={SIZES[span]}
 						showYear
 						loading={index < EAGER_COUNT ? 'eager' : 'lazy'}
+						priority={index === 0}
 					/>
 				</li>
 			);
