@@ -15,7 +15,7 @@ describe(pickHighlights, () => {
 			_createProject('b', ['b1', 'shared', 'b2']),
 		];
 
-		expect(names(pickHighlights(projects, 8))).toEqual([
+		expect(names(pickHighlights(projects))).toEqual([
 			'a1',
 			'b1',
 			'shared',
@@ -25,15 +25,14 @@ describe(pickHighlights, () => {
 });
 
 describe(buildHighlightColumns, () => {
-	it('should fill the shortest column, with columns 3 and 4 starting lower', () => {
-		const highlights = ['1', '2', '3', '4', '5', '6'].map(_createHighlight);
+	it('should fill each column up to its height, leaving columns 3 and 4 shorter', () => {
+		const highlights = Array.from({ length: 30 }, (_, index) =>
+			_createHighlight(String(index)),
+		);
 
-		expect(buildHighlightColumns(highlights).map(names)).toEqual([
-			['1', '5'],
-			['2', '6'],
-			['3'],
-			['4'],
-		]);
+		expect(
+			buildHighlightColumns(highlights).map((column) => column.length),
+		).toEqual([6, 6, 5, 5]);
 	});
 });
 

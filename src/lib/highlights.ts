@@ -5,20 +5,14 @@ export interface Highlight {
 	photo: ProjectPhoto;
 }
 
-export const HIGHLIGHT_COUNT = 16;
-
 const GAP_TO_COLUMN_WIDTH = 40 / 290;
-const LEAD_PROJECT_ROOM = 0.75;
+const COLUMN_HEIGHT_RATIOS = [5.3, 5.3, 4.5, 4.5];
 
-export function pickHighlights(
-	projects: Project[],
-	count: number,
-): Highlight[] {
+export function pickHighlights(projects: Project[]): Highlight[] {
 	const shownImages = new Set(projects.map(({ data }) => data.cover.src.src));
 	const highlights: Highlight[] = [];
 
 	for (const highlight of interleavePhotos(projects)) {
-		if (highlights.length === count) break;
 		if (shownImages.has(highlight.photo.src.src)) continue;
 
 		shownImages.add(highlight.photo.src.src);
@@ -29,13 +23,16 @@ export function pickHighlights(
 }
 
 export function buildHighlightColumns(highlights: Highlight[]): Highlight[][] {
-	const heights = [0, 0, LEAD_PROJECT_ROOM, LEAD_PROJECT_ROOM];
-	const columns = heights.map((): Highlight[] => []);
+	const room = [...COLUMN_HEIGHT_RATIOS];
+	const columns = room.map((): Highlight[] => []);
 
 	for (const highlight of highlights) {
-		const shortest = heights.indexOf(Math.min(...heights));
-		columns[shortest].push(highlight);
-		heights[shortest] += relativeHeight(highlight.photo);
+		const height = relativeHeight(highlight.photo);
+		const roomiest = room.indexOf(Math.max(...room));
+		if (room[roomiest] < height) continue;
+
+		columns[roomiest].push(highlight);
+		room[roomiest] -= height;
 	}
 
 	return columns;

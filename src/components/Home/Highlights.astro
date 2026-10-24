@@ -1,0 +1,20 @@
+---
+import { buildHighlightColumns, pickHighlights } from '~/lib/highlights';
+import { getProjects } from '~/lib/projects';
+import HighlightColumns from './HighlightColumns.astro';
+import Intro from './Intro.astro';
+
+const projects = await getProjects();
+const highlights = pickHighlights(projects);
+const columns = buildHighlightColumns(highlights);
+---
+
+<section
+	class="flex flex-col gap-gutter pt-2 md:grid md:grid-cols-2 md:items-start"
+>
+	<div class="contents md:flex md:flex-col md:gap-[60px]">
+		<HighlightColumns columns={columns.slice(0, 2)} priority />
+		<Intro class="-order-1 pt-section-S pb-5 md:order-none md:p-0 md:px-gutter" />
+	</div>
+	<HighlightColumns columns={columns.slice(2)} />
+</section>
