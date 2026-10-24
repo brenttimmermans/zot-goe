@@ -43,7 +43,7 @@ const label = showYear ? `${kind}, ${formatYear(date)}` : kind;
 			frameClass,
 		]}
 	/>
-	<span class:list={['flex gap-2.5 text-sm', labelClass]}>
+	<span class:list={['flex flex-wrap gap-x-2.5 text-sm', labelClass]}>
 		<span class="font-medium">{title}</span>
 		<span class="text-muted">{label}</span>
 	</span>
