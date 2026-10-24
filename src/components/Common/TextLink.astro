@@ -2,6 +2,7 @@
 interface Props {
 	href: string;
 	variant?: 'underline' | 'plain';
+	size?: 'sm' | 'lg';
 	arrow?: boolean;
 	class?: string;
 }
@@ -9,6 +10,7 @@ interface Props {
 const {
 	href,
 	variant = 'underline',
+	size = 'sm',
 	arrow = false,
 	class: className,
 } = Astro.props;
@@ -19,10 +21,20 @@ const VARIANT_CLASSES: Record<NonNullable<Props['variant']>, string> = {
 		'border-b border-ink pb-[3px] text-ink hover:border-accent hover:text-accent',
 	plain: 'text-subtle hover:text-accent',
 };
+
+const SIZE_CLASSES: Record<NonNullable<Props['size']>, string> = {
+	sm: 'text-sm',
+	lg: 'text-title font-medium',
+};
 ---
 
 <a
 	{href}
-	class:list={['text-sm transition-colors', VARIANT_CLASSES[variant], className]}
+	class:list={[
+		'transition-colors',
+		SIZE_CLASSES[size],
+		VARIANT_CLASSES[variant],
+		className,
+	]}
 	><slot />{arrow && <span aria-hidden="true"> →</span>}</a
 >

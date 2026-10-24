@@ -1,0 +1,18 @@
+---
+import { OWNER, TAGLINE } from '~/config';
+
+interface Props {
+	class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div class:list={['flex flex-col gap-4', className]}>
+	<p class="text-caption text-muted">{OWNER}, fotograaf in Gent</p>
+	<h1 class="text-statement font-medium text-pretty">{TAGLINE}</h1>
+	<a href="/contact" class="flex items-center gap-2 self-start text-sm">
+		<span class="size-[7px] rounded-full bg-accent" aria-hidden="true"></span>
+		Beschikbaar — plan een shoot <span aria-hidden="true">→</span>
+	</a>
+</div>
