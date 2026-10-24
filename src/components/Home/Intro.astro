@@ -8,7 +8,7 @@ interface Props {
 const { class: className } = Astro.props;
 ---
 
-<div class:list={['flex flex-col gap-[18px]', className]}>
+<div class:list={['flex flex-col gap-4', className]}>
 	<p class="text-caption text-muted">{OWNER}, fotograaf in Gent</p>
 	<h1 class="text-statement font-medium text-pretty">{TAGLINE}</h1>
 	<a href="/contact" class="flex items-center gap-2 self-start text-sm">

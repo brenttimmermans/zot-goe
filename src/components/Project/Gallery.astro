@@ -47,13 +47,13 @@ function altOf(photo: ProjectPhoto): string {
 }
 ---
 
-<div class="flex flex-col gap-media px-media pb-media">
+<div class="flex flex-col gap-3 px-gutter">
 	{
 		rows.map((row) => {
 			const layout = ROW_LAYOUTS[row.kind];
 
 			return (
-				<div class:list={['grid gap-media', layout.class]}>
+				<div class:list={['grid gap-3', layout.class]}>
 					{row.photos.map((photo, index) => (
 						<LightboxLink
 							src={photo.src}
