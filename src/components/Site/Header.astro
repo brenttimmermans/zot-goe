@@ -11,32 +11,34 @@ function isActive(href: string, currentPath: string): boolean {
 }
 ---
 
-<header class="flex h-header items-center justify-between gap-5 px-gutter">
-	<a href="/" class="text-base font-semibold tracking-[-0.01em]">{SITE_NAME}</a>
-	<div class="flex items-center gap-5 md:gap-7">
-		<nav aria-label="Hoofdmenu">
-			<ul class="flex items-center gap-5 text-sm md:gap-7">
-				{
-					NAV_LINKS.map(({ label, href }) => {
-						const active = isActive(href, pathname);
-						return (
-							<li>
-								<a
-									{href}
-									class:list={[
-										'hover:text-accent',
-										active ? 'font-medium text-ink' : 'text-subtle',
-									]}
-									aria-current={active ? 'page' : undefined}
-								>
-									{label}
-								</a>
-							</li>
-						);
-					})
-				}
-			</ul>
-		</nav>
+<header
+	class="grid h-header grid-cols-[1fr_auto_1fr] items-center gap-5 px-gutter"
+>
+	<div class="flex">
 		<ThemeToggle />
 	</div>
+	<a href="/" class="text-base font-semibold tracking-[-0.01em]">{SITE_NAME}</a>
+	<nav aria-label="Hoofdmenu" class="justify-self-end">
+		<ul class="flex items-center gap-5 text-sm md:gap-7">
+			{
+				NAV_LINKS.map(({ label, href }) => {
+					const active = isActive(href, pathname);
+					return (
+						<li>
+							<a
+								{href}
+								class:list={[
+									'hover:text-accent',
+									active ? 'font-medium text-ink' : 'text-subtle',
+								]}
+								aria-current={active ? 'page' : undefined}
+							>
+								{label}
+							</a>
+						</li>
+					);
+				})
+			}
+		</ul>
+	</nav>
 </header>
