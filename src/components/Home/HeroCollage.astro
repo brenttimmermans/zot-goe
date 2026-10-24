@@ -144,12 +144,14 @@ const tiles = pickCollageTiles(projects, COLLAGE_SLOTS.length);
 	.frame {
 		aspect-ratio: var(--w) / var(--h);
 		overflow: hidden;
+		box-shadow: var(--shadow-float);
 	}
 
+	/* Depth doubles as a phase offset so the tiles bob out of step. */
 	@media (prefers-reduced-motion: no-preference) {
-		.tile:hover .frame,
-		.tile:focus-visible .frame {
-			animation: float 6s ease-in-out infinite;
+		.frame {
+			animation: float 7s ease-in-out infinite;
+			animation-delay: calc(var(--depth) * -0.3s);
 		}
 	}
 

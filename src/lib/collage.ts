@@ -18,14 +18,14 @@ export const COLLAGE_HEIGHT = 888;
 
 // Design pixels inside the COLLAGE_WIDTH × COLLAGE_HEIGHT hero box.
 export const COLLAGE_SLOTS: CollageSlot[] = [
-	{ x: 40, y: 32, w: 220, h: 290, depth: 18 },
-	{ x: 340, y: 96, w: 180, h: 124, depth: 34 },
-	{ x: 720, y: 24, w: 320, h: 212, depth: 12 },
-	{ x: 1100, y: 150, w: 140, h: 186, depth: 40 },
-	{ x: 80, y: 420, w: 260, h: 172, depth: 24 },
-	{ x: 240, y: 660, w: 150, h: 190, depth: 44 },
-	{ x: 560, y: 640, w: 230, h: 150, depth: 28 },
-	{ x: 900, y: 400, w: 300, h: 380, depth: 10 },
+	{ x: 40, y: 28, w: 260, h: 340, depth: 18 },
+	{ x: 360, y: 84, w: 212, h: 146, depth: 34 },
+	{ x: 650, y: 20, w: 360, h: 238, depth: 12 },
+	{ x: 1072, y: 128, w: 168, h: 222, depth: 40 },
+	{ x: 64, y: 436, w: 296, h: 196, depth: 24 },
+	{ x: 404, y: 590, w: 168, h: 216, depth: 44 },
+	{ x: 620, y: 640, w: 258, h: 170, depth: 28 },
+	{ x: 940, y: 400, w: 300, h: 390, depth: 10 },
 ];
 
 export function pickCollageTiles(
