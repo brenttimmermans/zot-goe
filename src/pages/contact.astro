@@ -29,12 +29,12 @@ const structuredData = {
 
 <BaseLayout title="Contact" {description} {structuredData}>
 	<div
-		class="grid items-start gap-media pb-section-L md:grid-cols-[5fr_7fr] md:px-media"
+		class="grid items-start gap-media pb-section-L md:grid-cols-[5fr_7fr] md:px-media lg:grid-cols-[1fr_2fr]"
 	>
 		<Photo
 			src={CONTACT_IMAGE}
 			alt=""
-			sizes="42vw"
+			sizes="(min-width: 1024px) 33vw, 42vw"
 			class="hidden aspect-[3/4] md:block"
 		/>
 		<div

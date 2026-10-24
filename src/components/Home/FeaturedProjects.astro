@@ -12,8 +12,7 @@ interface FeaturedSlot {
 
 const ROW_CLASSES = [
 	'md:grid-cols-[7fr_5fr] md:items-end md:gap-media',
-	'md:mx-auto md:w-[77%]',
-	'md:grid-cols-[4fr_5fr] md:items-start md:gap-media',
+	'md:grid-cols-[5fr_7fr] md:items-start md:gap-media',
 ];
 
 const SLOTS: FeaturedSlot[] = [
@@ -29,19 +28,14 @@ const SLOTS: FeaturedSlot[] = [
 	},
 	{
 		row: 1,
-		frameClass: 'aspect-[8/5]',
-		sizes: '(min-width: 768px) 77vw, 100vw',
-	},
-	{
-		row: 2,
 		frameClass: 'aspect-[9/8]',
-		sizes: '(min-width: 768px) 45vw, 100vw',
+		sizes: '(min-width: 768px) 42vw, 100vw',
 		class: 'md:mt-[min(9.4vw,7.5rem)]',
 	},
 	{
-		row: 2,
-		frameClass: 'aspect-[21/20]',
-		sizes: '(min-width: 768px) 55vw, 100vw',
+		row: 1,
+		frameClass: 'aspect-[6/5]',
+		sizes: '(min-width: 768px) 58vw, 100vw',
 	},
 ];
 
