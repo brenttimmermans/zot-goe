@@ -6,20 +6,14 @@ export interface Highlight {
 }
 
 const GAP_TO_COLUMN_WIDTH = 12 / 291;
-const COLUMN_HEIGHT_RATIOS = [4.6, 4.6, 3.9, 3.9];
+const COLUMN_HEIGHT_RATIOS = [6.0, 6.0, 4.4, 4.4];
 
 export function pickHighlights(projects: Project[]): Highlight[] {
-	const shownImages = new Set(projects.map(({ data }) => data.cover.src.src));
-	const highlights: Highlight[] = [];
+	const covers = new Set(projects.map(({ data }) => data.cover.src.src));
 
-	for (const highlight of interleavePhotos(projects)) {
-		if (shownImages.has(highlight.photo.src.src)) continue;
-
-		shownImages.add(highlight.photo.src.src);
-		highlights.push(highlight);
-	}
-
-	return highlights;
+	return interleavePhotos(projects).filter(
+		({ photo }) => !covers.has(photo.src.src),
+	);
 }
 
 export function buildHighlightColumns(highlights: Highlight[]): Highlight[][] {

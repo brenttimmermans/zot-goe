@@ -9,18 +9,13 @@ import {
 import type { Project } from './projects';
 
 describe(pickHighlights, () => {
-	it('should interleave photos across projects, skipping covers and repeats', () => {
+	it('should interleave photos across projects, skipping covers', () => {
 		const projects = [
-			_createProject('a', ['a1', 'shared', 'b-cover']),
-			_createProject('b', ['b1', 'shared', 'b2']),
+			_createProject('a', ['a1', 'b-cover']),
+			_createProject('b', ['b1', 'b2']),
 		];
 
-		expect(names(pickHighlights(projects))).toEqual([
-			'a1',
-			'b1',
-			'shared',
-			'b2',
-		]);
+		expect(names(pickHighlights(projects))).toEqual(['a1', 'b1', 'b2']);
 	});
 });
 
@@ -32,7 +27,7 @@ describe(buildHighlightColumns, () => {
 
 		expect(
 			buildHighlightColumns(highlights).map((column) => column.length),
-		).toEqual([6, 6, 5, 5]);
+		).toEqual([8, 8, 6, 6]);
 	});
 });
 
