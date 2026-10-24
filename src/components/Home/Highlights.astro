@@ -12,22 +12,21 @@ const [lead] = await getFeaturedProjects();
 ---
 
 <section
-	class="flex flex-col gap-gutter pt-2 md:grid md:grid-cols-2 md:items-start"
+	class="flex flex-col gap-3 px-gutter md:grid md:grid-cols-2 md:items-start"
 >
-	<div class="contents md:flex md:flex-col md:gap-[60px]">
+	<div class="contents md:flex md:flex-col md:gap-section-M md:self-stretch">
 		<HighlightColumns columns={columns.slice(0, 2)} priority />
-		<Intro class="-order-1 pt-section-S pb-5 md:order-none md:p-0 md:px-gutter" />
+		<Intro class="-order-1 py-section-S md:order-none md:my-auto md:py-0" />
 	</div>
-	<div class="flex flex-col gap-gutter">
+	<div class="flex flex-col gap-3">
 		<HighlightColumns columns={columns.slice(2)} />
 		{
 			lead && (
 				<ProjectCard
 					project={lead}
-					frameClass="aspect-[3/2]"
+					frameClass="aspect-landscape"
 					sizes="(min-width: 768px) 50vw, 100vw"
 					showYear
-					labelClass="max-md:px-gutter"
 				/>
 			)
 		}

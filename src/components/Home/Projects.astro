@@ -4,11 +4,11 @@ import ProjectCard from '~/components/Project/ProjectCard.astro';
 import { getFeaturedProjects } from '~/lib/projects';
 
 const PORTRAIT = {
-	frameClass: 'aspect-[4/5]',
+	frameClass: 'aspect-portrait',
 	sizes: '(min-width: 768px) 35vw, 100vw',
 };
 const LANDSCAPE = {
-	frameClass: 'aspect-[3/2]',
+	frameClass: 'aspect-landscape',
 	sizes: '(min-width: 768px) 65vw, 100vw',
 };
 
@@ -19,32 +19,31 @@ const rows = Array.from(
 );
 ---
 
-<section class="flex flex-col gap-y-section-S pt-section-M">
+<section class="flex flex-col gap-section-M px-gutter pt-section-M">
 	<h2 class="sr-only">Uitgelicht werk</h2>
-	{
-		rows.map((row, rowIndex) => (
-			<div
-				class:list={[
-					'grid gap-x-gutter gap-y-section-S',
-					rowIndex % 2 === 0
-						? 'md:grid-cols-[8fr_15fr]'
-						: 'md:grid-cols-[15fr_8fr]',
-				]}
-			>
-				{row.map((project, index) => (
-					<ProjectCard
-						project={project}
-						{...((rowIndex + index) % 2 === 0 ? PORTRAIT : LANDSCAPE)}
-						showYear
-						labelClass={
-							index === 0 ? 'max-md:px-gutter md:pl-4' : 'max-md:px-gutter'
-						}
-					/>
-				))}
-			</div>
-		))
-	}
-	<p class="flex justify-end px-gutter">
+	<div class="flex flex-col gap-section-S">
+		{
+			rows.map((row, rowIndex) => (
+				<div
+					class:list={[
+						'grid gap-x-3 gap-y-section-S',
+						rowIndex % 2 === 0
+							? 'md:grid-cols-[8fr_15fr]'
+							: 'md:grid-cols-[15fr_8fr]',
+					]}
+				>
+					{row.map((project, index) => (
+						<ProjectCard
+							project={project}
+							{...((rowIndex + index) % 2 === 0 ? PORTRAIT : LANDSCAPE)}
+							showYear
+						/>
+					))}
+				</div>
+			))
+		}
+	</div>
+	<p class="flex justify-end">
 		<TextLink href="/werk" size="lg" arrow>Alle projecten</TextLink>
 	</p>
 </section>

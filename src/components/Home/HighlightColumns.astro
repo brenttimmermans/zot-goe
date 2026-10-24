@@ -10,10 +10,10 @@ interface Props {
 const { columns, priority = false } = Astro.props;
 ---
 
-<div class="grid grid-cols-2 items-start gap-gutter">
+<div class="grid grid-cols-2 items-start gap-3">
 	{
 		columns.map((column, columnIndex) => (
-			<div class="flex flex-col gap-gutter">
+			<div class="flex flex-col gap-3">
 				{column.map(({ project, photo }, index) => (
 					<a href={`/werk/${project.id}`} class="group">
 						<Photo

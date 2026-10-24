@@ -11,7 +11,6 @@ interface Props {
 	loading?: 'lazy' | 'eager';
 	priority?: boolean;
 	class?: string;
-	labelClass?: string;
 }
 
 const {
@@ -22,7 +21,6 @@ const {
 	loading = 'lazy',
 	priority = false,
 	class: className,
-	labelClass,
 } = Astro.props;
 const { title, kind, date, cover } = project.data;
 const label = showYear ? `${kind}, ${formatYear(date)}` : kind;
@@ -43,7 +41,7 @@ const label = showYear ? `${kind}, ${formatYear(date)}` : kind;
 			frameClass,
 		]}
 	/>
-	<span class:list={['flex flex-wrap gap-x-2.5 text-sm', labelClass]}>
+	<span class="flex flex-wrap gap-x-2.5 text-sm">
 		<span class="font-medium">{title}</span>
 		<span class="text-muted">{label}</span>
 	</span>

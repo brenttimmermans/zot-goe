@@ -5,8 +5,8 @@ export interface Highlight {
 	photo: ProjectPhoto;
 }
 
-const GAP_TO_COLUMN_WIDTH = 40 / 290;
-const COLUMN_HEIGHT_RATIOS = [5.3, 5.3, 4.5, 4.5];
+const GAP_TO_COLUMN_WIDTH = 12 / 291;
+const COLUMN_HEIGHT_RATIOS = [4.6, 4.6, 3.9, 3.9];
 
 export function pickHighlights(projects: Project[]): Highlight[] {
 	const shownImages = new Set(projects.map(({ data }) => data.cover.src.src));
