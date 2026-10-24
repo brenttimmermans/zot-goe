@@ -37,22 +37,22 @@ contact form. Without it the site builds, but the form can't send.
 3. Write `index.yaml`:
 
 ```yaml
-title: Lannoo × Pascal Naessens
+title: iPhone Duo reveal
 category: event
-kind: Boekvoorstelling
-date: 2025-04-10
-location: Gent
-summary: Boekvoorstelling voor pers en genodigden.
+kind: Productlancering
+date: 2025-06-14
+location: Brussel
+summary: Lancering van de iPhone Duo voor pers en genodigden.
 featured: 2
 story:
-  - Lannoo stelde het nieuwe kookboek van Pascal Naessens voor.
-  - "Opgeleverd: 120 bewerkte beelden, binnen vier dagen."
+  - Apple stelde de iPhone Duo voor aan pers en genodigden.
+  - "Opgeleverd: 80 bewerkte beelden, binnen drie dagen."
 cover:
   src: ./cover.jpg
-  alt: Pascal Naessens signeert een kookboek aan een lange tafel.
+  alt: De iPhone Duo wordt op het podium onthuld.
 photos:
   - src: ./01.jpg
-    alt: Genodigden luisteren naar de presentatie.
+    alt: Genodigden testen de iPhone Duo aan de demotafels.
   - src: ./02.jpg
 ```
 
@@ -60,7 +60,7 @@ photos:
 | --- | --- | --- |
 | `title` | required | Project name |
 | `category` | required | `concert`, `event`, `motorsport` or `huwelijk` (the `/werk` filter) |
-| `kind` | required | Display label, e.g. `Boekvoorstelling` |
+| `kind` | required | Display label, e.g. `Productlancering` |
 | `date` | required | `YYYY-MM-DD`; sets the order |
 | `location` | required | Shown on the project page |
 | `summary` | required | One sentence for search and link previews |
