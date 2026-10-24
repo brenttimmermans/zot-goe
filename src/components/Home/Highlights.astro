@@ -1,4 +1,5 @@
 ---
+import Lightbox from '~/components/Project/Lightbox.astro';
 import ProjectCard from '~/components/Project/ProjectCard.astro';
 import { buildHighlightColumns, pickHighlights } from '~/lib/highlights';
 import { getFeaturedProjects, getProjects } from '~/lib/projects';
@@ -8,6 +9,9 @@ import Intro from './Intro.astro';
 const projects = await getProjects();
 const highlights = pickHighlights(projects);
 const columns = buildHighlightColumns(highlights);
+const leftColumns = columns.slice(0, 2);
+const rightColumns = columns.slice(2);
+const total = columns.flat().length;
 const [lead] = await getFeaturedProjects();
 ---
 
@@ -15,11 +19,15 @@ const [lead] = await getFeaturedProjects();
 	class="flex flex-col gap-3 px-gutter md:grid md:grid-cols-2 md:items-start"
 >
 	<div class="contents md:flex md:flex-col md:gap-section-M md:self-stretch">
-		<HighlightColumns columns={columns.slice(0, 2)} priority />
+		<HighlightColumns columns={leftColumns} firstNumber={1} {total} priority />
 		<Intro class="-order-1 py-section-S md:order-none md:my-auto md:py-0" />
 	</div>
 	<div class="flex flex-col gap-3">
-		<HighlightColumns columns={columns.slice(2)} />
+		<HighlightColumns
+			columns={rightColumns}
+			firstNumber={leftColumns.flat().length + 1}
+			{total}
+		/>
 		{
 			lead && (
 				<ProjectCard
@@ -32,3 +40,4 @@ const [lead] = await getFeaturedProjects();
 		}
 	</div>
 </section>
+<Lightbox order="screen" />
