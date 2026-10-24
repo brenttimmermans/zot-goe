@@ -44,7 +44,7 @@ Imports use `~/` (→ `src/`) across folders, relative paths within one.
 
 | Route | Shows |
 | --- | --- |
-| `/` | Photo highlights, intro, featured projects, about teaser |
+| `/` | Photo highlights + lightbox, intro, featured projects, about teaser |
 | `/werk` | All projects, newest first, category filter |
 | `/werk/[slug]` | Cover, story, gallery + lightbox, next project |
 | `/over` | Portrait, bio, "Hoe het werkt" steps |

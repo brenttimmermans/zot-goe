@@ -1,6 +1,14 @@
 ---
 import 'glightbox/dist/css/glightbox.min.css';
+
+interface Props {
+	order?: 'source' | 'screen';
+}
+
+const { order = 'source' } = Astro.props;
 ---
+
+<div hidden data-lightbox-order={order}></div>
 
 <script>
 	import GLightbox from 'glightbox';
@@ -11,9 +19,16 @@ import 'glightbox/dist/css/glightbox.min.css';
 		'.gnext': 'Volgende foto',
 	};
 
+	const links = [...document.querySelectorAll<HTMLAnchorElement>('.glightbox')];
+	const sortsByScreen = Boolean(
+		document.querySelector('[data-lightbox-order="screen"]'),
+	);
 	const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+	// An empty list stops GLightbox binding the links itself, so the click
+	// handler can pass the slides in its own order.
 	const lightbox = GLightbox({
-		selector: '.glightbox',
+		elements: [],
 		touchNavigation: true,
 		loop: true,
 		openEffect: reducedMotion ? 'none' : 'zoom',
@@ -25,10 +40,19 @@ import 'glightbox/dist/css/glightbox.min.css';
 	// labels its buttons in English, so the open and close hooks fill that in.
 	let opener: HTMLElement | undefined;
 
-	for (const link of document.querySelectorAll<HTMLElement>('.glightbox')) {
-		link.addEventListener('click', () => {
-			opener = link;
-		});
+	const handleLinkClick = (event: MouseEvent): void => {
+		if (!(event.currentTarget instanceof HTMLAnchorElement)) return;
+
+		event.preventDefault();
+		opener = event.currentTarget;
+
+		const ordered = sortsByScreen ? links.toSorted(byScreenPosition) : links;
+		lightbox.setElements(ordered.map(toSlide));
+		lightbox.openAt(ordered.indexOf(event.currentTarget));
+	};
+
+	for (const link of links) {
+		link.addEventListener('click', handleLinkClick);
 	}
 
 	lightbox.on('open', () => {
@@ -39,6 +63,19 @@ import 'glightbox/dist/css/glightbox.min.css';
 		document.querySelector<HTMLElement>('.glightbox-container')?.focus();
 	});
 	lightbox.on('close', () => opener?.focus());
+
+	function byScreenPosition(first: HTMLElement, second: HTMLElement): number {
+		const firstBox = first.getBoundingClientRect();
+		const secondBox = second.getBoundingClientRect();
+
+		return (
+			Math.round(firstBox.top - secondBox.top) || firstBox.left - secondBox.left
+		);
+	}
+
+	function toSlide(link: HTMLAnchorElement): Record<string, string> {
+		return { href: link.href, type: 'image', alt: link.dataset.alt ?? '' };
+	}
 </script>
 
 <style is:global>
