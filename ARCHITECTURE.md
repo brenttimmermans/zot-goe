@@ -76,7 +76,7 @@ reference: [README → Adding a project](./README.md#adding-a-project).
   fails the build.
 - `category` is the `Category` enum (`constants/categories.ts`): `concert`,
   `event`, `motorsport`, `huwelijk`.
-- `featured` is a home-page rank. Five slots; extra ranks are ignored.
+- `featured` is a home-page rank. Four slots; extra ranks are ignored.
 - Read only through `lib/projects.ts`: `getProjects()` (newest first),
   `getFeaturedProjects()`, `getNextProject()`.
 

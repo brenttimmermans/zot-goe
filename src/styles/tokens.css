@@ -2,19 +2,22 @@
 	--font-sans: "Archivo Variable", "Helvetica Neue", Arial, sans-serif;
 	--font-serif: "Newsreader Variable", Georgia, serif;
 
-	--color-bg: hsl(40, 27%, 98%);
+	--color-bg: hsl(40, 20%, 99%);
 	--color-ink: hsl(48, 14%, 7%);
 	--color-body: hsl(45, 11%, 21%);
 	--color-subtle: hsl(44, 8%, 27%);
 	--color-muted: hsl(37, 6%, 44%);
 	--color-hint: hsl(42, 9%, 43%);
 	--color-rule: hsl(44, 13%, 83%);
-	--color-hairline: hsl(40, 19%, 91%);
+	--color-hairline: hsl(40, 14%, 92%);
 	--color-field: hsl(42, 12%, 79%);
 	--color-frame: hsl(40, 16%, 89%);
 	--color-frame-hover: hsl(40, 15%, 85%);
 	--color-accent: hsl(5, 77%, 60%);
 	--color-on-accent: hsl(48, 14%, 7%);
+
+	--shadow-float:
+		0 1px 2px hsla(48, 14%, 7%, 0.06), 0 16px 32px -14px hsla(48, 14%, 7%, 0.28);
 
 	/* Tailwind 4 pairs each --text-* with its --line-height/--letter-spacing,
 	   so one text-* utility carries the whole style. Fluid sizes interpolate
@@ -56,18 +59,20 @@
 }
 
 [data-theme="dark"] {
-	--color-bg: hsl(51, 19%, 7%);
-	--color-ink: hsl(47, 26%, 93%);
-	--color-body: hsl(42, 14%, 75%);
-	--color-subtle: hsl(43, 11%, 68%);
-	--color-muted: hsl(43, 7%, 53%);
-	--color-hint: hsl(42, 6%, 49%);
-	--color-rule: hsl(42, 11%, 18%);
-	--color-hairline: hsl(47, 13%, 13%);
-	--color-field: hsl(43, 10%, 26%);
-	--color-frame: hsl(47, 14%, 12%);
-	--color-frame-hover: hsl(48, 13%, 15%);
+	--color-bg: hsl(0, 0%, 8%);
+	--color-ink: hsl(0, 0%, 94%);
+	--color-body: hsl(0, 0%, 76%);
+	--color-subtle: hsl(0, 0%, 70%);
+	--color-muted: hsl(0, 0%, 54%);
+	--color-hint: hsl(0, 0%, 50%);
+	--color-rule: hsl(0, 0%, 19%);
+	--color-hairline: hsl(0, 0%, 14%);
+	--color-field: hsl(0, 0%, 27%);
+	--color-frame: hsl(0, 0%, 13%);
+	--color-frame-hover: hsl(0, 0%, 16%);
 	--color-accent: hsl(5, 86%, 69%);
-	--color-on-accent: hsl(51, 19%, 7%);
+	--color-on-accent: hsl(0, 0%, 8%);
+	--shadow-float:
+		0 1px 2px hsla(0, 0%, 0%, 0.3), 0 16px 32px -14px hsla(0, 0%, 0%, 0.7);
 	color-scheme: dark;
 }
