@@ -1,7 +1,7 @@
 ---
 import AboutTeaser from '~/components/Home/AboutTeaser.astro';
-import FeaturedProjects from '~/components/Home/FeaturedProjects.astro';
 import Highlights from '~/components/Home/Highlights.astro';
+import Projects from '~/components/Home/Projects.astro';
 import { CITY, EMAIL, OWNER, SITE_NAME, SITE_URL } from '~/config';
 import { SOCIALS } from '~/constants/site';
 import BaseLayout from '~/layouts/BaseLayout.astro';
@@ -28,6 +28,6 @@ const structuredData = {
 
 <BaseLayout structuredData={structuredData}>
 	<Highlights />
-	<FeaturedProjects />
+	<Projects />
 	<AboutTeaser />
 </BaseLayout>

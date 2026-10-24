@@ -41,7 +41,6 @@
 	--spacing-section-S: clamp(2.5rem, 4.4vw, 3.5rem);
 	--spacing-section-M: clamp(3.5rem, 6.9vw, 5.5rem);
 	--spacing-section-L: clamp(4rem, 8.6vw, 7rem);
-	--spacing-section-XL: clamp(5rem, 11vw, 8.75rem);
 	--spacing-header: 4.5rem;
 
 	--container-page: 100rem;
