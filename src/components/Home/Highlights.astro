@@ -1,0 +1,34 @@
+---
+import ProjectCard from '~/components/Project/ProjectCard.astro';
+import { buildHighlightColumns, pickHighlights } from '~/lib/highlights';
+import { getFeaturedProjects, getProjects } from '~/lib/projects';
+import HighlightColumns from './HighlightColumns.astro';
+import Intro from './Intro.astro';
+
+const projects = await getProjects();
+const highlights = pickHighlights(projects);
+const columns = buildHighlightColumns(highlights);
+const [lead] = await getFeaturedProjects();
+---
+
+<section
+	class="flex flex-col gap-3 px-gutter md:grid md:grid-cols-2 md:items-start"
+>
+	<div class="contents md:flex md:flex-col md:gap-section-M md:self-stretch">
+		<HighlightColumns columns={columns.slice(0, 2)} priority />
+		<Intro class="-order-1 py-section-S md:order-none md:my-auto md:py-0" />
+	</div>
+	<div class="flex flex-col gap-3">
+		<HighlightColumns columns={columns.slice(2)} />
+		{
+			lead && (
+				<ProjectCard
+					project={lead}
+					frameClass="aspect-landscape"
+					sizes="(min-width: 768px) 50vw, 100vw"
+					showYear
+				/>
+			)
+		}
+	</div>
+</section>

@@ -1,0 +1,49 @@
+---
+import TextLink from '~/components/Common/TextLink.astro';
+import ProjectCard from '~/components/Project/ProjectCard.astro';
+import { getFeaturedProjects } from '~/lib/projects';
+
+const PORTRAIT = {
+	frameClass: 'aspect-portrait',
+	sizes: '(min-width: 768px) 35vw, 100vw',
+};
+const LANDSCAPE = {
+	frameClass: 'aspect-landscape',
+	sizes: '(min-width: 768px) 65vw, 100vw',
+};
+
+const [, ...projects] = await getFeaturedProjects();
+const rows = Array.from(
+	{ length: Math.ceil(projects.length / 2) },
+	(_, index) => projects.slice(index * 2, index * 2 + 2),
+);
+---
+
+<section class="flex flex-col gap-section-M px-gutter pt-section-M">
+	<h2 class="sr-only">Uitgelicht werk</h2>
+	<div class="flex flex-col gap-section-S">
+		{
+			rows.map((row, rowIndex) => (
+				<div
+					class:list={[
+						'grid gap-x-3 gap-y-section-S',
+						rowIndex % 2 === 0
+							? 'md:grid-cols-[8fr_15fr]'
+							: 'md:grid-cols-[15fr_8fr]',
+					]}
+				>
+					{row.map((project, index) => (
+						<ProjectCard
+							project={project}
+							{...((rowIndex + index) % 2 === 0 ? PORTRAIT : LANDSCAPE)}
+							showYear
+						/>
+					))}
+				</div>
+			))
+		}
+	</div>
+	<p class="flex justify-end">
+		<TextLink href="/werk" size="lg" arrow>Alle projecten</TextLink>
+	</p>
+</section>
