@@ -64,7 +64,7 @@ photos:
 | `date` | required | `YYYY-MM-DD`; sets the order |
 | `location` | required | Shown on the project page |
 | `summary` | required | One sentence for search and link previews |
-| `featured` | optional | Home-page rank, `1` first. Top 5 shown |
+| `featured` | optional | Home-page rank, `1` first. Top 4 shown |
 | `story` | required | 1–3 paragraphs |
 | `cover` | required | `src` + `alt`. Use a landscape photo, subject centred |
 | `photos` | required | Gallery, in order. `alt` optional but recommended |
