@@ -1,12 +1,12 @@
 ---
 import ProcessSteps from '~/components/About/ProcessSteps.astro';
 import Photo from '~/components/Common/Photo.astro';
-import { EMAIL, OWNER, SINCE } from '~/config';
+import { EMAIL, OWNER, SINCE, SITE_NAME } from '~/config';
 import { SOCIALS } from '~/constants/site';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import { PORTRAIT } from '~/lib/siteImages';
 
-const DESCRIPTION = `${OWNER} fotografeert sinds ${SINCE} concerten, events, motorsport en huwelijken, in en rond Gent.`;
+const DESCRIPTION = `${OWNER} fotografeert concerten, events, motorsport en huwelijken in en rond Gent. Sinds 2017 achter de camera, sinds ${SINCE} als ${SITE_NAME}.`;
 
 const structuredData = {
 	'@context': 'https://schema.org',
@@ -47,17 +47,14 @@ const structuredData = {
 			>
 				<p>
 					Ik fotografeer al zolang ik me kan herinneren, maar in 2017 werd het
-					menens: van mijn eerste loon kocht ik een deftige camera. Alles wat ik
-					ken, heb ik mezelf aangeleerd.
+					menens: van mijn eerste loon kocht ik een camera. Alles wat ik
+					kan, heb ik mezelf aangeleerd.
 				</p>
 				<p>
-					Sindsdien sta ik op concerten, boekvoorstellingen, expo's, huwelijken
-					en aan de pitmuur op Spa. Wat me telkens trekt is het moment net vóór
-					of net ná waar iedereen naar kijkt.
-				</p>
-				<p>
-					Ik werk discreet, meestal zonder flits, en ik heb altijd een camera
-					bij.
+					Sindsdien sta ik op concerten, boekvoorstellingen, expo's en
+					huwelijken, en zo vaak als ik kan in Spa, tussen de paddock en de
+					tribunes. Wat me telkens weer boeit, is wat er net vóór of net ná het
+					grote moment gebeurt.
 				</p>
 			</div>
 		</div>

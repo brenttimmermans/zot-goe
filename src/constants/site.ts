@@ -14,21 +14,21 @@ export const PROCESS_STEPS: ProcessStep[] = [
 	{
 		no: '01',
 		title: 'Je stuurt een bericht',
-		body: 'Datum, soort shoot, locatie. Ik antwoord binnen 24 uur, meestal sneller.',
+		body: 'Datum, soort shoot, locatie. Ik antwoord binnen 24 uur.',
 	},
 	{
 		no: '02',
 		title: 'We bellen kort',
-		body: 'Vijftien minuten om te weten wat je nodig hebt en waarvoor je de beelden gebruikt.',
+		body: 'Een kwartiertje om te horen wat je nodig hebt en waarvoor je de beelden gebruikt.',
 	},
 	{
 		no: '03',
 		title: 'Ik kom fotograferen',
-		body: 'Discreet, meestal zonder flits. Ik loop mee, ik regisseer niet.',
+		body: 'Ik loop discreet mee en regisseer niet.',
 	},
 	{
 		no: '04',
 		title: 'Je krijgt je beelden',
-		body: 'Bewerkte selectie in web- en drukformaat, binnen een week. Sneller kan, in overleg.',
+		body: 'Bewerkte selectie in hoge resolutie, binnen een week. Sneller kan, in overleg.',
 	},
 ];
