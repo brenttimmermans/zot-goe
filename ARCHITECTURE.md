@@ -44,7 +44,7 @@ Imports use `~/` (→ `src/`) across folders, relative paths within one.
 
 | Route | Shows |
 | --- | --- |
-| `/` | Hero collage, featured projects, about teaser |
+| `/` | Photo highlights, intro, featured projects, about teaser |
 | `/werk` | All projects, newest first, category filter |
 | `/werk/[slug]` | Cover, story, gallery + lightbox, next project |
 | `/over` | Portrait, bio, "Hoe het werkt" steps |
@@ -59,7 +59,7 @@ Imports use `~/` (→ `src/`) across folders, relative paths within one.
 | `Common` | `Photo` (all images), `TextLink`, `Button` |
 | `Site` | `Header`, `Footer`, `ThemeToggle`, `ThemeScript` |
 | `Project` | `ProjectCard`, `Gallery`, `LightboxLink`, `Lightbox`, `NextProject` |
-| `Home` | `HeroCollage`, `FeaturedProjects`, `AboutTeaser` |
+| `Home` | `Highlights`, `HighlightColumns`, `Intro`, `Projects`, `AboutTeaser` |
 | `Work` | `WorkGrid`, `WorkFilter` |
 | `About` | `ProcessSteps` |
 | `Contact` | `ContactForm`, `Field` |
@@ -76,7 +76,8 @@ reference: [README → Adding a project](./README.md#adding-a-project).
   fails the build.
 - `category` is the `Category` enum (`constants/categories.ts`): `concert`,
   `event`, `motorsport`, `huwelijk`.
-- `featured` is a home-page rank. Four slots; extra ranks are ignored.
+- `featured` is a home-page rank. #1 leads under the highlights, the rest
+  pair up in rows.
 - Read only through `lib/projects.ts`: `getProjects()` (newest first),
   `getFeaturedProjects()`, `getNextProject()`.
 
@@ -107,7 +108,7 @@ reference: [README → Adding a project](./README.md#adding-a-project).
 
 | File | Does |
 | --- | --- |
-| `collage.ts` | 8 hero slots in a 1280×888 box; picks covers first, round-robin over projects |
+| `highlights.ts` | Home masonry: non-cover photos round-robin over projects, filled into 4 columns by real aspect ratio; columns 3–4 end early for the lead project |
 | `workGrid.ts` | `/werk` 12-col pattern (8+4, 4+8, 6+6); odd last card centred. Reused by the filter in the browser |
 | `gallery.ts` | Groups photos by orientation into `wide`, `pair`, `offset`, `single` rows |
 | `format.ts` | `formatMonthYear()` → "april 2025", `formatYear()` |
