@@ -25,54 +25,62 @@ describe(buildGalleryRows, () => {
 	});
 
 	it('should pair two landscapes that follow a wide row', () => {
-		const [a, b, c] = [landscape('a'), landscape('b'), landscape('c')];
+		const [first, second, third] = [
+			landscape('a'),
+			landscape('b'),
+			landscape('c'),
+		];
 
-		expect(buildGalleryRows([a, b, c])).toEqual([
-			{ kind: GalleryRowKind.Wide, photos: [a] },
-			{ kind: GalleryRowKind.Pair, photos: [b, c] },
+		expect(buildGalleryRows([first, second, third])).toEqual([
+			{ kind: GalleryRowKind.Wide, photos: [first] },
+			{ kind: GalleryRowKind.Pair, photos: [second, third] },
 		]);
 	});
 
 	it('should show a landscape full width', () => {
-		const [a, b] = [landscape('a'), portrait('b')];
+		const [first, second] = [landscape('a'), portrait('b')];
 
-		expect(buildGalleryRows([a, b])).toEqual([
-			{ kind: GalleryRowKind.Wide, photos: [a] },
-			{ kind: GalleryRowKind.Single, photos: [b] },
+		expect(buildGalleryRows([first, second])).toEqual([
+			{ kind: GalleryRowKind.Wide, photos: [first] },
+			{ kind: GalleryRowKind.Single, photos: [second] },
 		]);
 	});
 
 	it('should show a landscape after a wide row full width when no landscape follows', () => {
-		const [a, b, c] = [landscape('a'), landscape('b'), portrait('c')];
+		const [first, second, third] = [
+			landscape('a'),
+			landscape('b'),
+			portrait('c'),
+		];
 
-		expect(buildGalleryRows([a, b, c])).toEqual([
-			{ kind: GalleryRowKind.Wide, photos: [a] },
-			{ kind: GalleryRowKind.Wide, photos: [b] },
-			{ kind: GalleryRowKind.Single, photos: [c] },
+		expect(buildGalleryRows([first, second, third])).toEqual([
+			{ kind: GalleryRowKind.Wide, photos: [first] },
+			{ kind: GalleryRowKind.Wide, photos: [second] },
+			{ kind: GalleryRowKind.Single, photos: [third] },
 		]);
 	});
 
 	it('should pair two portraits', () => {
-		const [a, b] = [portrait('a'), portrait('b')];
+		const [first, second] = [portrait('a'), portrait('b')];
 
-		expect(buildGalleryRows([a, b])).toEqual([
-			{ kind: GalleryRowKind.Pair, photos: [a, b] },
+		expect(buildGalleryRows([first, second])).toEqual([
+			{ kind: GalleryRowKind.Pair, photos: [first, second] },
 		]);
 	});
 
 	it('should offset a portrait against the landscape after it', () => {
-		const [a, b] = [portrait('a'), landscape('b')];
+		const [first, second] = [portrait('a'), landscape('b')];
 
-		expect(buildGalleryRows([a, b])).toEqual([
-			{ kind: GalleryRowKind.Offset, photos: [a, b] },
+		expect(buildGalleryRows([first, second])).toEqual([
+			{ kind: GalleryRowKind.Offset, photos: [first, second] },
 		]);
 	});
 
 	it('should show a trailing portrait on its own', () => {
-		const a = portrait('a');
+		const photo = portrait('a');
 
-		expect(buildGalleryRows([a])).toEqual([
-			{ kind: GalleryRowKind.Single, photos: [a] },
+		expect(buildGalleryRows([photo])).toEqual([
+			{ kind: GalleryRowKind.Single, photos: [photo] },
 		]);
 	});
 

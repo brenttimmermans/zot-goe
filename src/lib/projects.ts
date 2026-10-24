@@ -5,14 +5,17 @@ export type ProjectPhoto = Project['data']['photos'][number];
 
 export function sortByNewest(projects: Project[]): Project[] {
 	return projects.toSorted(
-		(a, b) => b.data.date.getTime() - a.data.date.getTime(),
+		(first, second) => second.data.date.getTime() - first.data.date.getTime(),
 	);
 }
 
 export function selectFeatured(projects: Project[]): Project[] {
 	return projects
 		.filter((project) => project.data.featured !== undefined)
-		.toSorted((a, b) => (a.data.featured ?? 0) - (b.data.featured ?? 0));
+		.toSorted(
+			(first, second) =>
+				(first.data.featured ?? 0) - (second.data.featured ?? 0),
+		);
 }
 
 export async function getProjects(): Promise<Project[]> {
