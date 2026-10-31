@@ -2,6 +2,8 @@
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "zot-goe",
 	"compatibility_date": "2026-10-23",
+	// Hidden until the site takes over zotgoe.be.
+	"workers_dev": false,
 	"assets": {
 		"directory": "./dist",
 		"not_found_handling": "404-page"
