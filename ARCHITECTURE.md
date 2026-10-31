@@ -17,6 +17,7 @@ Astro builds every page into `dist/`. No server, no adapter.
 | Lint & format | Biome 2.5.6 |
 | Tests | Vitest 5.0.3 |
 | Hooks | Husky + lint-staged |
+| Hosting | Cloudflare Workers static assets (Wrangler 4.155.0) |
 
 ## Structure
 
@@ -132,5 +133,6 @@ tags. `@astrojs/sitemap` builds `sitemap-index.xml`.
 | --- | --- |
 | Commit | `biome check --write` on staged files |
 | Push and CI (`.github/workflows/ci.yml`) | `npx biome ci .`, `npm run check:types`, `npm test`, `npm run build` |
+| Push to `main`, after CI | `wrangler deploy` |
 
 Tests: `src/lib/*.test.ts`, Vitest through Astro's `getViteConfig`.
