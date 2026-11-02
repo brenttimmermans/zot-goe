@@ -10,10 +10,10 @@
 		"build": "astro build",
 		"preview": "astro preview",
 		"astro": "astro",
-		"lint": "biome lint .",
+		"lint": "biome ci .",
 		"format": "biome format --write .",
 		"check": "biome check --write .",
-		"check:types": "astro check",
+		"typecheck": "astro check",
 		"test": "vitest run",
 		"test:watch": "vitest",
 		"prepare": "husky"

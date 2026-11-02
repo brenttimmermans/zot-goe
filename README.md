@@ -23,10 +23,11 @@ contact form. Without it the site builds, but the form can't send.
 | `npm run dev` | Dev server |
 | `npm run build` | Build to `dist/` |
 | `npm run preview` | Serve `dist/` |
-| `npm run check:types` | Type check |
+| `npm run typecheck` | Type check |
 | `npm test` / `npm run test:watch` | Vitest |
 | `npm run check` | Biome lint + format, with fixes |
-| `npm run lint` / `npm run format` | Biome lint / format only |
+| `npm run lint` | Biome lint + format check, no fixes |
+| `npm run format` | Biome format only |
 
 ## Content
 
