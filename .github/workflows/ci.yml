@@ -4,40 +4,12 @@ on:
   push:
     branches: [main]
   pull_request:
-    branches: [main]
   workflow_dispatch:
 
 jobs:
-  verify:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5.1.0
-
-      - uses: actions/setup-node@v6.5.0
-        with:
-          node-version-file: .node-version
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Lint & format check
-        run: npx biome ci .
-
-      - name: Type check
-        run: npm run check:types
-
-      - name: Test
-        run: npm test
-
-      - name: Build
-        run: npm run build
-        env:
-          PUBLIC_WEB3FORMS_KEY: ${{ vars.PUBLIC_WEB3FORMS_KEY }}
-
-      - name: Deploy
-        if: github.ref == 'refs/heads/main'
-        run: npx wrangler deploy
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+  ci:
+    uses: brenttimmermans/github-actions/.github/workflows/cloudflare-ci.yml@v1
+    secrets: inherit
+    with:
+      build-env: |
+        PUBLIC_WEB3FORMS_KEY=${{ vars.PUBLIC_WEB3FORMS_KEY }}
