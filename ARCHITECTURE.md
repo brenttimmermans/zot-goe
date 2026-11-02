@@ -132,7 +132,7 @@ tags. `@astrojs/sitemap` builds `sitemap-index.xml`.
 | When | Runs |
 | --- | --- |
 | Commit | `biome check --write` on staged files |
-| Push and CI (`.github/workflows/ci.yml`) | `npx biome ci .`, `npm run check:types`, `npm test`, `npm run build` |
+| Push and CI (`.github/workflows/ci.yml`) | `npm run lint`, `npm run typecheck`, `npm test`, `npm run build` |
 | Push to `main`, after CI | `wrangler deploy` |
 
 Tests: `src/lib/*.test.ts`, Vitest through Astro's `getViteConfig`.
