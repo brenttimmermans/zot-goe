@@ -23,17 +23,17 @@
 		"@fontsource-variable/archivo": "^5.3.0",
 		"@fontsource-variable/newsreader": "^5.3.0",
 		"@tailwindcss/vite": "^4.3.3",
-		"astro": "^7.3.5",
+		"astro": "^7.4.1",
 		"glightbox": "^3.3.1",
 		"tailwindcss": "^4.3.3"
 	},
 	"devDependencies": {
-		"@astrojs/check": "^0.9.10",
-		"@biomejs/biome": "^2.5.6",
+		"@astrojs/check": "^0.9.11",
+		"@biomejs/biome": "^2.5.15",
 		"husky": "^9.1.7",
-		"lint-staged": "^17.3.0",
-		"typescript": "^6.0.3",
-		"vitest": "^5.0.3",
+		"lint-staged": "^17.6.0",
+		"typescript": "^7.0.2",
+		"vitest": "^5.0.5",
 		"wrangler": "4.155.0"
 	},
 	"lint-staged": {
