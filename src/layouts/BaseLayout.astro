@@ -6,13 +6,13 @@ import Header from '~/components/Site/Header.astro';
 import ThemeScript from '~/components/Site/ThemeScript.astro';
 import { CITY, SITE_NAME, TAGLINE } from '~/config';
 import { DEFAULT_OG_IMAGE } from '~/lib/siteImages';
+import { STRUCTURED_DATA } from '~/lib/structuredData';
 import '~/styles/global.css';
 
 interface Props {
 	title?: string;
 	description?: string;
 	image?: ImageMetadata;
-	structuredData?: Record<string, unknown>;
 	noindex?: boolean;
 }
 
@@ -24,7 +24,6 @@ const {
 	title,
 	description = TAGLINE,
 	image = DEFAULT_OG_IMAGE,
-	structuredData,
 	noindex = false,
 } = Astro.props;
 
@@ -77,10 +76,10 @@ const socialImage = await resolveSocialImage();
 		<meta name="twitter:image" content={socialImage} />
 
 		{
-			structuredData && (
+			!noindex && (
 				<script
 					type="application/ld+json"
-					set:html={JSON.stringify(structuredData)}
+					set:html={JSON.stringify(STRUCTURED_DATA)}
 				/>
 			)
 		}

@@ -1,31 +1,17 @@
 ---
 import ProcessSteps from '~/components/About/ProcessSteps.astro';
 import Photo from '~/components/Common/Photo.astro';
-import { EMAIL, OWNER, SINCE, SITE_NAME } from '~/config';
-import { SOCIALS } from '~/constants/site';
+import { OWNER, SINCE, SITE_NAME } from '~/config';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import { PORTRAIT } from '~/lib/siteImages';
 
 const DESCRIPTION = `${OWNER} fotografeert concerten, events, motorsport en huwelijken in en rond Gent. Sinds 2017 achter de camera, sinds ${SINCE} als ${SITE_NAME}.`;
-
-const structuredData = {
-	'@context': 'https://schema.org',
-	'@type': 'AboutPage',
-	mainEntity: {
-		'@type': 'Person',
-		name: OWNER,
-		jobTitle: 'Fotograaf',
-		email: EMAIL,
-		sameAs: SOCIALS.map(({ href }) => href),
-	},
-};
 ---
 
 <BaseLayout
 	title="Over"
 	description={DESCRIPTION}
 	image={PORTRAIT}
-	{structuredData}
 >
 	<section
 		class="grid items-start gap-3 md:grid-cols-[5fr_7fr] md:px-gutter lg:grid-cols-[1fr_2fr]"
