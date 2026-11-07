@@ -65,8 +65,7 @@ Imports use `~/` (→ `src/`) across folders, relative paths within one.
 | `About` | `ProcessSteps` |
 | `Contact` | `ContactForm`, `Field` |
 
-`BaseLayout` props: `title`, `description`, `image`, `structuredData`,
-`noindex`.
+`BaseLayout` props: `title`, `description`, `image`, `noindex`.
 
 ## Data model
 
@@ -119,13 +118,16 @@ reference: [README → Adding a project](./README.md#adding-a-project).
 `BaseLayout` writes title, description, canonical, Open Graph and Twitter
 tags. `@astrojs/sitemap` builds `sitemap-index.xml`.
 
-| Page | JSON-LD | `og:image` |
-| --- | --- | --- |
-| `/` | `WebSite` + `Person` | `DEFAULT_OG_IMAGE` |
-| `/werk` | `CollectionPage` | `DEFAULT_OG_IMAGE` |
-| `/werk/[slug]` | `ImageGallery` | cover |
-| `/over` | `AboutPage` | portrait |
-| `/contact` | `ContactPage` | `DEFAULT_OG_IMAGE` |
+JSON-LD: every indexed page emits `WebSite` + `Person` from
+`lib/structuredData.ts`.
+
+| Page | `og:image` |
+| --- | --- |
+| `/` | `DEFAULT_OG_IMAGE` |
+| `/werk` | `DEFAULT_OG_IMAGE` |
+| `/werk/[slug]` | cover |
+| `/over` | portrait |
+| `/contact` | `DEFAULT_OG_IMAGE` |
 
 ## Quality gates
 
