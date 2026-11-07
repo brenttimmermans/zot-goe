@@ -1,7 +1,7 @@
 ---
 import { PUBLIC_WEB3FORMS_KEY } from 'astro:env/client';
 import Button from '~/components/Common/Button.astro';
-import { CONTACT_EMAIL, SITE_URL } from '~/config';
+import { EMAIL, SITE_URL } from '~/config';
 import Field from './Field.astro';
 
 const WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit';
@@ -50,7 +50,7 @@ if (!PUBLIC_WEB3FORMS_KEY) {
 	<div class="mt-1.5 flex flex-wrap items-center gap-5">
 		<Button type="submit">Versturen</Button>
 		<p class="text-caption text-muted">
-			of mail naar <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+			of mail naar <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
 		</p>
 	</div>
 </form>
